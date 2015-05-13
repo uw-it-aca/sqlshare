@@ -19,7 +19,7 @@ This README documents whatever steps are necessary to get your application up an
     
 **Install Sqlshare Web**  
     
-    $ (yourenv) pip install -e git+https://github.com/uw-it-aca/sqlshare_web/#egg=aca-sqlshare-web
+    $ (yourenv) pip install -e git+https://github.com/uw-it-aca/sqlshare/#egg=aca-sqlshare-web
     
 **Update your settings.py**
     
