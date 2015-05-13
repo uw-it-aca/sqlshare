@@ -7,13 +7,13 @@ README = open(os.path.join(os.path.dirname(__file__), 'README.md')).read()
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
-    name='aca-sqlshare-web',
+    name='sqlshare-web',
     version='0.1',
     packages=['sqlshare_web'],
     include_package_data=True,
     install_requires = [
         'setuptools',
-        'django',
+        'django>=1.7',
         'django-compressor',
         'django-templatetag-handlebars',
         'django_mobileesp',

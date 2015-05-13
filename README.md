@@ -10,17 +10,16 @@ This README documents whatever steps are necessary to get your application up an
     $ virutualenv yourenv
     $ cd yourenv
     $ source bin/activate
-
-**Create an empty Django project**
-    
-    $ (yourenv) pip install django
-    $ (yourenv) django-admin.py startproject yourproj
-    $ (yourenv) cd yourproj
     
 **Install Sqlshare Web**  
     
-    $ (yourenv) pip install -e git+https://github.com/uw-it-aca/sqlshare/#egg=aca-sqlshare-web
+    $ (yourenv) pip install -e git+https://github.com/uw-it-aca/sqlshare/#egg=sqlshare-web
 
+**Create an empty Django project**
+    
+    $ (yourenv) django-admin.py startproject yourproj
+    $ (yourenv) cd yourproj
+    
 **Update your urls.py**
     
     urlpatterns = patterns('',
