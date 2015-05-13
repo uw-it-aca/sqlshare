@@ -2,10 +2,9 @@ language: python
 python:
   - "2.7"
   - "3.4"
-install: pip install -r requirements.txt
+install: pip install -e .
 before_script:
   - npm install lessc
-  - pip install -e .
   - pip install coverage
   - pip install python-coveralls
   - pip install pep8
