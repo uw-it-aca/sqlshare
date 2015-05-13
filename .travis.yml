@@ -4,7 +4,7 @@ python:
   - "3.4"
 install: pip install -e .
 before_script:
-  - npm install lessc
+  - npm install less
   - pip install coverage
   - pip install python-coveralls
   - pip install pep8
