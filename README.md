@@ -20,10 +20,19 @@ This README documents whatever steps are necessary to get your application up an
 **Install Sqlshare Web**  
     
     $ (yourenv) pip install -e git+https://github.com/uw-it-aca/sqlshare/#egg=aca-sqlshare-web
+
+**Update your urls.py**
+    
+    urlpatterns = patterns('',
+        ...
+        
+        url(r'^', include('sqlshare_web.urls')),
+    )
     
 **Update your settings.py**
     
     from django_mobileesp.detector import mobileesp_agent as agent
+    
     DETECT_USER_AGENTS = {
         'is_tablet' : agent.detectTierTablet,
         'is_mobile': agent.detectMobileQuick,
@@ -31,6 +40,7 @@ This README documents whatever steps are necessary to get your application up an
 
     INSTALLED_APPS = (
         ...
+        
         'compressor',
         'templatetag_handlebars',
         'sqlshare_web',
@@ -38,6 +48,7 @@ This README documents whatever steps are necessary to get your application up an
     
     TEMPLATE_CONTEXT_PROCESSORS = (
         ...
+        
         'sqlshare_web.context_processors.less_compiled',
         'sqlshare_web.context_processors.google_analytics',
         'sqlshare_web.context_processors.devtools_bar',
