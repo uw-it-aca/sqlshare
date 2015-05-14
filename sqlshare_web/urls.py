@@ -8,4 +8,5 @@ urlpatterns = patterns(
         name='dataset_detail'),
     url(r'^upload', 'sqlshare_web.views.dataset_upload',
         name='dataset_upload'),
+    url(r'^oauth/', 'sqlshare_web.views.oauth_return'),
 )
