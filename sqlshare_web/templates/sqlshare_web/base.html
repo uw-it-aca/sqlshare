@@ -38,7 +38,7 @@
                 
                 body { margin: 0; background: #f7f7f9 !important; }
                                 
-                #header { background: #fff; border-bottom: solid 1px #e1e1e8; height: 56px;
+                .sql-header { background: #fff; border-bottom: solid 1px #e1e1e8; height: 56px;
                     
                     h1 { margin: 0 10px; line-height: 56px; height:56px; text-transform: uppercase; font-family: 'Oswald', sans-serif; font-weight: 300; font-size: 30px; position: relative;
                     
@@ -50,7 +50,7 @@
                     
                 }
                 
-                #content { margin: 0 10px;
+                .sql-content { margin: 0 10px;
                     h2 {  font-family: 'Oswald', sans-serif; font-weight: 400; font-size: 18px; position: relative;
                         span { position: absolute; right: 0; font-size: 14px; font-weight: 300; }
                     }
@@ -115,15 +115,15 @@
     </head>
     <body>
        
-        <div id="header"> 
+        <div id="header"  class="sql-header"> 
             <h1><a href="/">SQLSHARE</a> <span>UW_NETID</span></h1>
         </div>         
                 
-        <div id="content">
+        <div id="content" class="sql-content">
             {% block content %}{% endblock %}
         </div>
 
-        <div id="footer">
+        <div id="footer"  class="sql-footer">
             <p class="text-muted credit">Courtesy of Charlon and Craig. UW-IT ACA</p>
         </div>
             
