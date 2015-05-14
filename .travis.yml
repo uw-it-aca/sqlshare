@@ -10,7 +10,7 @@ before_script:
   - pip install pep8
   - cp travis-ci/manage.py manage.py
   - python manage.py syncdb --noinput
-  - python manage.py collectstatic
+  - python manage.py collectstatic  --noinput
   - python manage.py compress
 script:
   - pep8 sqlshare_web/ --exclude=migrations,sqlshare_web/tests.py,sqlshare_web/test/
