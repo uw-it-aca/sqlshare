@@ -5,7 +5,7 @@ from django.http import HttpResponse
 
 from sqlshare_web.utils import oauth_access_token
 from sqlshare_web.utils import get_or_create_user, OAuthNeededException
-from sqlshare_web.dao import get_datasets
+from sqlshare_web.dao import get_datasets, get_dataset
 
 import urllib
 import json
@@ -26,8 +26,10 @@ def dataset_list(request):
                               context_instance=RequestContext(request))
 
 
-def dataset_detail(request):
+def dataset_detail(request, owner, name):
+    dataset = get_dataset(request, owner, name)
     return render_to_response('sqlshare_web/detail.html',
+                              {"dataset": dataset},
                               context_instance=RequestContext(request))
 
 
