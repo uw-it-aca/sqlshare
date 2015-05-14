@@ -66,7 +66,6 @@ This README documents whatever steps are necessary to get your application up an
     COMPRESS_PRECOMPILERS = (('text/less', 'lessc {infile} {outfile}'),)
     COMPRESS_ENABLED = False # True if you want to compress your development build
     COMPRESS_OFFLINE = False # True if you want to compress your build offline
-    COMPRESS_OUTPUT_DIR = ''
     COMPRESS_CSS_FILTERS = [
         'compressor.filters.css_default.CssAbsoluteFilter',
         'compressor.filters.cssmin.CSSMinFilter'
