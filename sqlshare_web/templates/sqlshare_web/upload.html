@@ -9,4 +9,33 @@
 <h2>Dataset Upload</h2>
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut hendrerit libero nec aliquam ultricies. Etiam eu varius ex, at scelerisque neque. Maecenas tempus orci purus, ut porta diam imperdiet at. Fusce imperdiet ut lacus non sodales. Vestibulum nec auctor justo. Mauris dictum erat ut neque vehicula elementum. Donec gravida malesuada lectus. Integer rhoncus mi in lectus porttitor accumsan at et elit. Curabitur mollis felis et augue viverra, at semper lorem accumsan. Maecenas tellus sapien, luctus eget erat vitae, tempor porta leo. Sed diam tellus, sollicitudin sit amet accumsan quis, convallis ac nibh. Nulla consequat lacinia eros, vel tempus mi sodales at. Vivamus id mi semper, consequat ipsum sed, mollis ipsum. Nam lorem elit, vestibulum sit amet ornare in, vehicula a turpis.</p>
 
+
+<div id="chunk_upload_container">
+{% csrf_token %}
+<button id="upload_dataset_browse">Upload a file</button>
+
+<div id="upload_dataset_droptarget" style="border: 10px dashed grey; width: 200px; height: 200px;">
+    Or... drop file here!
+</div>
+</div>
+
+<div id="uploading_panel" style="display: none;">
+    Uploading...
+    <div id="progress_meter_wrapper" style="width: 300px; height: 20px; border: 1px solid black;">
+        <div id="progress_meter" style="width: 0%; height: 100%; background-color: blue;"></div>
+    </div>
+</div>
+
+<div id="old_school_panel" style="display: none;">
+Your browser doesn't support html5 file uploading.  We're figuring out an option for you.
+</div>
+
+
+<script>
+    document.body.onload = function() {
+        create_uploader();
+    };
+</script>
+
+
 {% endblock %}
