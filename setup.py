@@ -17,6 +17,7 @@ setup(
         'django-compressor',
         'django-templatetag-handlebars',
         'django_mobileesp',
+        'sanction',
     ],
     license='Apache License, Version 2.0',  # example license
     description='Frontend for SQLShare',
@@ -32,6 +33,7 @@ setup(
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.4',
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
     ],
