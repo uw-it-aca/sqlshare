@@ -2,7 +2,9 @@ from django.conf import settings
 from sanction import Client, transport_headers
 from urllib2 import urlopen, HTTPError
 from django.http import HttpResponseRedirect
+import hashlib
 import json
+import os
 
 
 class MockResponse(object):
@@ -143,3 +145,10 @@ def send_request(request, method, url, headers, body=None,
         headers[header] = all_headers[header]
 
     return MockResponse(resp.getcode(), body, headers)
+
+
+def get_file_path(username, file_name, chunk):
+    return os.path.join(settings.SQLSHARE_FILE_CHUNK_PATH,
+                        username,
+                        hashlib.md5(file_name).hexdigest(),
+                        chunk)

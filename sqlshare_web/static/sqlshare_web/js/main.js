@@ -32,3 +32,21 @@ function create_uploader() {
     r.assignDrop(document.getElementById('upload_dataset_droptarget'));
 
 }
+
+function add_parser_form_events() {
+    "use strict";
+
+    function update_preview() {
+        $("#update_preview").val("1");
+        $("#dataset_parser_form").submit();
+    }
+
+    $("#dataset_delimiter").change(function() {
+        update_preview();
+    });
+
+    $("#has_column_headers").change(function() {
+        update_preview();
+    });
+}
+

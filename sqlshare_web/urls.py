@@ -11,6 +11,10 @@ urlpatterns = patterns(
     url(r'^upload_chunk', 'sqlshare_web.views.dataset_upload_chunk',
         name='dataset_upload_chunk'),
 
+    url(r'^upload/finalize/(?P<filename>.*)',
+        'sqlshare_web.views.upload_finalize',
+        name='upload_finalize'),
+
     url(r'^upload/parser/(?P<filename>.*)', 'sqlshare_web.views.upload_parser',
         name='upload_parser'),
 
