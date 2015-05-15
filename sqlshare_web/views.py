@@ -19,7 +19,10 @@ def dataset_list(request):
 
     datasets = get_datasets(request)
 
-    data = {"datasets": datasets}
+    data = {
+        "datasets": datasets,
+        "user": user,
+    }
 
     return render_to_response('sqlshare_web/list.html',
                               data,
@@ -27,9 +30,22 @@ def dataset_list(request):
 
 
 def dataset_detail(request, owner, name):
+    try:
+        user = get_or_create_user(request)
+    except OAuthNeededException as ex:
+        return ex.redirect
+
     dataset = get_dataset(request, owner, name)
+
+    print dataset
+
+    data = {
+        "dataset": dataset,
+        "user": user,
+    }
+
     return render_to_response('sqlshare_web/detail.html',
-                              {"dataset": dataset},
+                              data,
                               context_instance=RequestContext(request))
 
 
