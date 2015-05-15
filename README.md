@@ -74,6 +74,18 @@ This README documents whatever steps are necessary to get your application up an
         'compressor.filters.jsmin.JSMinFilter',
     ]
 
+    # If you're not using rest.sqlshare.uw.edu:
+    SQLSHARE_REST_HOST = "http://my-sqlshare-rest-server.edu:8123"
+
+    # This should be the full path to your installation.
+    SQLSHARE_WEB_HOST = "http://my-host-name.edu:8124/"
+
+    # You need an OAuth token.  You can create one at your rest server, at /o/applications/
+    # Your return url will be <your sqlshare installation>/oauth
+
+    SQLSHARE_OAUTH_ID = "client id"
+    SQLSHARE_OAUTH_SECRET = "client secret"
+
 **Create your database**
     $ (yourenv) python manage.py syncdb
 
