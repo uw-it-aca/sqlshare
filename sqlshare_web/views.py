@@ -7,7 +7,8 @@ from sqlshare_web.utils import oauth_access_token
 from sqlshare_web.utils import get_or_create_user, OAuthNeededException
 from sqlshare_web.utils import get_file_path
 from sqlshare_web.dao import get_datasets, get_dataset, get_parser_values
-from sqlshare_web.dao import update_parser_values
+from sqlshare_web.dao import update_parser_values, append_upload_file
+from sqlshare_web.dao import finalize_upload
 
 import urllib
 import json
@@ -61,9 +62,39 @@ def dataset_upload(request):
                               context_instance=RequestContext(request))
 
 
+def finalize_process(request, filename):
+    try:
+        user = get_or_create_user(request)
+    except OAuthNeededException as ex:
+        return ex.redirect
+
+    if "chunk" in request.POST:
+        chunk = request.POST["chunk"]
+        file_path = get_file_path(user["username"],
+                                  filename,
+                                  chunk,
+                                  )
+
+        if not os.path.exists(file_path):
+            return HttpResponse("upload_complete")
+        else:
+            append_upload_file(request, user, filename, chunk)
+            return HttpResponse("next_chunk")
+
+    if "finalize" in request.POST:
+        name = request.POST["dataset_name"]
+        description = request.POST["dataset_description"]
+        is_public = request.POST["is_public"]
+
+        finalize_upload(request, filename, name, description)
+
+    return HttpResponse("OK")
+
+
 def upload_finalize(request, filename):
     context = {
         "filename": filename,
+        "file_chunk_count": 30,
     }
     return render_to_response('sqlshare_web/upload_finalize.html',
                               context,

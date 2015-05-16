@@ -56,6 +56,40 @@ def get_parser_values(request, user, filename):
     }
 
 
+def append_upload_file(request, user, filename, chunk):
+    session_key = "ss_file_id_%s" % filename
+
+    upload_id = request.session[session_key]
+    path = get_file_path(user["username"], filename, "%s" % chunk)
+
+    with open(path, 'rb') as source:
+        data = source.read()
+
+    url = '/v3/db/file/%s' % (upload_id)
+    response = send_request(request, 'POST', url,
+                            {"Accept": "application/json",
+                             "Content-type": "text/plain",
+                             },
+                            body=data)
+
+
+def finalize_upload(request, filename, name, description):
+    session_key = "ss_file_id_%s" % filename
+
+    upload_id = request.session[session_key]
+    url = '/v3/db/file/%s/finalize' % (upload_id)
+
+    data = json.dumps({"dataset_name": name,
+                       "description": description,
+                       })
+
+    response = send_request(request, 'POST', url,
+                            {"Accept": "application/json",
+                             "Content-type": "text/plain",
+                             },
+                            body=data)
+
+
 def update_parser_values(request, user, filename, delimiter, has_header_row):
     session_key = "ss_file_id_%s" % filename
     upload_id = request.session[session_key]

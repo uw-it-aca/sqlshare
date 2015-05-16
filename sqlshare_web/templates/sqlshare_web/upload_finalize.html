@@ -8,12 +8,27 @@
 
 <h2>{{ dataset.name }}</h2>
 
-Title: <input type="text" name="dataset_name" value="{{ filename }}"/> <br />
+<div id="final_settings_panel">
+{% csrf_token %}
+<input type="hidden" name="original_name" value="{{ filename }}"/>
+Title: <input type="text" name="dataset_name" id="id_dataset_name" value="{{ filename }}"/> 
+<span id="title_required" style="display: none;">Required</span>
+<br />
 Description: <textarea name="dataset_description"></textarea>
 
 <br />
 
 <input type="checkbox" name="is_public" value="1" checked="checked" /> Is Public
 
-<button>Save</button>
+<button id="save_button">Save</button>
+</div>
+<div id="uploading_panel" style="display: none;">
+Saving dataset...
+</div>
+
+<script>
+    document.body.onload = function() {
+        add_finalize_form_events();
+    };
+</script>
 {% endblock %}
