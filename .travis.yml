@@ -6,6 +6,7 @@ install: pip install -e .
 before_script:
   - npm install less
   - npm install jshint
+  - npm install recess
   - pip install coverage
   - pip install python-coveralls
   - pip install pep8
@@ -17,6 +18,7 @@ script:
   - pep8 sqlshare_web/ --exclude=migrations,sqlshare_web/tests.py,sqlshare_web/test/
   - jshint sqlshare_web/static/sqlshare_web/js --verbose
   - coverage run --source=sqlshare_web/ --omit=sqlshare_rest/migrations/* manage.py test sqlshare_web
+  - recess sqlshare_web/static/sqlshare_web/css/*.less --noIds false
 after_script:
   - coveralls
 notifications:
