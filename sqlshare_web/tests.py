@@ -1,3 +1,1 @@
-from django.test import TestCase
-
-# Create your tests here.
+from sqlshare_web.test.context_processors import TestContextProcessors
