@@ -61,4 +61,3 @@ def new_query(request):
 
 def oauth_return(request):
     return oauth_access_token(request)
-
