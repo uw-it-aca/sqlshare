@@ -53,6 +53,9 @@ def dataset_upload(request):
     return render_to_response('sqlshare_web/upload.html',
                               context_instance=RequestContext(request))
 
+def new_query(request):
+    return render_to_response('sqlshare_web/new.html',
+                              context_instance=RequestContext(request))
 
 def oauth_return(request):
     return oauth_access_token(request)

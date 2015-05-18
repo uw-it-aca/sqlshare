@@ -1,0 +1,22 @@
+{% extends "sqlshare_web/base.html" %}
+
+{% block title %}SQLSHARE: New Query{% endblock %}
+
+{% load staticfiles %}
+
+{% block content %}
+
+<h2>Start a new query</h2>
+
+<div style="margin-bottom:2em;">
+    <textarea class="form-control" class="sql-new-query" rows="3" placeholder="E.g. select * from table name"></textarea>
+</div>
+
+
+<div>
+<button type="button" class="btn btn-primary">RUN QUERY</button>
+<button type="button" class="btn btn-primary">SAVE QUERY</button>
+<button type="button" class="btn btn-primary">DOWNLOAD RESULTS</button>
+</div>
+
+{% endblock %}
