@@ -77,7 +77,7 @@ function add_finalize_form_events() {
     }
 
     function send_finalize() {
-        var filename = $("input[name='original_name']").val()
+        var filename = $("input[name='original_name']").val();
         $.ajax({
             url: "/upload/finalize_process/" + filename,
             method: "POST",
@@ -94,7 +94,7 @@ function add_finalize_form_events() {
     }
 
     function upload_next_chunk() {
-        var filename = $("input[name='original_name']").val()
+        var filename = $("input[name='original_name']").val();
         $.ajax({
             url: "/upload/finalize_process/" + filename,
             method: "POST",
