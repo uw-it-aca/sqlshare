@@ -12,15 +12,16 @@ before_script:
   - pip install python-coveralls
   - pip install pep8
   - cp travis-ci/manage.py manage.py
-  - python manage.py syncdb --noinput
-  - python manage.py collectstatic  --noinput
-  - python manage.py compress
   # This is for the server we'll run in the background...
   - mysql -u root -e 'create database sqlshare_rest_app'
   - mysql -u root -e 'create user "ss_rest_user" identified by "ss_pass"'
   - mysql -u root -e 'grant all on *.* to ss_rest_user'
   - mysql -u root -e 'grant grant option on *.* to ss_rest_user'
   - source travis-ci/start_rest_server.sh
+  - deactivate
+  - python manage.py syncdb --noinput
+  - python manage.py collectstatic  --noinput
+  - python manage.py compress
 script:
   - pep8 sqlshare_web/ --exclude=migrations,sqlshare_web/tests.py,sqlshare_web/test/
   - jshint sqlshare_web/static/sqlshare_web/js --verbose
