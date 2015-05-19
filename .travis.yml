@@ -8,6 +8,7 @@ before_script:
   - npm install jshint
   - npm install recess
   - pip install coverage
+  - pip install mechanize
   - pip install python-coveralls
   - pip install pep8
   - cp travis-ci/manage.py manage.py

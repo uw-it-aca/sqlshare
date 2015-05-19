@@ -55,7 +55,17 @@ def dataset_upload(request):
 
 
 def new_query(request):
+    try:
+        user = get_or_create_user(request)
+    except OAuthNeededException as ex:
+        return ex.redirect
+
+    data = {
+        "user": user,
+    }
+
     return render_to_response('sqlshare_web/new.html',
+                              data,
                               context_instance=RequestContext(request))
 
 
