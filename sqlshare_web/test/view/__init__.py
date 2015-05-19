@@ -1,8 +1,14 @@
 import os
 from django.core.urlresolvers import reverse
 import base64
-import urllib2
 import re
+
+import six
+
+if six.PY2:
+    from urllib2 import HTTPError
+if six.PY3:
+    from urllib.error import HTTPError
 
 
 def run_view_tests():
@@ -21,7 +27,6 @@ def login(client, username):
     location = response["Location"]
 
     import mechanize
-    from urllib2 import HTTPError
 
     browser = mechanize.Browser()
     browser.set_handle_robots(False)
