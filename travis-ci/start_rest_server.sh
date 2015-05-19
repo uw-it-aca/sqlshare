@@ -22,7 +22,7 @@ cp $STARTING_DIR/travis-ci/rest-server-urls.py project/urls.py
 
 python manage.py syncdb --noinput
 
-CLIENT_VALUES=`python manage.py create_client_app --name TestApp --return-url http://localhost --owner-username=test_owner`
+CLIENT_VALUES=`python manage.py create_client_app --name TestApp --return-url http://localhost/oauth/ --owner-username=test_owner`
 export OAUTH_CLIENT_ID=`echo $CLIENT_VALUES | cut -d ' ' -f 1 | cut -d : -f 2`
 export OAUTH_CLIENT_SECRET=`echo $CLIENT_VALUES | cut -d ' ' -f 2 | cut -d : -f 2`
 
