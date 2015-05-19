@@ -39,4 +39,3 @@ def save_dataset_from_query(request, owner, name, sql, description, is_public):
     data = json.loads(response.content)
 
     return data
-

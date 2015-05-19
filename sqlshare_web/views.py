@@ -67,6 +67,7 @@ def new_query(request):
     else:
         return _show_new_query_form(request, user)
 
+
 def _save_query(request, user):
     sql = request.POST.get("sql", "")
     name = request.POST.get("name", "")
@@ -87,7 +88,8 @@ def _save_query(request, user):
 
     return HttpResponseRedirect(reverse("dataset_detail",
                                         kwargs={"owner": user["username"],
-                                                "name": name }))
+                                                "name": name}))
+
 
 def _show_query_name_form(request, user, errors={}):
     data = {
@@ -101,7 +103,6 @@ def _show_query_name_form(request, user, errors={}):
     return render_to_response('sqlshare_web/query/name.html',
                               data,
                               context_instance=RequestContext(request))
-
 
 
 def _show_new_query_form(request, user):
