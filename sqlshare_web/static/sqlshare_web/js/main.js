@@ -27,6 +27,8 @@ function create_uploader() {
     });
     r.on('progress', function(){
         $("#progress_meter").css("width", (100 * r.progress())+"%");
+        $("#progress_meter").html(Math.round(100 * r.progress())+"%");
+        $("#progress_meter").attr("aria-valuenow", Math.round(100 * r.progress()));
     });
 
     r.assignBrowse(document.getElementById('upload_dataset_browse'));
