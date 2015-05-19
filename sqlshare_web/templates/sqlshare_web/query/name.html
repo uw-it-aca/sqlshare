@@ -17,8 +17,8 @@
 </div>
 
 Dataset name: <input type="text" name="name" /> {% if errors.name %}Required{% endif %}<br>
-Description: <textarea name="description"></textarea>
-
+Description: <textarea name="description"></textarea> <br />
+Is public? <input type="checkbox" name="is_public" value="1" {% if is_public %}checked="checked"{% endif %} /> <br />
 <div>
     <input type="submit" />
 </div>

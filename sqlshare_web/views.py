@@ -72,6 +72,10 @@ def _save_query(request, user):
     sql = request.POST.get("sql", "")
     name = request.POST.get("name", "")
     description = request.POST.get("description", "")
+    is_public = request.POST.get("is_public", False)
+    if is_public:
+        # Want this to be specificly True or False, not trueish
+        is_public = True
 
     errors = {}
     if not sql:
@@ -82,7 +86,6 @@ def _save_query(request, user):
     if errors:
         return _show_query_name_form(request, user, errors=errors)
 
-    is_public = False
     save_dataset_from_query(request, user["username"], name, sql, description,
                             is_public)
 
@@ -92,12 +95,18 @@ def _save_query(request, user):
 
 
 def _show_query_name_form(request, user, errors={}):
+    is_public = request.POST.get("is_public", False)
+    if is_public:
+        # Want this to be specificly True or False, not trueish
+        is_public = True
+
     data = {
         "user": user,
         "sql": request.POST.get("sql", ""),
         "name": request.POST.get("name", ""),
         "description": request.POST.get("description", ""),
         "errors": errors,
+        "is_public": is_public,
     }
 
     return render_to_response('sqlshare_web/query/name.html',

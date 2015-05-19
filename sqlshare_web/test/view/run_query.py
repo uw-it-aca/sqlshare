@@ -41,9 +41,18 @@ class TestQueryView(TestCase):
         self.assertTrue(view_context["errors"]["name"])
 
         response = self.client.post(reverse("sqlshare_web.views.new_query"),
-                                    { "save": "1", })
+                                    { "save": "1"})
 
         view_context = response.context[-1]
+        self.assertFalse(view_context["is_public"])
+
+
+        response = self.client.post(reverse("sqlshare_web.views.new_query"),
+                                    { "save": "1",
+                                      "is_public": "1"})
+
+        view_context = response.context[-1]
+        self.assertTrue(view_context["is_public"])
         self.assertTrue(view_context["errors"]["name"])
         self.assertTrue(view_context["errors"]["sql"])
 
