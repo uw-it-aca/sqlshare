@@ -15,7 +15,7 @@
 
 Delimiter:
 
-<select name="delimiter" id="dataset_delimiter">
+<select name="delimiter" id="dataset_delimiter" class="form-control">
     <option value="," {% if parser_values.parser.delimiter == "," %}selected=selected{% endif %}>,</option>
     <option value="|" {% if parser_values.parser.delimiter == "|" %}selected=selected{% endif %}>|</option>
     <option value="TAB" {% if parser_values.parser.delimiter == "TAB" %}selected=selected{% endif %}>TAB</option>
@@ -25,22 +25,26 @@ Delimiter:
 
 Dataset Preview:
 
-<table>
-<tr>
-    {% for row in parser_values.columns %}
-        <td>{{ row.name }}</td>
-    {% endfor %}
-    </tr>
-{% for row in parser_values.sample_data %}
-    <tr>
-    {% for col in row %}
-        <td>{{ col }}</td>
-    {% endfor %}
-    </tr>
-{% endfor %}
-</table>
+<div class="table-responsive">
+    <table class="table">
+        
+            {% for row in parser_values.columns %}
+            <tr>
+                <td>{{ row.name }}</td>
+             </tr>   
+            {% endfor %}
+        
+        {% for row in parser_values.sample_data %}
+        <tr>
+            {% for col in row %}
+                <td>{{ col }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+</div>
 
-<input type="submit" value="Next...">
+<input class="btn btn-default" type="submit" value="Next...">
 
 </form>
 
