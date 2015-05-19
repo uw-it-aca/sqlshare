@@ -4,6 +4,7 @@ python:
   - "3.4"
 install: pip install -e .
 before_script:
+  - echo $PATH
   - npm install less
   - npm install jshint
   - npm install recess
@@ -18,7 +19,10 @@ before_script:
   - mysql -u root -e 'grant all on *.* to ss_rest_user'
   - mysql -u root -e 'grant grant option on *.* to ss_rest_user'
   - source travis-ci/start_rest_server.sh
+  # Close out the virtual env from the rest server, go back to ours...
   - deactivate
+  - ls -l
+  - source bin/activate
   - python manage.py syncdb --noinput
   - python manage.py collectstatic  --noinput
   - python manage.py compress
