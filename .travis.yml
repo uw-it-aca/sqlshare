@@ -15,10 +15,16 @@ before_script:
   - python manage.py syncdb --noinput
   - python manage.py collectstatic  --noinput
   - python manage.py compress
+  # This is for the server we'll run in the background...
+  - mysql -u root -e 'create database sqlshare_rest_app'
+  - mysql -u root -e 'create user "ss_rest_user" identified by "ss_pass"'
+  - mysql -u root -e 'grant all on *.* to ss_rest_user'
+  - mysql -u root -e 'grant grant option on *.* to ss_rest_user'
+  - source travis-ci/start_rest_server.sh
 script:
   - pep8 sqlshare_web/ --exclude=migrations,sqlshare_web/tests.py,sqlshare_web/test/
   - jshint sqlshare_web/static/sqlshare_web/js --verbose
-  - coverage run --source=sqlshare_web/ --omit=sqlshare_rest/migrations/* manage.py test sqlshare_web
+  - RUN_SQLSHARE_VIEW_TESTS=1 coverage run --source=sqlshare_web/ --omit=sqlshare_rest/migrations/* manage.py test sqlshare_web
   - recess sqlshare_web/static/sqlshare_web/css/*.less --noIds false
 after_script:
   - coveralls
