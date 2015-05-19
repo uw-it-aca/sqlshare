@@ -8,15 +8,15 @@
 
 <h2>Dataset Upload</h2>
 
-<p>Accepted file types: Comma-separated values (.csv) and Plain text (.txt)</p>
+
 
 <div id="chunk_upload_container">
-{% csrf_token %}
-<button id="upload_dataset_browse">Upload a file</button>
-
-<div id="upload_dataset_droptarget" style="border: 10px dashed grey; width: 200px; height: 200px;">
-    Or... drop file here!
-</div>
+    {% csrf_token %}
+    
+    <div id="upload_dataset_droptarget" style="border: 6px dotted grey; width: 100%; height: 200px; text-align:center; position:relative;">
+       <div style="position:absolute; top: 45%; text-align:center; width:100%;">Drop files here to upload <br/>or <a href="#" id="upload_dataset_browse">select from computer</a></div>
+    </div>
+    <p style="margin-top:1em;">Accepted file types: Comma-separated values (.csv) and Plain text (.txt)</p>
 </div>
 
 <div id="uploading_panel" style="display: none;">
