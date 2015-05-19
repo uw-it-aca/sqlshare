@@ -41,7 +41,6 @@ def login(client, username):
         browser.submit(label="Authorize")
     except HTTPError as ex:
         location = ex.hdrs["Location"]
-        print("Location: %s", location)
 
         local = re.match(".*(/oauth.*)", location).groups()[0]
 

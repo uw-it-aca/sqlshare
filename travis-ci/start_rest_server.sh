@@ -12,7 +12,7 @@ echo "now in `pwd`"
 git clone https://github.com/uw-it-aca/sqlshare-rest.git
 cd sqlshare-rest
 virtualenv .
-git checkout feature/management-command-client
+git checkout develop
 source bin/activate
 pip install -r requirements.txt
 pip install PyMySQL

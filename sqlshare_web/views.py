@@ -1,11 +1,12 @@
 from django.conf import settings
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.core.urlresolvers import reverse
 
 from sqlshare_web.utils import oauth_access_token
 from sqlshare_web.utils import get_or_create_user, OAuthNeededException
-from sqlshare_web.dao import get_datasets, get_dataset
+from sqlshare_web.dao import get_datasets, get_dataset, save_dataset_from_query
 
 import urllib
 import json
@@ -37,8 +38,6 @@ def dataset_detail(request, owner, name):
 
     dataset = get_dataset(request, owner, name)
 
-    print dataset
-
     data = {
         "dataset": dataset,
         "user": user,
@@ -60,11 +59,57 @@ def new_query(request):
     except OAuthNeededException as ex:
         return ex.redirect
 
+    if "save" in request.POST:
+        return _save_query(request, user)
+    elif "sql" in request.POST:
+        return _show_query_name_form(request, user)
+
+    else:
+        return _show_new_query_form(request, user)
+
+def _save_query(request, user):
+    sql = request.POST.get("sql", "")
+    name = request.POST.get("name", "")
+    description = request.POST.get("description", "")
+
+    errors = {}
+    if not sql:
+        errors["sql"] = True
+    if not name:
+        errors["name"] = True
+
+    if errors:
+        return _show_query_name_form(request, user, errors=errors)
+
+    is_public = False
+    save_dataset_from_query(request, user["username"], name, sql, description,
+                            is_public)
+
+    return HttpResponseRedirect(reverse("dataset_detail",
+                                        kwargs={"owner": user["username"],
+                                                "name": name }))
+
+def _show_query_name_form(request, user, errors={}):
+    data = {
+        "user": user,
+        "sql": request.POST.get("sql", ""),
+        "name": request.POST.get("name", ""),
+        "description": request.POST.get("description", ""),
+        "errors": errors,
+    }
+
+    return render_to_response('sqlshare_web/query/name.html',
+                              data,
+                              context_instance=RequestContext(request))
+
+
+
+def _show_new_query_form(request, user):
     data = {
         "user": user,
     }
 
-    return render_to_response('sqlshare_web/new.html',
+    return render_to_response('sqlshare_web/query/run.html',
                               data,
                               context_instance=RequestContext(request))
 
