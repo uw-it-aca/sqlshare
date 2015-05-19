@@ -4,7 +4,10 @@ python:
   - "3.4"
 install: pip install -e .
 before_script:
-  - echo $PATH
+  # manually make our own virtualenv, so we don't need to worry about python version paths
+  - deactivate
+  - virtualenv .
+  - source bin/activate
   - npm install less
   - npm install jshint
   - npm install recess
