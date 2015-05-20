@@ -172,6 +172,4 @@ def query_status(request, query_id):
         response["Location"] = reverse("sqlshare_web.views.query_status",
                                        kwargs={"query_id": query_id})
 
-
-
         return response

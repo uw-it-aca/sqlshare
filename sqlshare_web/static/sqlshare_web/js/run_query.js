@@ -1,4 +1,4 @@
-var prep_run_query_page = (function start_query() {
+var prep_run_query_page = (function() {
     var current_process = null,
         current_timeout = null,
         current_delay = null;
