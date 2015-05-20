@@ -15,65 +15,29 @@
     <input type="hidden" name="is_public" value="1"/>
     
     <div class="form-group">
-        <label for="blah3" class="sr-only">SQL Query:</label>
-        <textarea id="blah3" class="form-control sql-new-query-textarea" rows="3" placeholder="E.g. select * from table name" name="sql"></textarea>
+        <label for="query_sql" class="sr-only">SQL Query:</label>
+        <textarea class="form-control sql-new-query-textarea" rows="3" placeholder="E.g. select * from table name" name="sql" id="query_sql"></textarea>
     </div>
 
-    <button type="button" class="btn btn-default">RUN QUERY</button>
+    <button type="button" class="btn btn-default" id="run_query">RUN QUERY</button>
     
-
-
-    <h3>Dataset Preview</h3>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Table heading</th>
-                <th>Table heading</th>
-                <th>Table heading</th>
-                <th>Table heading</th>
-                <th>Table heading</th>
-                <th>Table heading</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Table cell</td>
-                <td>Table cell</td>
-                <td>Table cell</td>
-                <td>Table cell</td>
-                <td>Table cell</td>
-                <td>Table cell</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Table cell</td>
-                <td>Table cell</td>
-                <td>Table cell</td>
-                <td>Table cell</td>
-                <td>Table cell</td>
-                <td>Table cell</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Table cell</td>
-                <td>Table cell</td>
-                <td>Table cell</td>
-                <td>Table cell</td>
-                <td>Table cell</td>
-                <td>Table cell</td>
-              </tr>
-            </tbody>
-          </table>
+    
+    <div id="query_preview_panel" style="display: none;">
+        <h3>Dataset Preview</h3>
         
+        <div id="query_running_panel" style="display: none;">Running...</div>
+        <div id="query_results_panel" style="display: none;"></div>
+        
+        <div id="query_actions_panel" style="display: none;">
+            <button type="submit" class="btn btn-default">SAVE QUERY</button>
+            <button type="button" class="btn btn-default">DOWNLOAD RESULTS</button>
+        </div>
     </div>
     
-    <button type="submit" class="btn btn-default">SAVE QUERY</button>
-    <button type="button" class="btn btn-default">DOWNLOAD RESULTS</button>
-
-
 </form>
+
+<script>
+    document.body.onload = function() { prep_run_query_page(); };
+</script>
 
 {% endblock %}
