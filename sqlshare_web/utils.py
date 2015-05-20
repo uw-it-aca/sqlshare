@@ -93,7 +93,7 @@ def oauth_access_token(request):
     return response
 
 
-def send_request(request, method, url, headers, body=None,
+def send_request(request, method, url, headers={}, body=None,
                  is_reauth_attempt=False):
     # If we don't have an access token in our session, we need to get the
     # user to auth through the backend server
