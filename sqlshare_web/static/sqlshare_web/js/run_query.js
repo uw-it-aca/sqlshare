@@ -72,13 +72,13 @@ var prep_run_query_page = (function() {
 
         codemirror = CodeMirror.fromTextArea(document.getElementById("query_sql"), {
             textWrapping: false,
-//            parserfile: "parsesql.js",
-//            stylesheet: static_url+"/styles/sqlcolors.css",
-//            path: static_url+'/javascript/codemirror/',
             autoMatchParens: true,
             mode:  "text/x-mssql",
             lineNumbers: true,
             smartIndent: true,
+            extraKeys: {
+                Tab: false
+            }
         });
 
         codemirror.focus();
