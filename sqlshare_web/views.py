@@ -169,5 +169,9 @@ def query_status(request, query_id):
     else:
         response = HttpResponse("Running...")
         response.status_code = 202
+        response["Location"] = reverse("sqlshare_web.views.query_status",
+                                       kwargs={"query_id": query_id})
+
+
 
         return response

@@ -90,6 +90,9 @@ class TestQueryView(TestCase):
         response = self.client.get(location)
         self.assertEquals(response.status_code, 202)
 
+        # Make sure we have a location, even if our user-agent automatically redirects
+        self.assertEquals(response["Location"], location)
+
         time.sleep(3)
         response = self.client.get(location)
         self.assertEquals(response.status_code, 200)

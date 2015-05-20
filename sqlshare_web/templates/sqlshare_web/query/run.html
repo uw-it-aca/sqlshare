@@ -13,14 +13,22 @@
 <!-- this is priming the next page, if they want to save the query -->
 <input type="hidden" name="is_public" value="1"/>
 <div style="margin-bottom:2em;">
-    <textarea class="form-control sql-new-query-textarea" rows="3" placeholder="E.g. select * from table name" name="sql"></textarea>
+    <textarea class="form-control sql-new-query-textarea" rows="3" placeholder="E.g. select * from table name" name="sql" id="query_sql"></textarea>
 </div>
 
 
 <div>
-    <button type="button" class="btn btn-primary">RUN QUERY</button>
-    <input type="submit" class="btn btn-primary">SAVE QUERY</input>
+    <button type="button" class="btn btn-primary" id="run_query">RUN QUERY</button>
+    <input type="submit" class="btn btn-primary" value="SAVE QUERY"></input>
     <button type="button" class="btn btn-primary">DOWNLOAD RESULTS</button>
 </div>
 </form>
+
+<div id="query_running_panel">Running...</div>
+
+<div id="query_results_panel"></div>
+
+<script>
+    document.body.onload = function() { prep_run_query_page(); };
+</script>
 {% endblock %}
