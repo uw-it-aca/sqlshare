@@ -9,18 +9,34 @@
 <h2>Start a new query</h2>
 
 <form method="POST">
-<input type="hidden" name="save" value="1"/>
-{% csrf_token %}
-<div style="margin-bottom:2em;">
-    <input type="hidden" name="sql" value="{{sql}}"/>
-    {{ sql }}
-</div>
+    
+    <input type="hidden" name="save" value="1"/>
+    {% csrf_token %}
+    
+    <div class="form-group">
+        <input type="hidden" name="sql" value="{{sql}}"/>
+        <label for="blah3" class="sr-only">SQL Query:</label>
+        <textarea class="form-control" id="blah3" disabled="disabled">{{ sql }}</textarea>
+    </div>
 
-Dataset name: <input type="text" name="name" /> {% if errors.name %}Required{% endif %}<br>
-Description: <textarea name="description"></textarea> <br />
-Is public? <input type="checkbox" name="is_public" value="1" {% if is_public %}checked="checked"{% endif %} /> <br />
-<div>
-    <input type="submit" />
-</div>
+    <div class="form-group {% if errors.name %}has-error{% endif %}">
+        <label class="control-label" for="blah1">Dataset name:  {% if errors.name %}Required{% endif %}</label>
+        <input type="text" id="blah1" class="form-control" name="name" />
+    </div>
+
+    <div class="form-group">
+        <label class="control-label" for="blah2">Description:</label>
+        <textarea id="blah2" class="form-control" rows="3" name="description"></textarea>
+    </div>
+
+    <div class="checkbox">
+        <label>
+          <input type="checkbox" name="is_public" value="1" {% if is_public %}checked="checked"{% endif %} />Is public?
+        </label>
+    </div>
+
+    <button class="btn btn-default" type="submit">Submit</button>
+
+</form>
 
 {% endblock %}

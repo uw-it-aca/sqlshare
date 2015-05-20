@@ -9,18 +9,71 @@
 <h2>Start a new query</h2>
 
 <form method="POST">
-{% csrf_token %}
-<!-- this is priming the next page, if they want to save the query -->
-<input type="hidden" name="is_public" value="1"/>
-<div style="margin-bottom:2em;">
-    <textarea class="form-control sql-new-query-textarea" rows="3" placeholder="E.g. select * from table name" name="sql"></textarea>
-</div>
+    
+    {% csrf_token %}
+    <!-- this is priming the next page, if they want to save the query -->
+    <input type="hidden" name="is_public" value="1"/>
+    
+    <div class="form-group">
+        <label for="blah3" class="sr-only">SQL Query:</label>
+        <textarea id="blah3" class="form-control sql-new-query-textarea" rows="3" placeholder="E.g. select * from table name" name="sql"></textarea>
+    </div>
+
+    <button type="button" class="btn btn-default">RUN QUERY</button>
+    
 
 
-<div>
-    <button type="button" class="btn btn-primary">RUN QUERY</button>
-    <input type="submit" class="btn btn-primary">SAVE QUERY</input>
-    <button type="button" class="btn btn-primary">DOWNLOAD RESULTS</button>
-</div>
+    <h3>Dataset Preview</h3>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Table heading</th>
+                <th>Table heading</th>
+                <th>Table heading</th>
+                <th>Table heading</th>
+                <th>Table heading</th>
+                <th>Table heading</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>Table cell</td>
+                <td>Table cell</td>
+                <td>Table cell</td>
+                <td>Table cell</td>
+                <td>Table cell</td>
+                <td>Table cell</td>
+              </tr>
+              <tr>
+                <th scope="row">2</th>
+                <td>Table cell</td>
+                <td>Table cell</td>
+                <td>Table cell</td>
+                <td>Table cell</td>
+                <td>Table cell</td>
+                <td>Table cell</td>
+              </tr>
+              <tr>
+                <th scope="row">3</th>
+                <td>Table cell</td>
+                <td>Table cell</td>
+                <td>Table cell</td>
+                <td>Table cell</td>
+                <td>Table cell</td>
+                <td>Table cell</td>
+              </tr>
+            </tbody>
+          </table>
+        
+    </div>
+    
+    <button type="submit" class="btn btn-default">SAVE QUERY</button>
+    <button type="button" class="btn btn-default">DOWNLOAD RESULTS</button>
+
+
 </form>
+
 {% endblock %}
