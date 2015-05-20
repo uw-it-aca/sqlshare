@@ -1,10 +1,12 @@
 var prep_run_query_page = (function() {
     var current_process = null,
         current_timeout = null,
-        current_delay = null;
+        current_delay = null,
+        codemirror = null;
 
     function start_query() {
-        var sql = $("#query_sql").val();
+        //var sql = $("#query_sql").val();
+        sql = codemirror.getValue();
 
         if (current_process) {
             current_process.abort();
@@ -62,6 +64,19 @@ var prep_run_query_page = (function() {
 
     function add_events() {
         $("#run_query").on("click", start_query);
+
+        codemirror = CodeMirror.fromTextArea(document.getElementById("query_sql"), {
+            textWrapping: false,
+//            parserfile: "parsesql.js",
+//            stylesheet: static_url+"/styles/sqlcolors.css",
+//            path: static_url+'/javascript/codemirror/',
+            autoMatchParens: true,
+            mode:  "text/x-mssql",
+            lineNumbers: true,
+            smartIndent: true,
+        });
+
+        codemirror.focus();
     }
 
     return add_events;
