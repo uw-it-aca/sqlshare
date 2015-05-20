@@ -77,6 +77,10 @@ function add_finalize_form_events() {
         }
     }
 
+    function send_to_dataset(data, text_status, xhr) {
+        window.location.href = xhr.getResponseHeader("Location");
+    }
+
     function send_finalize() {
         var filename = $("input[name='original_name']").val();
         $.ajax({
@@ -89,7 +93,7 @@ function add_finalize_form_events() {
                 "dataset_description": $("textarea[name='dataset_description']").val(),
                 "is_public": $("input[name='is_public']").is(':checked')
             },
-            success: post_chunk_upload
+            success: send_to_dataset
         });
 
     }

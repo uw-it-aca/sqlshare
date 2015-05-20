@@ -105,7 +105,11 @@ def finalize_process(request, filename):
         del request.session[key1]
         del request.session[key2]
 
-    return HttpResponse("OK")
+        response = HttpResponse("OK")
+        response["Location"] = reverse("dataset_detail",
+                                       kwargs={"owner": user["username"],
+                                               "name": name})
+        return response
 
 
 def upload_finalize(request, filename):
@@ -154,6 +158,7 @@ def upload_parser(request, filename):
         response = HttpResponse()
         response.status_code = 404
         return response
+
 
 def dataset_upload_chunk(request):
     try:

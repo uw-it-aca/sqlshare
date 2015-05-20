@@ -1,4 +1,5 @@
 var prep_run_query_page = (function() {
+    "use strict";
     var current_process = null,
         current_timeout = null,
         current_delay = null,
@@ -6,7 +7,7 @@ var prep_run_query_page = (function() {
 
     function start_query() {
         //var sql = $("#query_sql").val();
-        sql = codemirror.getValue();
+        var sql = codemirror.getValue();
 
         if (current_process) {
             current_process.abort();
