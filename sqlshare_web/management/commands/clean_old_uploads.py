@@ -38,7 +38,7 @@ class Command(BaseCommand):
 
                 if age > max_age:
                     if verbose:
-                        print "Delete file: %s" % path
+                        print("Delete file: %s" % path)
                     if not dry_run:
                         os.remove(path)
 
@@ -48,7 +48,7 @@ class Command(BaseCommand):
 
                 if age > max_age:
                     if verbose:
-                        print "Delete directory: %s" % path
+                        print("Delete directory: %s" % path)
                     if not dry_run:
                         try:
                             os.rmdir(path)
