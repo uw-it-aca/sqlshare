@@ -4,6 +4,7 @@ from sqlshare_web.test.view import run_view_tests, login
 import unittest
 import calendar
 import time
+import re
 from django.test import Client
 
 
@@ -65,3 +66,42 @@ class TestQueryView(TestCase):
                                       "description": "Testing creation"})
 
         self.assertRedirects(response, reverse("dataset_detail", kwargs={"owner": "new_query_user", "name": name }))
+
+    def test_running_query(self):
+        response = self.client.post(reverse("sqlshare_web.views.run_query"),
+                                    {"sql": "select (22)" })
+
+        location = response["Location"]
+        self.assertTrue(re.match(".*/query/[\d]+$", location))
+
+        time.sleep(1)
+        response = self.client.get(location)
+
+        self.assertEquals(response.templates[0].name, "sqlshare_web/query/results.html")
+
+
+        response = self.client.post(reverse("sqlshare_web.views.run_query"),
+                                    {"sql": "select SLEEP(2)" })
+
+        location = response["Location"]
+        self.assertTrue(re.match(".*/query/[\d]+$", location))
+
+        time.sleep(1)
+        response = self.client.get(location)
+        self.assertEquals(response.status_code, 202)
+
+        time.sleep(3)
+        response = self.client.get(location)
+        self.assertEquals(response.status_code, 200)
+
+        response = self.client.post(reverse("sqlshare_web.views.run_query"),
+                                    {"sql": "select (22" })
+
+        location = response["Location"]
+        self.assertTrue(re.match(".*/query/[\d]+$", location))
+
+        time.sleep(1)
+        response = self.client.get(location)
+
+        self.assertEquals(response.templates[0].name, "sqlshare_web/query/error.html")
+

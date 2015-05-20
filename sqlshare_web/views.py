@@ -7,9 +7,11 @@ from django.core.urlresolvers import reverse
 from sqlshare_web.utils import oauth_access_token
 from sqlshare_web.utils import get_or_create_user, OAuthNeededException
 from sqlshare_web.dao import get_datasets, get_dataset, save_dataset_from_query
+from sqlshare_web.dao import enqueue_sql_statement, get_query_data
 
 import urllib
 import json
+import re
 
 
 def dataset_list(request):
@@ -126,3 +128,46 @@ def _show_new_query_form(request, user):
 
 def oauth_return(request):
     return oauth_access_token(request)
+
+
+def run_query(request):
+    """
+    This view starts a query, and returns a url that can be fetched to see
+    the state or result of the query.
+    """
+    sql = request.POST.get("sql", "")
+
+    if not sql:
+        return
+
+    data = enqueue_sql_statement(request, sql)
+
+    url = data["url"]
+    query_id = re.match(".*v3/db/query/([\d]+)", url).groups()[0]
+
+    return HttpResponseRedirect(reverse("sqlshare_web.views.query_status",
+                                kwargs={"query_id": query_id}))
+
+
+def query_status(request, query_id):
+    """
+    This view returns content for a query.  The query can be in process, or it
+    can be a table of data.
+    """
+    data = get_query_data(request, query_id)
+
+    if data["is_finished"]:
+        if data["has_error"]:
+            return render_to_response('sqlshare_web/query/error.html',
+                                      data,
+                                      context_instance=RequestContext(request))
+        else:
+            return render_to_response('sqlshare_web/query/results.html',
+                                      data,
+                                      context_instance=RequestContext(request))
+
+    else:
+        response = HttpResponse("Running...")
+        response.status_code = 202
+
+        return response

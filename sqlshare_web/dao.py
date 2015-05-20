@@ -39,3 +39,34 @@ def save_dataset_from_query(request, owner, name, sql, description, is_public):
     data = json.loads(response.content)
 
     return data
+
+
+def enqueue_sql_statement(request, sql):
+    """
+    Starts a query.  Asynchronous method.
+    """
+    url = '/v3/db/query'
+
+    data = {
+        "sql": sql,
+    }
+
+    response = send_request(request, 'POST', url,
+                            {"Accept": "application/json"},
+                            json.dumps(data))
+
+    data = json.loads(response.content)
+
+    return data
+
+
+def get_query_data(request, query_id):
+    """
+    Get the status of a running or finished query, by query id.  The query id
+    comes from the data in enqueue_sql_statement.
+    """
+    url = '/v3/db/query/%s' % query_id
+
+    response = send_request(request, 'GET', url)
+
+    return json.loads(response.content)
