@@ -60,6 +60,7 @@ def dataset_upload(request):
     except OAuthNeededException as ex:
         return ex.redirect
     return render_to_response('sqlshare_web/upload.html',
+                              {"user": user},
                               context_instance=RequestContext(request))
 
 
