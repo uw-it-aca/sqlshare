@@ -51,7 +51,6 @@ var prep_run_query_page = (function() {
         $("#query_results_panel").html(xhr.responseText);
         $("#query_running_panel").hide();
         $("#query_results_panel").show();
-        $("#query_actions_panel").show();
         
     }
 
