@@ -170,6 +170,7 @@ def _check_upload_chunk(request, user):
 
     return response
 
+
 def new_query(request):
     try:
         user = get_or_create_user(request)
