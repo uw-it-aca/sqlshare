@@ -90,13 +90,36 @@ def finalize_process(request, filename):
 
         finalize_upload(request, filename, name, description)
 
+        key1 = "ss_file_id_%s" % filename
+        key2 = "ss_max_chunk_%s" % filename
+
+        max_chunks = request.session[key2]
+        for i in range(1, int(max_chunks)+1):
+            file_path = get_file_path(user["username"],
+                                      filename,
+                                      "%s" % i,
+                                      )
+
+            os.remove(file_path)
+
+        del request.session[key1]
+        del request.session[key2]
+
     return HttpResponse("OK")
 
 
 def upload_finalize(request, filename):
+    try:
+        user = get_or_create_user(request)
+    except OAuthNeededException as ex:
+        return ex.redirect
+
+    session_key = "ss_max_chunk_%s" % filename
+    chunk_count = request.session.get(session_key, 0)
     context = {
         "filename": filename,
-        "file_chunk_count": 30,
+        "file_chunk_count": chunk_count,
+        "user": user,
     }
     return render_to_response('sqlshare_web/upload_finalize.html',
                               context,
@@ -120,11 +143,17 @@ def upload_parser(request, filename):
         if request.POST["update_preview"] == "0":
             return redirect("upload_finalize", filename=filename)
 
-    parser_values = get_parser_values(request, user, filename)
-    return render_to_response('sqlshare_web/parser.html',
-                              parser_values,
-                              context_instance=RequestContext(request))
+    try:
+        parser_values = get_parser_values(request, user, filename)
 
+        parser_values["user"] = user
+        return render_to_response('sqlshare_web/parser.html',
+                                  parser_values,
+                                  context_instance=RequestContext(request))
+    except IOError:
+        response = HttpResponse()
+        response.status_code = 404
+        return response
 
 def dataset_upload_chunk(request):
     try:
@@ -139,10 +168,18 @@ def dataset_upload_chunk(request):
 
 
 def _save_upload_chunk(request, user):
+    file_name = request.POST['resumableFilename']
+    chunk_number = request.POST['resumableChunkNumber']
     file_path = get_file_path(user["username"],
-                              request.POST['resumableFilename'],
-                              request.POST['resumableChunkNumber'],
+                              file_name,
+                              chunk_number,
                               )
+
+    session_key = "ss_max_chunk_%s" % file_name
+    current = request.session.get(session_key, 0)
+
+    if chunk_number > current:
+        request.session[session_key] = chunk_number
 
     if not os.path.exists(os.path.dirname(file_path)):
         try:
