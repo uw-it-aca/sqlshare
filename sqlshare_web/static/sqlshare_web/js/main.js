@@ -67,7 +67,6 @@ function add_finalize_form_events() {
     }
 
     function post_chunk_upload(data, text_status) {
-        console.log(data, text_status);
         if (data == "next_chunk") {
             current_file_chunk += 1;
             upload_next_chunk();
