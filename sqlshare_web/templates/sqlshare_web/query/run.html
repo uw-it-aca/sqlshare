@@ -13,26 +13,35 @@
 <h2>Start a new query</h2>
 
 <form method="POST">
-{% csrf_token %}
-<!-- this is priming the next page, if they want to save the query -->
-<input type="hidden" name="is_public" value="1"/>
-<div style="margin-bottom:2em;">
-    <textarea class="form-control sql-new-query-textarea" rows="3" placeholder="E.g. select * from table name" name="sql" id="query_sql"></textarea>
-</div>
+    
+    {% csrf_token %}
+    <!-- this is priming the next page, if they want to save the query -->
+    <input type="hidden" name="is_public" value="1"/>
+    
+    <div class="form-group">
+        <label for="query_sql" class="sr-only">SQL Query:</label>
+        <textarea class="form-control sql-new-query-textarea" rows="3" placeholder="E.g. select * from table name" name="sql" id="query_sql"></textarea>
+    </div>
 
-
-<div>
-    <button type="button" class="btn btn-primary" id="run_query">RUN QUERY</button>
-    <input type="submit" class="btn btn-primary" value="SAVE QUERY"></input>
-    <button type="button" class="btn btn-primary">DOWNLOAD RESULTS</button>
-</div>
+    <button type="button" class="btn btn-default" id="run_query">RUN QUERY</button>
+    
+    
+    <div id="query_preview_panel" style="display: none;">
+        <h3>Dataset Preview</h3>
+        
+        <div id="query_running_panel" style="display: none;">Running...</div>
+        <div id="query_results_panel" style="display: none;"></div>
+        
+        <div id="query_actions_panel" style="display: none;">
+            <button type="submit" class="btn btn-default">SAVE QUERY</button>
+            <button type="button" class="btn btn-default">DOWNLOAD RESULTS</button>
+        </div>
+    </div>
+    
 </form>
-
-<div id="query_running_panel" style="display: none;">Running...</div>
-
-<div id="query_results_panel" style="display: none;"></div>
 
 <script>
     document.body.onload = function() { prep_run_query_page(); };
 </script>
+
 {% endblock %}

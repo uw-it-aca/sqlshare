@@ -14,8 +14,11 @@ var prep_run_query_page = (function() {
         if (current_timeout) {
             window.clearTimeout(current_timeout);
         }
-
+        
+        $("#query_preview_panel").show();
+        
         $("#query_results_panel").hide();
+        $("#query_actions_panel").hide();
         $("#query_running_panel").show();
 
         reset_polling_delay();
@@ -44,10 +47,12 @@ var prep_run_query_page = (function() {
 
             return;
         }
-
+        
         $("#query_results_panel").html(xhr.responseText);
         $("#query_running_panel").hide();
         $("#query_results_panel").show();
+        $("#query_actions_panel").show();
+        
     }
 
     function reset_polling_delay() {
