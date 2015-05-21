@@ -80,6 +80,7 @@ def finalize_process(request, filename):
     else:
         return _update_finalize_process(request, filename, user)
 
+
 def _get_finalize_status(request, filename, user):
     status = get_upload_status(request, filename)
     if status == 202:
@@ -105,6 +106,7 @@ def _get_finalize_status(request, filename, user):
         return response
     else:
         print "S: ", status
+
 
 def _update_finalize_process(request, filename, user):
     if "chunk" in request.POST:
