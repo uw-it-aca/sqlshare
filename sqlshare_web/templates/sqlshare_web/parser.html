@@ -21,26 +21,28 @@ Delimiter:
     <option value="TAB" {% if parser_values.parser.delimiter == "TAB" %}selected=selected{% endif %}>TAB</option>
 </select>
 
-<br>
 
-Dataset Preview:
 
-<div class="table-responsive">
-    <table class="table">
-        
-            {% for row in parser_values.columns %}
+<h3>Dataset Preview</h3>
+
+<div class="table-responsive" style="background:#fff; margin-bottom:2em;">
+    <table class="table table-striped">
+        <thead>
             <tr>
-                <td>{{ row.name }}</td>
-             </tr>   
-            {% endfor %}
-        
-        {% for row in parser_values.sample_data %}
-        <tr>
-            {% for col in row %}
+                {% for row in parser_values.columns %}
+                <th>{{ row.name }}</th>
+                {% endfor %}
+            </tr>  
+        </thead>
+        <tbody> 
+            {% for row in parser_values.sample_data %}
+            <tr>
+                {% for col in row %}
                 <td>{{ col }}</td>
+                {% endfor %}
+            </tr>
             {% endfor %}
-        </tr>
-        {% endfor %}
+        </tbody>
     </table>
 </div>
 
