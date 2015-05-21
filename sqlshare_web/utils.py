@@ -2,7 +2,9 @@ from django.conf import settings
 from sanction import Client, transport_headers
 from urllib2 import urlopen, HTTPError
 from django.http import HttpResponseRedirect
+import hashlib
 import json
+import os
 
 
 class MockResponse(object):
@@ -91,7 +93,7 @@ def oauth_access_token(request):
     return response
 
 
-def send_request(request, method, url, headers, body=None,
+def send_request(request, method, url, headers={}, body=None,
                  is_reauth_attempt=False):
     # If we don't have an access token in our session, we need to get the
     # user to auth through the backend server
@@ -143,3 +145,10 @@ def send_request(request, method, url, headers, body=None,
         headers[header] = all_headers[header]
 
     return MockResponse(resp.getcode(), body, headers)
+
+
+def get_file_path(username, file_name, chunk):
+    return os.path.join(settings.SQLSHARE_FILE_CHUNK_PATH,
+                        username,
+                        hashlib.md5(file_name).hexdigest(),
+                        chunk)

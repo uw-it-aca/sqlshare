@@ -1,0 +1,57 @@
+{% extends "sqlshare_web/base.html" %}
+
+{% block title %}SQLSHARE: Dataset Upload{% endblock %}
+
+{% load staticfiles %}
+
+{% block content %}
+
+<form method="POST" id="dataset_parser_form">
+
+{% csrf_token %}
+
+<input type="hidden" name="update_preview" id="update_preview" value="0" />
+<input id="has_column_headers" type="checkbox" name="has_header" value="1" {% if parser_values.parser.has_column_headers %}checked="checked"{% endif %} /> Has column headers <Br />
+
+Delimiter:
+
+<select name="delimiter" id="dataset_delimiter" class="form-control">
+    <option value="," {% if parser_values.parser.delimiter == "," %}selected=selected{% endif %}>,</option>
+    <option value="|" {% if parser_values.parser.delimiter == "|" %}selected=selected{% endif %}>|</option>
+    <option value="TAB" {% if parser_values.parser.delimiter == "TAB" %}selected=selected{% endif %}>TAB</option>
+</select>
+
+<br>
+
+Dataset Preview:
+
+<div class="table-responsive">
+    <table class="table">
+        
+            {% for row in parser_values.columns %}
+            <tr>
+                <td>{{ row.name }}</td>
+             </tr>   
+            {% endfor %}
+        
+        {% for row in parser_values.sample_data %}
+        <tr>
+            {% for col in row %}
+                <td>{{ col }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<input class="btn btn-default" type="submit" value="Next...">
+
+</form>
+
+<script>
+    document.body.onload = function() {
+        add_parser_form_events();
+    };
+</script>
+
+{% endblock %}

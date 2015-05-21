@@ -1,0 +1,18 @@
+<table>
+    <thead>
+        <tr>
+            {% for column in columns %}
+                <th>{{ column.name }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in sample_data %}
+            <tr>
+                {% for cell in row %}
+                <td>{{ cell }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

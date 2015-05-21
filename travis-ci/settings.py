@@ -126,3 +126,12 @@ STATICFILES_FINDERS = (
     'compressor.finders.CompressorFinder',
 )
 
+SQLSHARE_WEB_HOST = 'http://localhost:8000'
+SQLSHARE_REST_HOST = 'http://localhost:9000'
+
+SQLSHARE_OAUTH_ID=os.environ["OAUTH_CLIENT_ID"]
+SQLSHARE_OAUTH_SECRET=os.environ["OAUTH_CLIENT_SECRET"]
+
+SQLSHARE_FILE_CHUNK_PATH = "/tmp/sqlshare_chunk_uploads/"
+
+
