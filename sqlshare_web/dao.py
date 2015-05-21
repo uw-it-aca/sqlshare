@@ -92,6 +92,20 @@ def finalize_upload(request, filename, name, description):
                             body=data)
 
 
+def get_upload_status(request, filename):
+    session_key = "ss_file_id_%s" % filename
+
+    upload_id = request.session[session_key]
+    url = '/v3/db/file/%s/finalize' % (upload_id)
+    response = send_request(request, 'GET', url,
+                            {"Accept": "application/json",
+                             "Content-type": "text/plain",
+                             },
+                            )
+
+    return response.status
+
+
 def update_parser_values(request, user, filename, delimiter, has_header_row):
     session_key = "ss_file_id_%s" % filename
     upload_id = request.session[session_key]

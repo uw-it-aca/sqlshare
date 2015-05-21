@@ -11,6 +11,7 @@ from sqlshare_web.dao import get_datasets, get_dataset, get_parser_values
 from sqlshare_web.dao import update_parser_values, append_upload_file
 from sqlshare_web.dao import finalize_upload, save_dataset_from_query
 from sqlshare_web.dao import enqueue_sql_statement, get_query_data
+from sqlshare_web.dao import get_upload_status
 
 import urllib
 import json
@@ -73,6 +74,39 @@ def finalize_process(request, filename):
     except OAuthNeededException as ex:
         return ex.redirect
 
+    if request.META['REQUEST_METHOD'] == "GET":
+        return _get_finalize_status(request, filename, user)
+
+    else:
+        return _update_finalize_process(request, filename, user)
+
+def _get_finalize_status(request, filename, user):
+    status = get_upload_status(request, filename)
+    if status == 202:
+        return HttpResponse("finalizing")
+
+    elif status == 201:
+        key1 = "ss_file_id_%s" % filename
+        key2 = "ss_max_chunk_%s" % filename
+
+        max_chunks = request.session[key2]
+        for i in range(1, int(max_chunks)+1):
+            file_path = get_file_path(user["username"],
+                                      filename,
+                                      "%s" % i,
+                                      )
+
+            os.remove(file_path)
+
+        del request.session[key1]
+        del request.session[key2]
+
+        response = HttpResponse("Done")
+        return response
+    else:
+        print "S: ", status
+
+def _update_finalize_process(request, filename, user):
     if "chunk" in request.POST:
         chunk = request.POST["chunk"]
         file_path = get_file_path(user["username"],
@@ -93,25 +127,7 @@ def finalize_process(request, filename):
 
         finalize_upload(request, filename, name, description)
 
-        key1 = "ss_file_id_%s" % filename
-        key2 = "ss_max_chunk_%s" % filename
-
-        max_chunks = request.session[key2]
-        for i in range(1, int(max_chunks)+1):
-            file_path = get_file_path(user["username"],
-                                      filename,
-                                      "%s" % i,
-                                      )
-
-            os.remove(file_path)
-
-        del request.session[key1]
-        del request.session[key2]
-
-        response = HttpResponse("OK")
-        response["Location"] = reverse("dataset_detail",
-                                       kwargs={"owner": user["username"],
-                                               "name": name})
+        response = HttpResponse("finalizing")
         return response
 
 

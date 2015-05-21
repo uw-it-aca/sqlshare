@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from sqlshare_web.test.view import run_view_tests, login
 import unittest
 from django.test import Client
+import time
 import six
 
 if six.PY2:
@@ -33,7 +34,7 @@ class TestUploads(TestCase):
 
         self.assertEquals(response.status_code, 404)
 
-        file_handle = StringIO("a,b,c,d\n1,2,3,4\n5,6,7,8")
+        file_handle = StringIO("a,b,c,d\n1,2,3,4\n5,6,7,8\n")
 
         response = self.client.post(reverse("dataset_upload_chunk"), {
             "resumableChunkNumber": 1,
@@ -114,10 +115,18 @@ class TestUploads(TestCase):
 
         response = self.client.post(reverse('upload_finalize_process', kwargs={"filename": "test_upload.csv"}), { "finalize": True, "dataset_name": "test_upload.csv", "dataset_description": "Desc", "is_public": True })
         self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.content, "finalizing")
 
+        has_done = False
+        for i in range(1,  10):
+            time.sleep(1)
+            response = self.client.get(reverse('upload_finalize_process', kwargs={"filename": "test_upload.csv"}))
+            self.assertEquals(response.status_code, 200)
+            if response.content == "Done":
+                has_done = True
+                break
 
-        self.assertEquals(response["Location"], "http://testserver%s" % reverse("dataset_detail", kwargs={ "owner": "upload_file_user", "name": "test_upload.csv" }))
-
+        self.assertTrue(has_done)
         self.assertTrue("ss_max_chunk_test_upload.csv" not in self.client.session)
         self.assertTrue("ss_file_id_upload.csv" not in self.client.session)
 

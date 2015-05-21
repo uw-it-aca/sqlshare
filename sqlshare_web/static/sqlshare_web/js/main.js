@@ -81,6 +81,24 @@ function add_finalize_form_events() {
         window.location.href = xhr.getResponseHeader("Location");
     }
 
+    function poll_finalize(data, text_status, xhr) {
+        var filename = $("input[name='original_name']").val();
+        var dataset_name = $("#id_dataset_name").val();
+        if (data == "Done") {
+            window.location.href = "/detail/"+encodeURIComponent(sqlshare_user)+"/"+encodeURIComponent(dataset_name);
+        }
+        else {
+            window.setTimeout(function() {
+                $.ajax({
+                    url: "/upload/finalize_process/" + filename,
+                    method: "GET",
+                    success: poll_finalize
+                });
+            }, 1000);
+
+        }
+    }
+
     function send_finalize() {
         var filename = $("input[name='original_name']").val();
         $.ajax({
@@ -93,7 +111,7 @@ function add_finalize_form_events() {
                 "dataset_description": $("textarea[name='dataset_description']").val(),
                 "is_public": $("input[name='is_public']").is(':checked')
             },
-            success: send_to_dataset
+            success: poll_finalize
         });
 
     }
