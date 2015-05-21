@@ -17,9 +17,11 @@ def get_dataset(request, owner, name):
     response = send_request(request, 'GET', url,
                             {"Accept": "application/json"})
 
-    data = json.loads(response.content)
+    if response.status == 200:
+        data = json.loads(response.content)
 
-    return data
+        return data
+    return None
 
 
 def get_parser_values(request, user, filename):

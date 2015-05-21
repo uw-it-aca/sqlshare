@@ -2,7 +2,7 @@ from django.conf import settings
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response, redirect
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 
 from sqlshare_web.utils import oauth_access_token
 from sqlshare_web.utils import get_or_create_user, OAuthNeededException
@@ -43,6 +43,9 @@ def dataset_detail(request, owner, name):
         return ex.redirect
 
     dataset = get_dataset(request, owner, name)
+
+    if not dataset:
+        raise Http404("Dataset Not Found")
 
     data = {
         "dataset": dataset,
@@ -155,9 +158,7 @@ def upload_parser(request, filename):
                                   parser_values,
                                   context_instance=RequestContext(request))
     except IOError:
-        response = HttpResponse()
-        response.status_code = 404
-        return response
+        raise Http404("")
 
 
 def dataset_upload_chunk(request):
@@ -209,7 +210,7 @@ def _check_upload_chunk(request, user):
 
     response = HttpResponse("")
     if not os.path.exists(file_path):
-        response.status_code = 404
+        raise Http404("")
 
     return response
 
