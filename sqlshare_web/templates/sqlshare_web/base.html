@@ -51,7 +51,10 @@
                 
                 .sql-search-bar { margin: 10px; }
                 
-                .sql-content { margin: 0 10px;
+                .sql-content { margin: 0; background: #fff;
+                    
+                    .sql-content-inner { padding: 10px; }
+                    
                     h2 {  font-family: 'Oswald', sans-serif; text-transform: uppercase; font-weight: 400; font-size: 18px; position: relative;
                         span { position: absolute; right: 0; font-size: 14px; font-weight: 300; }
                     }
@@ -150,11 +153,13 @@
         </div>       
                 
         <div id="content" class="sql-content">
+            <div class="sql-content-inner">
             {% block content %}{% endblock %}
+            </div>
         </div>
 
         <div id="footer" class="sql-footer">
-            footer
+            <p>Copyright © 1998-2011 eScience &amp; Academic and Collaborative Applications | Privacy | Terms</p>
         </div>
             
         <!-- devtools bar -->
