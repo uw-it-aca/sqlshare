@@ -1,21 +1,15 @@
-.sql-header { position: fixed; top:0; width: 100%; z-index: 9999; 
-    
+.sql-header { position: fixed; top:0; z-index: 9999; width: 100%; 
     .sql-user-name { padding-right: 20px; }
-    
 }
 
-.sql-search-bar {  position: fixed; top:10px; left: 220px; width: 500px; height: 56px; line-height: 56px; margin: 0; z-index: 99999; }
+.sql-search-bar {  position: fixed; top:10px; left: 220px; z-index: 99999; width: 500px;  height: 56px; margin: 0; line-height: 56px;  }
 
-.sql-sidebar {
+.sql-sidebar { position: fixed; top:66px; bottom: 0; z-index: 9999; width: 220px; background: transparent; border-right: solid 1px #e1e1e8;
     
-    position: fixed; top:66px; bottom: 0; width: 220px;
-    background: transparent; border-right: solid 1px #e1e1e8;
-    z-index: 9999;
-    
-    .sql-sidebar-actions { padding: 0px; 
-        ul { list-style: none; padding: 20px; border-bottom: solid 1px #e1e1e8; margin-bottom: 0;}
-        a { line-height: 30px; display: block; }
+    .sql-sidebar-actions { padding: 0; 
+        ul { padding: 20px;  margin-bottom: 0; list-style: none; border-bottom: solid 1px #e1e1e8;}
+        a {  display: block; line-height: 30px; }
     }
 }
 
-.sql-content { margin-left: 240px; margin-top: 85px; }
+.sql-content { margin-top: 85px;  margin-left: 240px; }
