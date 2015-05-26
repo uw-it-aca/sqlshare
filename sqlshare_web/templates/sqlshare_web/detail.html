@@ -33,11 +33,11 @@
 <h3>Dataset Preview</h3>
 
 {% if dataset.sample_data_status == "working" %}
-    Building preview...
+    <p class="text-muted">Building preview...</p>
 {% endif %}
 
 {% if dataset.sample_data_status == "error" %}
-    Error creating preview: {{ dataset.sample_data_error }}
+    <p class="text-danger">Error creating preview: {{ dataset.sample_data_error }}</p>
 {% endif %}
 
 {% if dataset.sample_data_status == "success" %}
