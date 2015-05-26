@@ -38,18 +38,21 @@
                 
                 body { margin: 0; background: #f7f7f9 !important; }
                                 
-                .sql-header { background: #fff; border-bottom: solid 1px #e1e1e8; height: 56px; position: relative; text-transform: uppercase; font-family: 'Oswald', sans-serif; 
+                .sql-header { background: #fff; border-top: solid 10px #2980b9; border-bottom: solid 1px #e1e1e8; height: 66px; position: relative; text-transform: uppercase; font-family: 'Oswald', sans-serif; 
                     
                     h1 { margin: 0 10px; line-height: 56px; height:56px; font-weight: 300; font-size: 30px; }
-                    a { text-decoration: none; color: #2980b9; }
-                    .sql-header-actions { position: absolute; top:0; right: 0; padding-right:10px; font-size: 18px; font-weight: 300; line-height: 56px;
-                        .sql-user-name {  color: red; }
+                    a { text-decoration: none; color: #2980b9; 
+                        &:hover { text-decoration: none; }
                     }
                     
+                    .sql-user-name {   position: absolute; top:0; right: 0; padding-right:10px; font-size: 18px; font-weight: 300; line-height: 56px; color: #777; }
+                
                 }
                 
+                .sql-search-bar { margin: 10px; }
+                
                 .sql-content { margin: 0 10px;
-                    h2 {  font-family: 'Oswald', sans-serif; font-weight: 400; font-size: 18px; position: relative;
+                    h2 {  font-family: 'Oswald', sans-serif; text-transform: uppercase; font-weight: 400; font-size: 18px; position: relative;
                         span { position: absolute; right: 0; font-size: 14px; font-weight: 300; }
                     }
                     
@@ -69,7 +72,7 @@
         {% if request.is_mobile %}
         {% compress css %}
         <!-- bootstrap & font awesome -->
-        <link rel="stylesheet" href="{% static "vendor/css/bootstrap-3.3.1.min.css" %}">
+        <link rel="stylesheet" href="{% static "vendor/css/bootstrap-3.3.4.min.css" %}">
         <link rel="stylesheet" href="{% static "vendor/css/font-awesome-4.0.3.min.css" %}">
         <!-- codemirror -->
         <link rel="stylesheet" href="{% static "vendor/css/codemirror-5.3.css" %}">
@@ -83,7 +86,7 @@
         {% if request.is_tablet %}
         {% compress css %}
         <!-- bootstrap & font awesome -->
-        <link rel="stylesheet" href="{% static "vendor/css/bootstrap-3.3.1.min.css" %}">
+        <link rel="stylesheet" href="{% static "vendor/css/bootstrap-3.3.4.min.css" %}">
         <link rel="stylesheet" href="{% static "vendor/css/font-awesome-4.0.3.min.css" %}">
         <!-- codemirror -->
         <link rel="stylesheet" href="{% static "vendor/css/codemirror-5.3.css" %}">
@@ -98,7 +101,7 @@
         {% if not request.is_mobile and not request.is_tablet %}
         {% compress css %}
         <!-- bootstrap & font awesome -->
-        <link rel="stylesheet" href="{% static "vendor/css/bootstrap-3.3.1.min.css" %}">
+        <link rel="stylesheet" href="{% static "vendor/css/bootstrap-3.3.4.min.css" %}">
         <link rel="stylesheet" href="{% static "vendor/css/font-awesome-4.0.3.min.css" %}">
         <!-- codemirror -->
         <link rel="stylesheet" href="{% static "vendor/css/codemirror-5.3.css" %}">
@@ -121,14 +124,30 @@
        
         <div id="header" class="sql-header">
             <h1><a href="/">SQLSHARE</a></h1>
-            
-            <div class="sql-header-actions">
-                
-                <span class="sql-upload"><a href="/upload">Upload</a></span>
-                <span class="sql-new-query"><a href="/new">New</a></span>
-                <span class="sql-user-name">{{ user.username }}</span>
-            </div>
+            <span class="sql-user-name">{{ user.username }}</span>
         </div>         
+        
+        <div class="sql-search-bar">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search for..." style="float:none;">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button">Go!</button>
+              </span>
+            </div>
+        </div>
+            
+        <div id="sidebar" class="sql-sidebar">
+            <div class="sql-sidebar-actions">
+                <ul>
+                    <li><a href="/">Your Datasets</a></li>
+                    
+                </ul>
+                <ul>
+                    <li><a href="/upload">Upload</a></li>
+                    <li><a href="/new">New</a></li>
+                </ul>
+            </div>
+        </div>       
                 
         <div id="content" class="sql-content">
             {% block content %}{% endblock %}
@@ -146,7 +165,7 @@
         {% compress js %}
         <!-- global javascript -->
         <script src="{% static "vendor/js/jquery-1.11.0.min.js" %}"></script>
-        <script src="{% static "vendor/js/bootstrap-3.2.0.min.js" %}"></script>
+        <script src="{% static "vendor/js/bootstrap-3.3.4.min.js" %}"></script>
         <script src="{% static "vendor/js/aca-devtools.min.js" %}"></script>
         <script src="{% static "vendor/js/resumable-1.0-github-master.js" %}"></script>
         <script src="{% static "vendor/js/codemirror-5.3.js" %}"></script>
