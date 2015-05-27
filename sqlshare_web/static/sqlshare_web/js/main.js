@@ -19,7 +19,7 @@ function create_uploader() {
 
     r.on('fileAdded', function() { r.upload(); });
     r.on('uploadStart', function(){
-        $("#chunk_upload_container").hide();
+        //$("#chunk_upload_container").hide();
         $("#uploading_panel").show();
     });
     r.on('complete', function(){
