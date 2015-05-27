@@ -3,6 +3,8 @@ from sanction import Client, transport_headers
 from urllib2 import urlopen, HTTPError
 from django.http import HttpResponseRedirect
 import json
+import uuid
+import csv
 
 
 class MockResponse(object):
@@ -143,3 +145,14 @@ def send_request(request, method, url, headers={}, body=None,
         headers[header] = all_headers[header]
 
     return MockResponse(resp.getcode(), body, headers)
+
+
+def build_download_url(query_id):
+    host = getattr(settings, "SQLSHARE_REST_HOST", None)
+    api_uri = getattr(settings, "SQLSHARE_DOWNLOAD_API", "/v3/db/query/")
+    return host + api_uri + query_id + "/download"
+
+
+
+
+

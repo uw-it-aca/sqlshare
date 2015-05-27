@@ -6,8 +6,9 @@ from django.core.urlresolvers import reverse
 
 from sqlshare_web.utils import oauth_access_token
 from sqlshare_web.utils import get_or_create_user, OAuthNeededException
+from sqlshare_web.utils import build_download_url
 from sqlshare_web.dao import get_datasets, get_dataset, save_dataset_from_query
-from sqlshare_web.dao import enqueue_sql_statement, get_query_data
+from sqlshare_web.dao import enqueue_sql_statement, get_query_data, get_full_results
 
 import urllib
 import json
@@ -170,6 +171,53 @@ def query_status(request, query_id):
         response = HttpResponse("Running...")
         response.status_code = 202
         response["Location"] = reverse("sqlshare_web.views.query_status",
+                                       kwargs={"query_id": query_id})
+
+        return response
+
+
+def run_download(request):
+    """
+    This view starts a download, and returns a url that can be fetched to see
+    the state or result of the download.
+    """
+    sql = request.POST.get("sql", "")
+
+    if not sql:
+        return
+
+    data = enqueue_sql_statement(request, sql)
+
+    url = data["url"]
+    query_id = re.match(".*v3/db/query/([\d]+)", url).groups()[0]
+    print 'boo'
+
+    return HttpResponseRedirect(reverse("sqlshare_web.views.download_status",
+                                kwargs={"query_id": query_id}))
+
+
+def download_status(request, query_id):
+    """
+    This view returns content for a download.  The download can be in process, or it
+    can be a download link.
+    """
+    data = get_query_data(request, query_id)
+
+    if data["is_finished"]:
+        if data["has_error"]:
+            return render_to_response('sqlshare_web/query/error.html',
+                                      data,
+                                      context_instance=RequestContext(request))
+        else:
+            download_uri = build_download_url(query_id)
+            print download_uri
+
+            return HttpResponse(download_uri)
+
+    else:
+        response = HttpResponse("Running...")
+        response.status_code = 202
+        response["Location"] = reverse("sqlshare_web.views.download_status",
                                        kwargs={"query_id": query_id})
 
         return response

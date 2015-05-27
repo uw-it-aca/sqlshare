@@ -70,3 +70,14 @@ def get_query_data(request, query_id):
     response = send_request(request, 'GET', url)
 
     return json.loads(response.content)
+
+
+def get_full_results(request, sql):
+    """
+    Runs a query and streams results
+    """
+    url = '/v3/db/sql'
+
+    response = send_request(request, 'POST', url, body={'POST': sql})
+    return response.body
+
