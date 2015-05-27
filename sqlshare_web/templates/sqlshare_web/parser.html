@@ -6,29 +6,38 @@
 
 {% block content %}
 
+<h2>Save Upload</h2>
+
 <form method="POST" id="dataset_parser_form">
 
 {% csrf_token %}
 
-<div id="">
+<div id="" style="margin-bottom:2em;">
+    
     <input type="hidden" name="update_preview" id="update_preview" value="0" />
-    <input id="has_column_headers" type="checkbox" name="has_header" value="1" {% if parser_values.parser.has_column_headers %}checked="checked"{% endif %} /> Has column headers <Br />
+        
+    <div class="checkbox">
+        <label>
+          <input id="has_column_headers" type="checkbox" name="has_header" value="1" {% if parser_values.parser.has_column_headers %}checked="checked"{% endif %} /> Has column headers
+        </label>
+    </div>
     
-    Delimiter:
-    
-    <select name="delimiter" id="dataset_delimiter" class="form-control">
-        <option value="," {% if parser_values.parser.delimiter == "," %}selected=selected{% endif %}>,</option>
-        <option value="|" {% if parser_values.parser.delimiter == "|" %}selected=selected{% endif %}>|</option>
-        <option value="TAB" {% if parser_values.parser.delimiter == "TAB" %}selected=selected{% endif %}>TAB</option>
-    </select>
-    
-    <input class="btn btn-default" type="submit" value="Next...">
+    <div class="form-group">
+        <label for="dataset_delimiter">Delimiter:</label>
+        <select name="delimiter" id="dataset_delimiter" class="form-control">
+            <option value="," {% if parser_values.parser.delimiter == "," %}selected=selected{% endif %}>,</option>
+            <option value="|" {% if parser_values.parser.delimiter == "|" %}selected=selected{% endif %}>|</option>
+            <option value="TAB" {% if parser_values.parser.delimiter == "TAB" %}selected=selected{% endif %}>TAB</option>
+        </select>
+    </div>
+     
+    <!--<input class="btn btn-default" type="submit" value="Next...">-->
     
 </div>
 
 <!-- the save stuff needs to get wired up -->
 
-<div id="final_settings_panel">
+<div id="final_settings_panel" style="margin-bottom:2em;">
     
     {% csrf_token %}
     <input type="hidden" name="original_name" value="{{ filename }}"/>
@@ -37,7 +46,7 @@
         <label for="id_dataset_name">Title:</label>
         <input type="text" class="form-control" name="dataset_name" id="id_dataset_name" value="{{ filename }}"/> 
         <span id="title_required" style="display: none;">Required</span>
-      </div>
+    </div>
   
     <div class="form-group">
         <label for="id_dataset_description">Description:</label>
@@ -59,9 +68,8 @@ Saving dataset...
 </div>
 
 
-<h3>Dataset Preview</h3>
-
 <div class="table-responsive" style="background:#fff; margin-bottom:2em;">
+    <h3>Dataset Preview</h3>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -81,7 +89,6 @@ Saving dataset...
         </tbody>
     </table>
 </div>
-
 
 
 </form>
