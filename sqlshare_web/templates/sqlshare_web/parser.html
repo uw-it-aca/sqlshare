@@ -10,22 +10,52 @@
 
 {% csrf_token %}
 
-<input type="hidden" name="update_preview" id="update_preview" value="0" />
-<input id="has_column_headers" type="checkbox" name="has_header" value="1" {% if parser_values.parser.has_column_headers %}checked="checked"{% endif %} /> Has column headers <Br />
-
-Delimiter:
-
-<select name="delimiter" id="dataset_delimiter" class="form-control">
-    <option value="," {% if parser_values.parser.delimiter == "," %}selected=selected{% endif %}>,</option>
-    <option value="|" {% if parser_values.parser.delimiter == "|" %}selected=selected{% endif %}>|</option>
-    <option value="TAB" {% if parser_values.parser.delimiter == "TAB" %}selected=selected{% endif %}>TAB</option>
-</select>
-
-
-<div style="margin-top: 3em; margin-bottom:3em;">
+<div id="">
+    <input type="hidden" name="update_preview" id="update_preview" value="0" />
+    <input id="has_column_headers" type="checkbox" name="has_header" value="1" {% if parser_values.parser.has_column_headers %}checked="checked"{% endif %} /> Has column headers <Br />
     
-    save info goes here!
+    Delimiter:
     
+    <select name="delimiter" id="dataset_delimiter" class="form-control">
+        <option value="," {% if parser_values.parser.delimiter == "," %}selected=selected{% endif %}>,</option>
+        <option value="|" {% if parser_values.parser.delimiter == "|" %}selected=selected{% endif %}>|</option>
+        <option value="TAB" {% if parser_values.parser.delimiter == "TAB" %}selected=selected{% endif %}>TAB</option>
+    </select>
+    
+    <input class="btn btn-default" type="submit" value="Next...">
+    
+</div>
+
+<!-- the save stuff needs to get wired up -->
+
+<div id="final_settings_panel">
+    
+    {% csrf_token %}
+    <input type="hidden" name="original_name" value="{{ filename }}"/>
+    
+    <div class="form-group">
+        <label for="id_dataset_name">Title:</label>
+        <input type="text" class="form-control" name="dataset_name" id="id_dataset_name" value="{{ filename }}"/> 
+        <span id="title_required" style="display: none;">Required</span>
+      </div>
+  
+    <div class="form-group">
+        <label for="id_dataset_description">Description:</label>
+        <textarea class="form-control" rows="3" id="id_dataset_description" name="dataset_description"></textarea>
+    </div>
+    
+    <div class="checkbox">
+        <label>
+          <input type="checkbox" name="is_public" value="1" checked="checked" /> Is Public
+        </label>
+    </div>
+            
+    <button class="btn btn-default" id="save_button">Save</button>
+
+</div>
+
+<div id="uploading_panel" style="display: none;">
+Saving dataset...
 </div>
 
 
@@ -52,7 +82,7 @@ Delimiter:
     </table>
 </div>
 
-<input class="btn btn-default" type="submit" value="Next...">
+
 
 </form>
 
