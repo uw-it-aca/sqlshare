@@ -89,6 +89,7 @@ class TestUploads(TestCase):
         self.assertEquals(response.templates[0].name, "sqlshare_web/parser.html")
 
         # Moving on...
+        response = self.client.post(reverse("upload_parser", kwargs={"filename": "test_upload.csv"}), {"delimiter": ",", "has_header": True, "update_preview": False,  "dataset_name": "test_upload.csv", "dataset_description": "Desc", "is_public": True })
 
         # Send off to the backend server:
         response = self.client.post(reverse('upload_finalize_process', kwargs={"filename": "test_upload.csv"}), { "chunk": "1" })
