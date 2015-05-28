@@ -133,24 +133,6 @@ def _update_finalize_process(request, filename, user):
         return response
 
 
-def upload_finalize(request, filename):
-    try:
-        user = get_or_create_user(request)
-    except OAuthNeededException as ex:
-        return ex.redirect
-
-    session_key = "ss_max_chunk_%s" % filename
-    chunk_count = request.session.get(session_key, 0)
-    context = {
-        "filename": filename,
-        "file_chunk_count": chunk_count,
-        "user": user,
-    }
-    return render_to_response('sqlshare_web/upload_finalize.html',
-                              context,
-                              context_instance=RequestContext(request))
-
-
 def upload_parser(request, filename):
     try:
         user = get_or_create_user(request)
