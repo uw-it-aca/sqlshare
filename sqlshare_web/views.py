@@ -147,7 +147,6 @@ def upload_parser(request, filename):
         update_parser_values(request, user, filename, delimiter,
                              has_header_row)
 
-
     try:
         parser_values = get_parser_values(request, user, filename)
 
@@ -158,7 +157,6 @@ def upload_parser(request, filename):
 
         if "new_name" not in parser_values or parser_values["new_name"] == "":
             parser_values["new_name"] = filename
-
 
         parser_values["user"] = user
         parser_values["filename"] = filename
