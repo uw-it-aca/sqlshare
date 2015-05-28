@@ -151,8 +151,3 @@ def build_download_url(query_id, token):
     host = getattr(settings, "SQLSHARE_REST_HOST", None)
     api_uri = getattr(settings, "SQLSHARE_DOWNLOAD_API", "/v3/db/query/")
     return host + api_uri + query_id + "/download/" + token
-
-
-
-
-
