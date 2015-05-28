@@ -12,9 +12,7 @@
 <p class="sql-dataset-owner">{{ dataset.owner }}</p>
 <p class="sql-dataset-modified">modified on {{ dataset.date_modified }}</p>
 
-<div class="well" style="background:#fff;">
-    {{ dataset.sql_code }}
-</div>
+<div id="dataset_sql" class="well" style="background:#fff;">{{ dataset.sql_code }}</div>
 
 <div style="margin-bottom:1em;">
     <button type="button" class="btn btn-default" id="">EDIT</button>
@@ -63,5 +61,9 @@
 {% endif %}
 
 </div>
+
+<script>
+    document.body.onload = function() { prep_details_page(); };
+</script>
 
 {% endblock %}
