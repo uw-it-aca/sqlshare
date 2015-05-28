@@ -12,24 +12,26 @@
 <p class="sql-dataset-owner">{{ dataset.owner }}</p>
 <p class="sql-dataset-modified">modified on {{ dataset.date_modified }}</p>
 
-<div class="well" style="background:#fff;">
-    {{ dataset.sql_code }}
-</div>
-
-<div style="margin-bottom:1em;">
-    <button type="button" class="btn btn-default" id="">EDIT</button>
-    <button type="button" class="btn btn-default" id="">DERIVE</button>
-    <button type="button" class="btn btn-default" id="">SNAPSHOT</button>
-</div>
-
-<div>
+<div style="position:absolute; top:10px; right:10px; width:150px; text-align:right;">
     <button type="button" class="btn btn-default btn-xs" id="">MAKE PRIVATE</button>
     <button type="button" class="btn btn-default btn-xs" id="">SHARING</button>
     <button type="button" class="btn btn-default btn-xs" id="">DOWNLOAD</button>
     <button type="button" class="btn btn-default btn-xs" id="">DELETE</button>
 </div>    
     
+    
+<div class="form-group">
+    <label for="query_sql" class="sr-only">SQL Query:</label>    
+    <textarea class="form-control sql-new-query-textarea" rows="3" placeholder="E.g. select * from table name" name="sql" id=""> {{ dataset.sql_code }}</textarea>
+</div>
 
+<div style="margin-bottom:1em;">
+    <button type="button" class="btn btn-default" id="">RUN QUERY</button>
+    <button type="button" class="btn btn-default" disabled="disabled" id="">UPDATE DATASET</button>
+</div>
+
+
+<div style="position:relative;">
 <h3>Dataset Preview</h3>
 
 {% if dataset.sample_data_status == "working" %}
@@ -61,6 +63,13 @@
     </tbody>
 </table>
 {% endif %}
+
+</div>
+
+<div style="position:absolute; top:0; right:0; width:150px; text-align:right;">
+    <button type="button" class="btn btn-default btn-xs" id="">DERIVE</button>
+    <button type="button" class="btn btn-default btn-xs" id="">SNAPSHOT</button>
+</div>
 
 </div>
 
