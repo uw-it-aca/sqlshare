@@ -10,6 +10,7 @@ var prep_details_page = function() {
             textWrapping: false,
             mode:  "text/x-mssql",
             lineNumbers: true,
+            readOnly: true,
             value: el.innerHTML
         });
     }

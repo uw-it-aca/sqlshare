@@ -1,12 +1,14 @@
+.sql-sidebar { font-family: 'Oswald', sans-serif;  font-size: 16px; font-weight: 300;  color: #999; text-transform: uppercase; }
+
 .sql-content {
     
+    .sql-content-inner { position: relative; }
     .sql-dataset-list {
         .sql-dataset-name { display: block; font-weight: bold; color: #222; }
         .sql-dataset-desc { display: block; }
         .sql-dataset-owner { display: block;  color: #777; }
         .sql-dataset-modified { color: #ccc; }
     }
-    
     
 }
 
@@ -24,6 +26,7 @@
     .CodeMirror-scroll {
         height: auto;
         min-height: 100px;
+        padding-bottom: 0;
         overflow-x: auto;
         overflow-y: hidden;
     }
