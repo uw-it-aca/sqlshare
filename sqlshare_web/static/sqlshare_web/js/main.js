@@ -51,11 +51,7 @@ function add_parser_form_events() {
     $("#has_column_headers").change(function() {
         update_preview();
     });
-}
 
-
-function add_finalize_form_events() {
-    "use strict";
     // Chunk one is uploaded for the dataset preview.
     var current_file_chunk = 2;
 
@@ -143,10 +139,14 @@ function add_finalize_form_events() {
 
     $("#save_button").click(function() {
         if (has_title()) {
+            $("#dataset_parser_settings_panel").hide();
             $("#final_settings_panel").hide();
+            $("#dataset_preview_panel").hide();
             $("#uploading_panel").show();
             upload_next_chunk();
         }
+
+        return false;
     });
 }
 

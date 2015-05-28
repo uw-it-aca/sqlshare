@@ -165,13 +165,21 @@ def upload_parser(request, filename):
         update_parser_values(request, user, filename, delimiter,
                              has_header_row)
 
-        if request.POST["update_preview"] == "0":
-            return redirect("upload_finalize", filename=filename)
 
     try:
         parser_values = get_parser_values(request, user, filename)
 
+        if request.META['REQUEST_METHOD'] == "POST":
+            parser_values["new_name"] = request.POST["dataset_name"]
+            parser_values["description"] = request.POST["dataset_description"]
+            parser_values["is_public"] = request.POST["is_public"]
+
+        if "new_name" not in parser_values or parser_values["new_name"] == "":
+            parser_values["new_name"] = filename
+
+
         parser_values["user"] = user
+        parser_values["filename"] = filename
         return render_to_response('sqlshare_web/parser.html',
                                   parser_values,
                                   context_instance=RequestContext(request))
