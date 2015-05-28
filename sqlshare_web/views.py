@@ -8,7 +8,8 @@ from sqlshare_web.utils import oauth_access_token
 from sqlshare_web.utils import get_or_create_user, OAuthNeededException
 from sqlshare_web.utils import build_download_url
 from sqlshare_web.dao import get_datasets, get_dataset, save_dataset_from_query
-from sqlshare_web.dao import enqueue_sql_statement, get_query_data, get_full_results
+from sqlshare_web.dao import enqueue_sql_statement, get_query_data
+from sqlshare_web.dao import get_download_token_for_query
 
 import urllib
 import json
@@ -190,13 +191,14 @@ def run_download(request):
 
     url = data["url"]
     query_id = re.match(".*v3/db/query/([\d]+)", url).groups()[0]
-    print 'boo'
+    token_req = get_download_token_for_query(request, query_id)
 
     return HttpResponseRedirect(reverse("sqlshare_web.views.download_status",
-                                kwargs={"query_id": query_id}))
+                                kwargs={"query_id": query_id,
+                                        "token": token_req['token']}))
 
 
-def download_status(request, query_id):
+def download_status(request, query_id, token=None):
     """
     This view returns content for a download.  The download can be in process, or it
     can be a download link.
@@ -209,8 +211,7 @@ def download_status(request, query_id):
                                       data,
                                       context_instance=RequestContext(request))
         else:
-            download_uri = build_download_url(query_id)
-            print download_uri
+            download_uri = build_download_url(query_id, token)
 
             return HttpResponse(download_uri)
 
@@ -218,6 +219,7 @@ def download_status(request, query_id):
         response = HttpResponse("Running...")
         response.status_code = 202
         response["Location"] = reverse("sqlshare_web.views.download_status",
-                                       kwargs={"query_id": query_id})
+                                       kwargs={"query_id": query_id,
+                                               "token": token})
 
         return response

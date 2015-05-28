@@ -72,12 +72,12 @@ def get_query_data(request, query_id):
     return json.loads(response.content)
 
 
-def get_full_results(request, sql):
+def get_download_token_for_query(request, query_id):
     """
-    Runs a query and streams results
+    Get a single use download token for a given query id
     """
-    url = '/v3/db/sql'
+    url = '/v3/db/query/%s/download' % query_id
 
-    response = send_request(request, 'POST', url, body={'POST': sql})
-    return response.body
+    response = send_request(request, 'POST', url)
 
+    return json.loads(response.content)

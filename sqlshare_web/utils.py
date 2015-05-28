@@ -147,10 +147,10 @@ def send_request(request, method, url, headers={}, body=None,
     return MockResponse(resp.getcode(), body, headers)
 
 
-def build_download_url(query_id):
+def build_download_url(query_id, token):
     host = getattr(settings, "SQLSHARE_REST_HOST", None)
     api_uri = getattr(settings, "SQLSHARE_DOWNLOAD_API", "/v3/db/query/")
-    return host + api_uri + query_id + "/download"
+    return host + api_uri + query_id + "/download/" + token
 
 
 
