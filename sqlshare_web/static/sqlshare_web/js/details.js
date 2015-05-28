@@ -4,7 +4,9 @@ var prep_details_page = function() {
     function add_code_mirror() {
         var el = document.getElementById("dataset_sql");
 
-        var codemirror = CodeMirror(function(cm) {
+        // work around jshint - newcap error.
+        var func_code_mirror = CodeMirror;
+        var codemirror = func_code_mirror(function(cm) {
             el.parentNode.replaceChild(cm, el);
         }, {
             textWrapping: false,
