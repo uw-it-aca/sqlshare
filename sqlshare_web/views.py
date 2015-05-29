@@ -11,7 +11,9 @@ from sqlshare_web.dao import get_datasets, get_dataset, get_parser_values
 from sqlshare_web.dao import update_parser_values, append_upload_file
 from sqlshare_web.dao import finalize_upload, save_dataset_from_query
 from sqlshare_web.dao import enqueue_sql_statement, get_query_data
-from sqlshare_web.dao import get_upload_status
+from sqlshare_web.dao import get_upload_status, update_dataset_sql
+from sqlshare_web.dao import update_dataset_description
+from sqlshare_web.dao import update_dataset_public_state
 
 import urllib
 import json
@@ -44,6 +46,7 @@ def dataset_detail(request, owner, name):
         return ex.redirect
 
     dataset = get_dataset(request, owner, name)
+    print dataset
 
     if not dataset:
         raise Http404("Dataset Not Found")
@@ -351,3 +354,60 @@ def query_status(request, query_id):
                                        kwargs={"query_id": query_id})
 
         return response
+
+
+def patch_dataset_sql(request, owner, name):
+    try:
+        user = get_or_create_user(request)
+    except OAuthNeededException as ex:
+        return ex.redirect
+
+    dataset = get_dataset(request, owner, name)
+
+    if not dataset:
+        raise Http404("Dataset Not Found")
+
+    sql = request.POST["dataset_sql"]
+    update_dataset_sql(request, dataset, sql)
+
+    return HttpResponse("")
+
+
+def patch_dataset_description(request, owner, name):
+    try:
+        user = get_or_create_user(request)
+    except OAuthNeededException as ex:
+        return ex.redirect
+
+    dataset = get_dataset(request, owner, name)
+
+    if not dataset:
+        raise Http404("Dataset Not Found")
+
+    description = request.POST["description"]
+    update_dataset_description(request, dataset, description)
+
+    return HttpResponse("")
+
+
+def patch_dataset_public(request, owner, name):
+    try:
+        user = get_or_create_user(request)
+    except OAuthNeededException as ex:
+        return ex.redirect
+
+    dataset = get_dataset(request, owner, name)
+
+    if not dataset:
+        raise Http404("Dataset Not Found")
+
+    is_public = request.POST["is_public"]
+
+    if is_public == "0":
+        is_public = False
+    else:
+        is_public = True
+
+    update_dataset_public_state(request, dataset, is_public)
+
+    return HttpResponse("")

@@ -30,7 +30,6 @@ var prep_polling_query = (function() {
 
     function start_query() {
         //var sql = $("#query_sql").val();
-        console.log("CM2: ", codemirror);
         var sql = codemirror.getValue();
 
         if (current_process) {

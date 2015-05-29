@@ -24,6 +24,30 @@ def get_dataset(request, owner, name):
     return None
 
 
+def update_dataset_sql(request, dataset, sql):
+    url = '/v3/db/dataset/%s/%s' % (quote(dataset["owner"]),
+                                    quote(dataset["name"]))
+    data = json.dumps({"sql_code": sql})
+    response = send_request(request, 'PATCH', url,
+                            {"Accept": "application/json"}, body=data)
+
+
+def update_dataset_description(request, dataset, description):
+    url = '/v3/db/dataset/%s/%s' % (quote(dataset["owner"]),
+                                    quote(dataset["name"]))
+    data = json.dumps({"description": description})
+    response = send_request(request, 'PATCH', url,
+                            {"Accept": "application/json"}, body=data)
+
+
+def update_dataset_public_state(request, dataset, is_public):
+    url = '/v3/db/dataset/%s/%s' % (quote(dataset["owner"]),
+                                    quote(dataset["name"]))
+    data = json.dumps({"is_public": is_public})
+    response = send_request(request, 'PATCH', url,
+                            {"Accept": "application/json"}, body=data)
+
+
 def get_parser_values(request, user, filename):
     session_key = "ss_file_id_%s" % filename
     if session_key not in request.session:

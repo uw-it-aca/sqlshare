@@ -8,25 +8,29 @@
 
 <h2>{{ dataset.name }}</h2>
 
-<p class="sql-dataset-desc">{{ dataset.description }}</p>
+<p class="sql-dataset-desc"><textarea id="dataset_description">{{ dataset.description }}</textarea></p>
 <p class="sql-dataset-owner">{{ dataset.owner }}</p>
 <p class="sql-dataset-modified">modified on {{ dataset.date_modified }}</p>
 
 <div style="position:absolute; top:10px; right:10px; width:150px; text-align:right;">
-    <button type="button" class="btn btn-default btn-xs" id="">MAKE PRIVATE</button>
+    <button type="button" class="btn btn-default btn-xs" id="make_dataset_private" {% if not dataset.is_public %}style="display:none;"{% endif %}>MAKE PRIVATE</button>
+    <button type="button" class="btn btn-default btn-xs" id="make_dataset_public" {% if dataset.is_public %}style="display:none;"{% endif %}>MAKE PUBLIC</button>
     <button type="button" class="btn btn-default btn-xs" id="">SHARING</button>
     <button type="button" class="btn btn-default btn-xs" id="">DELETE</button>
 </div>    
     
     
+<form method="POST">
+{% csrf_token %}
+
 <div class="form-group">
     <label for="query_sql" class="sr-only">SQL Query:</label>    
-    <div id="dataset_sql" class="well" style="background:#fff;">{{ dataset.sql_code }}</div>
+    <textarea id="dataset_sql" name='dataset_sql' class="well" style="background:#fff;">{{ dataset.sql_code }}</textarea>
 </div>
 
 <div style="margin-bottom:1em;">
     <button type="button" class="btn btn-default" id="run_query">RUN QUERY</button>
-    <button type="button" class="btn btn-default" disabled="disabled" id="">UPDATE DATASET</button>
+    <button type="button" class="btn btn-default" id="update_dataset_sql" style="display: none;">UPDATE DATASET</button>
 </div>
 
 <div id="query_preview_panel" style="display: none;">
@@ -42,7 +46,6 @@
     
     <h3>Dataset Preview</h3>
     
-    {% csrf_token %}
     {% if dataset.sample_data_status == "working" %}
         <p class="text-muted">Building preview...</p>
     {% endif %}
