@@ -8,9 +8,13 @@
 
 <h2>{{ dataset.name }}</h2>
 
-<p class="sql-dataset-desc"><textarea id="dataset_description">{{ dataset.description }}</textarea></p>
-<p class="sql-dataset-owner">{{ dataset.owner }}</p>
-<p class="sql-dataset-modified">modified on {{ dataset.date_modified }}</p>
+<span class="sql-dataset-owner">{{ dataset.owner }}</span>
+<span class="sql-dataset-modified">modified on {{ dataset.date_modified }}</span>
+
+<div class="form-group sql-dataset-desc">
+    <label for="query_sql" class="sr-only">Description:</label>    
+    <textarea class="form-control" id="dataset_description">{{ dataset.description }}</textarea>
+</div>
 
 <div style="position:absolute; top:10px; right:10px; width:150px; text-align:right;">
     <button type="button" class="btn btn-default btn-xs" id="make_dataset_private" {% if not dataset.is_public %}style="display:none;"{% endif %}>MAKE PRIVATE</button>
