@@ -1,4 +1,4 @@
-var prep_details_page = function() {
+var prep_details_page = (function() {
     "use strict";
 
     function add_code_mirror() {
@@ -10,12 +10,25 @@ var prep_details_page = function() {
             el.parentNode.replaceChild(cm, el);
         }, {
             textWrapping: false,
+            autoMatchParens: true,
             mode:  "text/x-mssql",
             lineNumbers: true,
-            readOnly: true,
+            smartIndent: true,
+            extraKeys: {
+                Tab: false
+            },
             value: el.innerHTML
         });
+
+        return codemirror;
     }
 
-    add_code_mirror();
-};
+
+    function add_events() {
+        var code_mirror = add_code_mirror();
+        // defined in run_query.js
+        prep_polling_query(code_mirror);
+
+    }
+    return add_events;
+})();
