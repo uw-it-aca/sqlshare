@@ -12,9 +12,10 @@
 {% for dataset in datasets %}
     <a class="list-group-item" href="/detail/{{ dataset.owner }}/{{ dataset.name }}">
         <span class="sql-dataset-name">{{ dataset.name }}</span>
-        <span class="sql-dataset-desc">{{ dataset.description }}</span>
         <span class="sql-dataset-owner">{{ dataset.owner }}</span>
-        <span class="sql-dataset-modified">modified on {{ dataset.date_modified }}</span>
+        <span class="sql-dataset-modified">{{ dataset.date_modified }}</span>
+        
+        <div class="sql-dataset-desc">{{ dataset.description }}</div>
     </a>
 {% endfor %}
 </div>

@@ -17,9 +17,19 @@
 }
 
 .sql-content { margin-top: 80px;  margin-left: 240px; 
-    
-    h2 { margin-top: 0; }
-    .sql-content-inner { padding: 20px; }
+        
+    .sql-content-inner { padding: 20px; 
+        
+        h2 { margin-top: 0; }
+        
+        .sql-dataset-list {
+            .sql-dataset-name { display: inline-block; width:55%; font-weight: bold; color: #222; }
+            .sql-dataset-owner { display: inline-block; width:14%; color: #777; }
+            .sql-dataset-modified { display:inline-block; width:30%; color: #ccc; text-align: right; }
+            
+            .sql-dataset-desc { display: block; }
+        }
+    }
 }
 
 .sql-footer { margin-left: 240px; color: #666; }
