@@ -6,8 +6,8 @@
 
 {% block content %}
 
-
 <h2>{{ dataset.name }}</h2>
+
 <div style="position:relative;">
     
     <span class="sql-dataset-owner">{{ dataset.owner }}</span>
@@ -27,7 +27,8 @@
 
 </div>
     
-<form method="POST">
+
+<form method="POST" style="margin-top: 3em;">
     {% csrf_token %}
 
     <div class="form-group">
@@ -40,16 +41,18 @@
         <button type="button" class="btn btn-default" id="update_dataset_sql" style="display: none;">UPDATE DATASET</button>
         <button type="button" class="btn btn-default btn-xs" id="" style="position: absolute; right:0;">START NEW DATASET FROM QUERY</button>
     </div>
-    
-    <div id="query_preview_panel" style="display: none;">
-        <h3>Dataset Preview</h3>
-    
-        <div id="query_running_panel" style="display: none;"><i class="fa fa-circle-o-notch fa-spin"></i> Running...</div>
-        <div id="query_results_panel" style="display: none;"></div>
-    
-    </div>
-    
+  
 </form> 
+
+    
+<div id="query_preview_panel" style="margin-top:3em; display: none;">
+    <h3>Dataset Preview</h3>
+
+    <div id="query_running_panel" style="display: none;"><i class="fa fa-circle-o-notch fa-spin"></i> Running...</div>
+    <div id="query_results_panel" style="display: none;"></div>
+
+</div>
+    
 
 <div style="position:relative; margin-top:3em;" id="original_results_panel" >
     
