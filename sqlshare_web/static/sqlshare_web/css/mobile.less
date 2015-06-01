@@ -2,13 +2,23 @@
 
 .sql-content {
     
-    .sql-content-inner { position: relative; }
-    .sql-dataset-list {
-        .sql-dataset-name { display: block; font-weight: bold; color: #222; }
-        .sql-dataset-desc { display: block; }
-        .sql-dataset-owner { display: block;  color: #777; }
-        .sql-dataset-modified { color: #ccc; }
+    .sql-content-inner { position: relative; 
+        
+        .sql-dataset-list {
+            .sql-dataset-name { display: block; font-weight: bold; color: #222; }
+            .sql-dataset-desc { display: block; }
+            .sql-dataset-owner { display: block;  color: #777; }
+            .sql-dataset-modified { color: #ccc; }
+        }
+        
+        
+        .sql-dataset-desc { 
+            textarea { resize: vertical; }
+        }
+        
     }
+    
+    
     
 }
 
