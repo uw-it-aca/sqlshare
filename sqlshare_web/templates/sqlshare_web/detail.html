@@ -19,10 +19,10 @@
     </div>
     
     <div style="position:absolute; top:0; right:0; width:150px; text-align:right;">
-        <button type="button" class="btn btn-default btn-xs" id="make_dataset_private" {% if not dataset.is_public %}style="display:none;"{% endif %}>MAKE PRIVATE</button>
-        <button type="button" class="btn btn-default btn-xs" id="make_dataset_public" {% if dataset.is_public %}style="display:none;"{% endif %}>MAKE PUBLIC</button>
-        <button type="button" class="btn btn-default btn-xs" id="">SHARING</button>
-        <button type="button" class="btn btn-default btn-xs" id="">DELETE</button>
+        <button type="button" class="btn btn-default btn-xs" id="make_dataset_private" {% if not dataset.is_public %}style="display:none;"{% endif %}><i class="fa fa-eye-slash"></i> MAKE PRIVATE</button>
+        <button type="button" class="btn btn-default btn-xs" id="make_dataset_public" {% if dataset.is_public %}style="display:none;"{% endif %}><i class="fa fa-eye"></i> MAKE PUBLIC</button>
+        <button type="button" class="btn btn-default btn-xs" id=""><i class="fa fa-share"></i> SHARE</button>
+        <button type="button" class="btn btn-default btn-xs" id=""><i class="fa fa-trash"></i> DELETE</button>
     </div>    
 
 </div>
@@ -88,9 +88,9 @@
     {% endif %}
 
     <div style="position:absolute; top:-25px; right:0; width:200px; text-align:right;">
-        <button type="button" class="btn btn-default btn-xs" id="">DOWNLOAD</button>
-        <button type="button" class="btn btn-default btn-xs" id="">DERIVE</button>
-        <button type="button" class="btn btn-default btn-xs" id="">SNAPSHOT</button>
+        <button type="button" class="btn btn-default btn-xs" id=""><i class="fa fa-download"></i> DOWNLOAD</button>
+        <button type="button" class="btn btn-default btn-xs" id=""><i class="fa fa-code-fork"></i> DERIVE</button>
+        <button type="button" class="btn btn-default btn-xs" id=""><i class="fa fa-camera"></i> SNAPSHOT</button>
         
     </div>
 
