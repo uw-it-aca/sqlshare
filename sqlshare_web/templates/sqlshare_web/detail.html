@@ -35,9 +35,10 @@
         <textarea id="dataset_sql" name='dataset_sql' class="well" style="background:#fff;">{{ dataset.sql_code }}</textarea>
     </div>
     
-    <div style="margin-bottom:1em;">
+    <div style="margin-bottom:1em; position: relative;">
         <button type="button" class="btn btn-default" id="run_query">RUN QUERY</button>
         <button type="button" class="btn btn-default" id="update_dataset_sql" style="display: none;">UPDATE DATASET</button>
+        <button type="button" class="btn btn-default btn-xs" id="" style="position: absolute; right:0;">START NEW DATASET FROM QUERY</button>
     </div>
     
     <div id="query_preview_panel" style="display: none;">
@@ -90,7 +91,7 @@
         <button type="button" class="btn btn-default btn-xs" id="">DOWNLOAD</button>
         <button type="button" class="btn btn-default btn-xs" id="">DERIVE</button>
         <button type="button" class="btn btn-default btn-xs" id="">SNAPSHOT</button>
-        <button type="button" class="btn btn-default btn-xs" id="">CREATE NEW</button>
+        
     </div>
 
 </div>
