@@ -49,7 +49,6 @@ def dataset_detail(request, owner, name):
         return ex.redirect
 
     dataset = get_dataset(request, owner, name)
-    print dataset
 
     if not dataset:
         raise Http404("Dataset Not Found")
@@ -57,6 +56,7 @@ def dataset_detail(request, owner, name):
     data = {
         "dataset": dataset,
         "user": user,
+        "derive_dataset_sql": "SELECT * FROM %s" % (dataset["qualified_name"]),
     }
 
     return render_to_response('sqlshare_web/detail.html',
@@ -247,7 +247,7 @@ def new_query(request):
 
     if "save" in request.POST:
         return _save_query(request, user)
-    elif "sql" in request.POST:
+    elif "sql" in request.POST and "show_initial" not in request.POST:
         return _show_query_name_form(request, user)
 
     else:
@@ -304,6 +304,9 @@ def _show_new_query_form(request, user):
     data = {
         "user": user,
     }
+
+    if "sql" in request.POST:
+        data["sql"] = request.POST["sql"]
 
     return render_to_response('sqlshare_web/query/run.html',
                               data,

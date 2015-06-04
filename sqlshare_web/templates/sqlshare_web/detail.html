@@ -29,7 +29,7 @@
 </div>
     
 
-<form method="POST" style="margin-top: 3em; position: relative;">
+<div  style="margin-top: 3em; position: relative;">
     {% csrf_token %}
     
     <h3>SQL</h3>
@@ -46,10 +46,15 @@
     
     <div class="sql-dataset-actions">
         <button type="button" class="btn btn-default btn-xs" id=""><i class="fa fa-plus-square"></i> <span>NEW DATASET FROM QUERY</span></button>
-        <button type="button" class="btn btn-default btn-xs" id=""><i class="fa fa-code-fork"></i> <span>DERIVE</span></button>
+        <form action="/new/" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="sql" value="{{ derive_dataset_sql }}" />
+        <input type="hidden" name="show_initial" value="1" />
+        <input type="submit" value="DERIVE" class="btn btn-default btn-xs" id="" />
+        </form>
         <button type="button" class="btn btn-default btn-xs" id=""><i class="fa fa-camera"></i> <span>SNAPSHOT</span></button>
     </div>
-</form> 
+</div> 
 
     
 <div id="query_preview_panel" style="margin-top:3em; display: none;">

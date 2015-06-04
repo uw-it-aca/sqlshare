@@ -16,7 +16,7 @@
     
     <div class="form-group">
         <label for="query_sql" class="sr-only">SQL Query:</label>
-        <textarea class="form-control sql-new-query-textarea" rows="3" placeholder="E.g. select * from table name" name="sql" id="query_sql"></textarea>
+        <textarea class="form-control sql-new-query-textarea" rows="3" placeholder="E.g. select * from table name" name="sql" id="query_sql">{{ sql }}</textarea>
     </div>
 
     <button type="button" class="btn btn-default" id="run_query">RUN QUERY</button>
@@ -34,7 +34,12 @@
 </form>
 
 <script>
-    document.body.onload = function() { prep_run_query_page(); };
+    document.body.onload = function() {
+        prep_run_query_page();
+        {% if sql %}
+        $("#run_query").click();
+        {% endif %}
+    };
 </script>
 
 {% endblock %}
