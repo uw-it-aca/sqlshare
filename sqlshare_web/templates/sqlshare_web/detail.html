@@ -114,6 +114,12 @@
             <label for="exampleInputEmail1">Email address</label>
             <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
         </div>
+
+        <div>
+            Users:
+            <div id="dataset_access_list">
+            </div>
+        </div>
   
       </div>
       <div class="modal-footer">
@@ -145,6 +151,14 @@
     
 <script>
     document.body.onload = function() { prep_details_page(); };
+</script>
+
+<script id="user-access-item" type="text/x-handlebars-template">
+{% verbatim %}
+<div>
+    <label><input type="checkbox" checked="checked" value="{{username}}"><span>{{ username }}</span></label>
+</div>
+{% endverbatim %}
 </script>
 
 {% endblock %}

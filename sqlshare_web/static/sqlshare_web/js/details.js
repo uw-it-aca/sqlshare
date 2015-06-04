@@ -1,7 +1,10 @@
 var prep_details_page = (function() {
     "use strict";
     var last_description,
-        code_mirror;
+        code_mirror,
+        user_template;
+
+    user_template = Handlebars.compile($("#user-access-item").text());
 
     function add_code_mirror() {
         // work around jshint - newcap error.
@@ -105,6 +108,16 @@ var prep_details_page = (function() {
         $("#make_dataset_public").show();
     }
 
+    function addUserOnEnter(ev) {
+        if (ev.keyCode === 13) {
+            var content = user_template({ username: $("#exampleInputEmail1").val() });
+            $("#dataset_access_list").append($(content));
+            $('#user-autocomplete-container #exampleInputEmail1').typeahead('close');
+            $('#user-autocomplete-container #exampleInputEmail1').typeahead('val', "");
+            $("#exampleInputEmail1").val("");
+        }
+    }
+
     function prep_typeahed() {
         var users = new Bloodhound({
             datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
@@ -120,6 +133,9 @@ var prep_details_page = (function() {
           display: 'login',
           source: users
         });
+
+
+        $("#exampleInputEmail1").on("keypress", addUserOnEnter);
     }
 
     function add_events() {
