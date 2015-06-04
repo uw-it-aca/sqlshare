@@ -13,7 +13,7 @@ from sqlshare_web.dao import finalize_upload, save_dataset_from_query
 from sqlshare_web.dao import enqueue_sql_statement, get_query_data
 from sqlshare_web.dao import get_upload_status, update_dataset_sql
 from sqlshare_web.dao import update_dataset_description
-from sqlshare_web.dao import update_dataset_public_state
+from sqlshare_web.dao import update_dataset_public_state, delete_dataset
 
 import urllib
 import json
@@ -409,5 +409,24 @@ def patch_dataset_public(request, owner, name):
         is_public = True
 
     update_dataset_public_state(request, dataset, is_public)
+
+    return HttpResponse("")
+
+
+def run_delete_dataset(request, owner, name):
+    try:
+        user = get_or_create_user(request)
+    except OAuthNeededException as ex:
+        return ex.redirect
+
+    dataset = get_dataset(request, owner, name)
+
+    if not dataset:
+        raise Http404("Dataset Not Found")
+
+    if request.META["REQUEST_METHOD"] != "POST":
+        return HttpResponse("")
+
+    delete_dataset(request, dataset)
 
     return HttpResponse("")

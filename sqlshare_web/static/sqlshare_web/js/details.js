@@ -24,6 +24,20 @@ var prep_details_page = (function() {
         last_description = $("#dataset_description").val();
     }
 
+    function delete_dataset() {
+        $.ajax({
+            type: "POST",
+            url: window.location.href+"/delete",
+            data: {
+                'csrfmiddlewaretoken': $("input[name='csrfmiddlewaretoken']").val()
+            },
+            success: function() {
+                window.location.href = "/";
+            }
+        });
+
+    }
+
     function update_description() {
         var new_description = $("#dataset_description").val();
 
@@ -99,6 +113,7 @@ var prep_details_page = (function() {
         $("#make_dataset_private").on("click", make_private);
         $("#dataset_description").on("focus", description_focus);
         $("#dataset_description").on("blur", update_description);
+        $("#delete_dataset").on("click", delete_dataset);
         // defined in run_query.js
         prep_polling_query(code_mirror);
 

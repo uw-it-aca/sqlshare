@@ -24,6 +24,13 @@ def get_dataset(request, owner, name):
     return None
 
 
+def delete_dataset(request, dataset):
+    url = '/v3/db/dataset/%s/%s' % (quote(dataset["owner"]),
+                                    quote(dataset["name"]))
+    response = send_request(request, 'DELETE', url,
+                            {"Accept": "application/json"})
+
+
 def update_dataset_sql(request, dataset, sql):
     url = '/v3/db/dataset/%s/%s' % (quote(dataset["owner"]),
                                     quote(dataset["name"]))

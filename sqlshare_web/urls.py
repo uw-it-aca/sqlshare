@@ -11,6 +11,8 @@ urlpatterns = patterns(
         'sqlshare_web.views.patch_dataset_description'),
     url(r'^detail/(?P<owner>.*)/(?P<name>.*)/toggle_public',
         'sqlshare_web.views.patch_dataset_public'),
+    url(r'^detail/(?P<owner>.*)/(?P<name>.*)/delete',
+        'sqlshare_web.views.run_delete_dataset'),
 
     url(r'^detail/(?P<owner>.*)/(?P<name>.*)$',
         'sqlshare_web.views.dataset_detail',
