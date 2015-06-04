@@ -165,7 +165,6 @@ var prep_details_page = (function() {
 
     function show_permissions_panel(data) {
         $("#dataset_access_list").html("");
-        console.log("D: ", data);
         for (var i = 0; i < data.length; i++) {
             var content = user_template({ username: data[i] });
             $("#dataset_access_list").append($(content));
