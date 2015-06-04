@@ -138,6 +138,15 @@ var prep_details_page = (function() {
         $("#exampleInputEmail1").on("keypress", addUserOnEnter);
     }
 
+    function save_permissions() {
+        var checked = $("input[name='dataset_account']:checked");
+        var len = checked.length;
+
+        for (var i = 0; i < len; i++) {
+            console.log(checked[i].value);
+        }
+    }
+
     function add_events() {
         code_mirror = add_code_mirror();
         $("#run_query").on("click", function() { $("#update_dataset_sql").show(); });
@@ -147,6 +156,7 @@ var prep_details_page = (function() {
         $("#dataset_description").on("focus", description_focus);
         $("#dataset_description").on("blur", update_description);
         $("#delete_dataset").on("click", delete_dataset);
+        $("#save_permissions_button").on("click", save_permissions);
         // defined in run_query.js
         prep_polling_query(code_mirror);
         prep_typeahed();
