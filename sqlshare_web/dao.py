@@ -199,3 +199,11 @@ def get_query_data(request, query_id):
     response = send_request(request, 'GET', url)
 
     return json.loads(response.content)
+
+
+def get_user_search_results(request, term):
+    response = send_request(request, 'GET', '/v3/users?q=%s' % (term),
+                            {"Accept": "application/json"})
+
+    data = json.loads(response.content)
+    return data

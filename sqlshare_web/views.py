@@ -14,6 +14,7 @@ from sqlshare_web.dao import enqueue_sql_statement, get_query_data
 from sqlshare_web.dao import get_upload_status, update_dataset_sql
 from sqlshare_web.dao import update_dataset_description
 from sqlshare_web.dao import update_dataset_public_state, delete_dataset
+from sqlshare_web.dao import get_user_search_results
 
 import urllib
 import json
@@ -430,3 +431,14 @@ def run_delete_dataset(request, owner, name):
     delete_dataset(request, dataset)
 
     return HttpResponse("")
+
+
+def user_search(request, term):
+    try:
+        user = get_or_create_user(request)
+    except OAuthNeededException as ex:
+        return ex.redirect
+
+    results = get_user_search_results(request, term)
+
+    return HttpResponse(json.dumps(results["users"]))

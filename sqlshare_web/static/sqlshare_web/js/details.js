@@ -105,6 +105,23 @@ var prep_details_page = (function() {
         $("#make_dataset_public").show();
     }
 
+    function prep_typeahed() {
+        var users = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            remote: {
+                url: '/user_search/%QUERY',
+                wildcard: '%QUERY'
+            }
+        });
+
+        $('#user-autocomplete-container #exampleInputEmail1').typeahead(null, {
+          name: 'user-list',
+          display: 'login',
+          source: users
+        });
+    }
+
     function add_events() {
         code_mirror = add_code_mirror();
         $("#run_query").on("click", function() { $("#update_dataset_sql").show(); });
@@ -116,6 +133,7 @@ var prep_details_page = (function() {
         $("#delete_dataset").on("click", delete_dataset);
         // defined in run_query.js
         prep_polling_query(code_mirror);
+        prep_typeahed();
 
     }
     return add_events;

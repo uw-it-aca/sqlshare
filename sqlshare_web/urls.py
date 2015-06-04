@@ -38,6 +38,7 @@ urlpatterns = patterns(
         name='dataset_upload'),
     url(r'^new/', 'sqlshare_web.views.new_query'),
     url(r'^run_query/', 'sqlshare_web.views.run_query'),
+    url(r'^user_search/(?P<term>.*)', 'sqlshare_web.views.user_search'),
     url(r'^query/(?P<query_id>.*)', 'sqlshare_web.views.query_status'),
     url(r'^oauth/', 'sqlshare_web.views.oauth_return'),
 
