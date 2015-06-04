@@ -183,6 +183,11 @@ var prep_details_page = (function() {
         });
     }
 
+    function create_new_dataset_from_query() {
+        $("#new_query_sql").val(code_mirror.getValue());
+        $("#new_dataset_from_query_form").submit();
+    }
+
     function add_events() {
         code_mirror = add_code_mirror();
         $("#run_query").on("click", function() { $("#update_dataset_sql").show(); });
@@ -193,6 +198,7 @@ var prep_details_page = (function() {
         $("#dataset_description").on("blur", update_description);
         $("#delete_dataset").on("click", delete_dataset);
         $("#save_permissions_button").on("click", save_permissions);
+        $("#new_dataset_from_query").on("click", create_new_dataset_from_query);
         // defined in run_query.js
         prep_polling_query(code_mirror);
         prep_typeahed();

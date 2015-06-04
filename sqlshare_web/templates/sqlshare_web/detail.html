@@ -45,7 +45,12 @@
     </div>
     
     <div class="sql-dataset-actions">
-        <button type="button" class="btn btn-default btn-xs" id=""><i class="fa fa-plus-square"></i> <span>NEW DATASET FROM QUERY</span></button>
+        <form action="/new/" method="POST" id="new_dataset_from_query_form">
+        {% csrf_token %}
+        <input type="hidden" name="sql" value="" id="new_query_sql"/>
+        <input type="hidden" name="show_initial" value="1" />
+        <button type="button" class="btn btn-default btn-xs" id="new_dataset_from_query"><i class="fa fa-plus-square"></i> <span>NEW DATASET FROM QUERY</span></button>
+        </form>
         <form action="/new/" method="POST">
         {% csrf_token %}
         <input type="hidden" name="sql" value="{{ derive_dataset_sql }}" />
