@@ -15,6 +15,8 @@ from sqlshare_web.dao import get_upload_status, update_dataset_sql
 from sqlshare_web.dao import update_dataset_description
 from sqlshare_web.dao import update_dataset_public_state, delete_dataset
 from sqlshare_web.dao import get_user_search_results
+from sqlshare_web.dao import update_dataset_permissions
+from sqlshare_web.dao import get_dataset_permissions
 
 import urllib
 import json
@@ -389,6 +391,30 @@ def patch_dataset_description(request, owner, name):
     update_dataset_description(request, dataset, description)
 
     return HttpResponse("")
+
+
+def dataset_permissions(request, owner, name):
+    try:
+        user = get_or_create_user(request)
+    except OAuthNeededException as ex:
+        return ex.redirect
+
+    dataset = get_dataset(request, owner, name)
+
+    if not dataset:
+        raise Http404("Dataset Not Found")
+
+    if request.META["REQUEST_METHOD"] == "POST":
+        if "accounts[]" in request.POST:
+            accounts = request.POST["accounts[]"]
+        else:
+            accounts = []
+        update_dataset_permissions(request, dataset,
+                                   request.POST.getlist("accounts[]"))
+
+
+    data = get_dataset_permissions(request, dataset)
+    return HttpResponse(json.dumps(data), content_type="application/json")
 
 
 def patch_dataset_public(request, owner, name):

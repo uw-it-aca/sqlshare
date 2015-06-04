@@ -142,9 +142,46 @@ var prep_details_page = (function() {
         var checked = $("input[name='dataset_account']:checked");
         var len = checked.length;
 
+        var accounts = [];
         for (var i = 0; i < len; i++) {
-            console.log(checked[i].value);
+            accounts.push(checked[i].value);
         }
+
+        $.ajax({
+            type: "POST",
+            url: window.location.href+"/permissions",
+            data: {
+                "accounts": accounts,
+                'csrfmiddlewaretoken': $("input[name='csrfmiddlewaretoken']").val()
+            },
+            success: hide_sharing_panel
+        });
+
+    }
+
+    function hide_sharing_panel() {
+        $("#share_modal").modal('hide');
+    }
+
+    function show_permissions_panel(data) {
+        $("#dataset_access_list").html("");
+        console.log("D: ", data);
+        for (var i = 0; i < data.length; i++) {
+            var content = user_template({ username: data[i] });
+            $("#dataset_access_list").append($(content));
+        }
+        $("#sharing-modal-loading").hide();
+        $("#sharing-modal-display").show();
+    }
+
+    function load_permissions_data() {
+        $("#sharing-modal-display").hide();
+        $("#sharing-modal-loading").show();
+        $.ajax({
+            type: "GET",
+            url: window.location.href+"/permissions",
+            success: show_permissions_panel
+        });
     }
 
     function add_events() {
@@ -160,6 +197,7 @@ var prep_details_page = (function() {
         // defined in run_query.js
         prep_polling_query(code_mirror);
         prep_typeahed();
+        $("#share_modal").on('show.bs.modal', load_permissions_data);
 
     }
     return add_events;

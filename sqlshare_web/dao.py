@@ -207,3 +207,34 @@ def get_user_search_results(request, term):
 
     data = json.loads(response.content)
     return data
+
+
+def update_dataset_permissions(request, dataset, accounts):
+    url = '/v3/db/dataset/%s/%s/permissions' % (quote(dataset["owner"]),
+                                                quote(dataset["name"]))
+
+    data = json.dumps({ "authlist": accounts })
+    response = send_request(request, 'PUT', url,
+                            {"Accept": "application/json"},
+                            body=data)
+
+
+def get_dataset_permissions(request, dataset):
+    url = '/v3/db/dataset/%s/%s/permissions' % (quote(dataset["owner"]),
+                                                quote(dataset["name"]))
+
+    response = send_request(request, 'GET', url,
+                            {"Accept": "application/json"})
+
+    data = json.loads(response.content)
+
+    accounts = []
+
+    for email in data["emails"]:
+        accounts.append(email)
+
+    for account in data["accounts"]:
+        accounts.append(account["login"])
+
+    accounts.sort()
+    return accounts
