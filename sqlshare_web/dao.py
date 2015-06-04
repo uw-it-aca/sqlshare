@@ -213,7 +213,7 @@ def update_dataset_permissions(request, dataset, accounts):
     url = '/v3/db/dataset/%s/%s/permissions' % (quote(dataset["owner"]),
                                                 quote(dataset["name"]))
 
-    data = json.dumps({ "authlist": accounts })
+    data = json.dumps({"authlist": accounts})
     response = send_request(request, 'PUT', url,
                             {"Accept": "application/json"},
                             body=data)

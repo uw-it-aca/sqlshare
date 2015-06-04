@@ -412,7 +412,6 @@ def dataset_permissions(request, owner, name):
         update_dataset_permissions(request, dataset,
                                    request.POST.getlist("accounts[]"))
 
-
     data = get_dataset_permissions(request, dataset)
     return HttpResponse(json.dumps(data), content_type="application/json")
 
