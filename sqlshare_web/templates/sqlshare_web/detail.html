@@ -21,14 +21,10 @@
     <div class="sql-dataset-actions">
         <button type="button" class="btn btn-default btn-xs" id="make_dataset_private" {% if not dataset.is_public %}style="display:none;"{% endif %}><i class="fa fa-eye"></i> <span>PUBLIC</span></button>
         <button type="button" class="btn btn-default btn-xs" id="make_dataset_public" {% if dataset.is_public %}style="display:none;"{% endif %}><i class="fa fa-eye-slash"></i> <span>PRIVATE</span></button>
-        
-        
-        
+        <button type="button" class="btn btn-default btn-xs" id=""><i class="fa fa-download"></i> <span>DOWNLOAD</span></button>
         <button type="button" class="btn btn-default btn-xs" id="" data-toggle="modal" data-target="#share_modal"><i class="fa fa-share"></i> <span>SHARE</span></button>
         <button type="button" class="btn btn-danger btn-xs" id="" data-toggle="modal" data-target="#delete_modal"><i class="fa fa-trash"></i> <span>DELETE</span></button>
     </div>
-    
-      
 
 </div>
     
@@ -47,9 +43,11 @@
         <button type="button" class="btn btn-default" id="run_query">RUN QUERY</button>
         <button type="button" class="btn btn-default" id="update_dataset_sql" style="display: none;">UPDATE DATASET</button>
     </div>
+    
     <div class="sql-dataset-actions">
         <button type="button" class="btn btn-default btn-xs" id=""><i class="fa fa-plus-square"></i> <span>NEW DATASET FROM QUERY</span></button>
         <button type="button" class="btn btn-default btn-xs" id=""><i class="fa fa-code-fork"></i> <span>DERIVE</span></button>
+        <button type="button" class="btn btn-default btn-xs" id=""><i class="fa fa-camera"></i> <span>SNAPSHOT</span></button>
     </div>
 </form> 
 
@@ -98,13 +96,7 @@
     </table>
     </div>
     {% endif %}
-
-    <div class="sql-dataset-actions">
-        
-        <button type="button" class="btn btn-default btn-xs" id=""><i class="fa fa-download"></i> <span>DOWNLOAD</span></button>
-        <button type="button" class="btn btn-default btn-xs" id=""><i class="fa fa-camera"></i> <span>SNAPSHOT</span></button>
-    </div>
-
+    
 </div>
 
 <!-- share dataset modal -->
