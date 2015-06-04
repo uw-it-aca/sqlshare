@@ -19,10 +19,13 @@
     </div>
     
     <div class="sql-dataset-actions">
-        <button type="button" class="btn btn-default btn-xs" id="make_dataset_private" {% if not dataset.is_public %}style="display:none;"{% endif %}><i class="fa fa-eye-slash"></i> MAKE PRIVATE</button>
-        <button type="button" class="btn btn-default btn-xs" id="make_dataset_public" {% if dataset.is_public %}style="display:none;"{% endif %}><i class="fa fa-eye"></i> MAKE PUBLIC</button>
-        <button type="button" class="btn btn-default btn-xs" id="" data-toggle="modal" data-target="#share_modal"><i class="fa fa-share"></i> SHARE</button>
-        <button type="button" class="btn btn-danger btn-xs" id="" data-toggle="modal" data-target="#delete_modal"><i class="fa fa-trash"></i> DELETE</button>
+        <button type="button" class="btn btn-default btn-xs" id="make_dataset_private" {% if not dataset.is_public %}style="display:none;"{% endif %}><i class="fa fa-eye"></i> <span>PUBLIC</span></button>
+        <button type="button" class="btn btn-default btn-xs" id="make_dataset_public" {% if dataset.is_public %}style="display:none;"{% endif %}><i class="fa fa-eye-slash"></i> <span>PRIVATE</span></button>
+        
+        
+        
+        <button type="button" class="btn btn-default btn-xs" id="" data-toggle="modal" data-target="#share_modal"><i class="fa fa-share"></i> <span>SHARE</span></button>
+        <button type="button" class="btn btn-danger btn-xs" id="" data-toggle="modal" data-target="#delete_modal"><i class="fa fa-trash"></i> <span>DELETE</span></button>
     </div>
     
       
@@ -33,7 +36,7 @@
 <form method="POST" style="margin-top: 3em; position: relative;">
     {% csrf_token %}
     
-    <h3>Query</h3>
+    <h3>SQL</h3>
     
     <div class="form-group">
         <label for="query_sql" class="sr-only">SQL Query:</label>    
@@ -43,16 +46,16 @@
     <div style="margin-bottom:1em;">
         <button type="button" class="btn btn-default" id="run_query">RUN QUERY</button>
         <button type="button" class="btn btn-default" id="update_dataset_sql" style="display: none;">UPDATE DATASET</button>
-        
-        <button type="button" class="btn btn-default btn-xs" id="" style="position: absolute; right:0; top:0;"><i class="fa fa-plus-square"></i> NEW DATASET FROM QUERY</button>
-        <button type="button" class="btn btn-default btn-xs" id=""><i class="fa fa-code-fork"></i> DERIVE</button>
     </div>
-  
+    <div class="sql-dataset-actions">
+        <button type="button" class="btn btn-default btn-xs" id=""><i class="fa fa-plus-square"></i> <span>NEW DATASET FROM QUERY</span></button>
+        <button type="button" class="btn btn-default btn-xs" id=""><i class="fa fa-code-fork"></i> <span>DERIVE</span></button>
+    </div>
 </form> 
 
     
 <div id="query_preview_panel" style="margin-top:3em; display: none;">
-    <h3>Dataset Preview</h3>
+    <h3>Preview</h3>
 
     <div id="query_running_panel" style="display: none;"><i class="fa fa-circle-o-notch fa-spin"></i> Running...</div>
     <div id="query_results_panel" style="display: none;"></div>
@@ -62,7 +65,7 @@
 
 <div style="position:relative; margin-top:3em;" id="original_results_panel" >
     
-    <h3>Dataset Preview</h3>
+    <h3>Preview</h3>
     
     {% if dataset.sample_data_status == "working" %}
         <p class="text-muted"><i class="fa fa-circle-o-notch fa-spin"></i> Building preview...</p>
@@ -97,8 +100,9 @@
     {% endif %}
 
     <div class="sql-dataset-actions">
-        <button type="button" class="btn btn-default btn-xs" id=""><i class="fa fa-download"></i> DOWNLOAD</button>
-        <button type="button" class="btn btn-default btn-xs" id=""><i class="fa fa-camera"></i> SNAPSHOT</button>
+        
+        <button type="button" class="btn btn-default btn-xs" id=""><i class="fa fa-download"></i> <span>DOWNLOAD</span></button>
+        <button type="button" class="btn btn-default btn-xs" id=""><i class="fa fa-camera"></i> <span>SNAPSHOT</span></button>
     </div>
 
 </div>
