@@ -55,9 +55,9 @@
         {% csrf_token %}
         <input type="hidden" name="sql" value="{{ derive_dataset_sql }}" />
         <input type="hidden" name="show_initial" value="1" />
-        <button type="button" class="btn btn-default btn-xs" id="new_dataset_derive"><i class="fa fa-code-fork"></i><span>DERIVE</span></button>
+        <button type="button" class="btn btn-default btn-xs" id="new_dataset_derive"><i class="fa fa-code-fork"></i> <span>DERIVE</span></button>
         </form>
-        <span type="button" class="btn btn-default btn-xs" id=""><i class="fa fa-camera"></i><a href="{{ snapshot_url }}"><span>SNAPSHOT</span></a></span>
+        <span type="button" class="btn btn-default btn-xs" id=""><a href="{{ snapshot_url }}"><i class="fa fa-camera"></i> <span>SNAPSHOT</span></a></span>
     </div>
 </div> 
 
