@@ -133,6 +133,7 @@
         <div id="header" class="sql-header">
             <h1><a href="/">SQL<span>SHARE</span></a></h1>
             <span class="sql-user-name">{{ user.username }}</span>
+            <button onclick="document.getElementById('sidebar').classList.toggle('closed');" type="button" class="btn sql-menu-button"><i class="fa fa-bars"></i></button>
         </div>         
         
         <div class="sql-search-bar">
@@ -144,7 +145,7 @@
             </div>
         </div>
             
-        <div id="sidebar" class="sql-sidebar">
+        <div id="sidebar" class="sql-sidebar {% if request.is_mobile or request.is_tablet %}closed{% endif %}">
             <div class="sql-sidebar-actions">
                 <ul>
                     <li><a href="/">Yours</a></li>
