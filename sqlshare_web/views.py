@@ -95,6 +95,8 @@ def dataset_snapshot(request, owner, name):
         "description": request.POST.get("description", default_description),
         "is_public": is_public,
         "user": user,
+        "dataset_url": reverse("dataset_detail",
+                               kwargs={"owner": owner, "name": name}),
     }
 
     return render_to_response('sqlshare_web/snapshot.html',
