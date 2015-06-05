@@ -18,6 +18,7 @@ from sqlshare_web.dao import get_user_search_results
 from sqlshare_web.dao import update_dataset_permissions
 from sqlshare_web.dao import get_dataset_permissions
 
+import datetime
 import urllib
 import json
 import os
@@ -57,9 +58,46 @@ def dataset_detail(request, owner, name):
         "dataset": dataset,
         "user": user,
         "derive_dataset_sql": "SELECT * FROM %s" % (dataset["qualified_name"]),
+        "snapshot_url": reverse("make_dataset_snapshot",
+                                kwargs={"owner": owner, "name": name}),
     }
 
     return render_to_response('sqlshare_web/detail.html',
+                              data,
+                              context_instance=RequestContext(request))
+
+
+def dataset_snapshot(request, owner, name):
+    try:
+        user = get_or_create_user(request)
+    except OAuthNeededException as ex:
+        return ex.redirect
+
+    dataset = get_dataset(request, owner, name)
+
+    if not dataset:
+        raise Http404("Dataset Not Found")
+
+    default_name = "Snapshot of %s" % name
+    date = datetime.date.today().strftime("%B %-d, %Y")
+    default_description = "Snapshot of %s on %s" % (dataset["sql_code"], date)
+
+    is_public = False
+    if "is_public" in request.POST:
+        is_public = True
+    else:
+        if not request.POST:
+            # Default to being public
+            is_public = True
+    data = {
+        "dataset": dataset,
+        "name": request.POST.get("name", default_name),
+        "description": request.POST.get("description", default_description),
+        "is_public": is_public,
+        "user": user,
+    }
+
+    return render_to_response('sqlshare_web/snapshot.html',
                               data,
                               context_instance=RequestContext(request))
 

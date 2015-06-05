@@ -20,6 +20,10 @@ urlpatterns = patterns(
         'sqlshare_web.views.dataset_detail',
         name='dataset_detail'),
 
+    url(r'^snapshot/(?P<owner>.*)/(?P<name>.*)$',
+        'sqlshare_web.views.dataset_snapshot',
+        name='make_dataset_snapshot'),
+
 
     url(r'^upload_chunk', 'sqlshare_web.views.dataset_upload_chunk',
         name='dataset_upload_chunk'),
