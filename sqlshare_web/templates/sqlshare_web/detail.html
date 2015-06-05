@@ -21,7 +21,7 @@
     <div class="sql-dataset-actions">
         <button type="button" class="btn btn-default btn-xs" id="make_dataset_private" {% if not dataset.is_public %}style="display:none;"{% endif %}><i class="fa fa-eye"></i> <span>PUBLIC</span></button>
         <button type="button" class="btn btn-default btn-xs" id="make_dataset_public" {% if dataset.is_public %}style="display:none;"{% endif %}><i class="fa fa-eye-slash"></i> <span>PRIVATE</span></button>
-        <button type="button" class="btn btn-default btn-xs" id=""><i class="fa fa-download"></i> <span>DOWNLOAD</span></button>
+        
         <button type="button" class="btn btn-default btn-xs" id="" data-toggle="modal" data-target="#share_modal"><i class="fa fa-share"></i> <span>SHARE</span></button>
         <button type="button" class="btn btn-danger btn-xs" id="" data-toggle="modal" data-target="#delete_modal"><i class="fa fa-trash"></i> <span>DELETE</span></button>
     </div>
@@ -73,7 +73,7 @@
 
 <div style="position:relative; margin-top:3em;" id="original_results_panel" >
     
-    <h3>Preview</h3>
+    <h3>Dataset Preview</h3>
     
     {% if dataset.sample_data_status == "working" %}
         <p class="text-muted"><i class="fa fa-circle-o-notch fa-spin"></i> Building preview...</p>
@@ -106,6 +106,10 @@
     </table>
     </div>
     {% endif %}
+    
+    <div class="sql-dataset-actions">
+        <button type="button" class="btn btn-default btn-xs" id=""><i class="fa fa-download"></i> <span>DOWNLOAD</span></button>
+    </div>
     
 </div>
 
