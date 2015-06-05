@@ -10,14 +10,19 @@
 	transition-property: max-height;
 	transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
 	
+	.sql-sidebar-actions { padding: 0; 
+        ul { padding: 10px;  margin-bottom: 0; list-style: none; border-bottom: solid 1px #e1e1e8; 
+            li { line-height: 30px; }
+        }
+        a {  display: block; line-height: 30px; }
+    }
+	
 }
 .closed { max-height: 0; }
 
 .sql-content {
     
     .sql-content-inner {
-        
-        
         
         .sql-dataset-list {
             .sql-dataset-name { display: block; font-weight: bold; color: #222; }
