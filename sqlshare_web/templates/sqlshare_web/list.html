@@ -21,10 +21,13 @@
 {% for dataset in datasets %}
     <a class="list-group-item" href="/detail/{{ dataset.owner }}/{{ dataset.name }}">
         <span class="sql-dataset-name">{{ dataset.name }}</span>
-        <span class="sql-dataset-owner">{{ dataset.owner }}</span>
-        <span class="sql-dataset-modified">{{ dataset.date_modified }}</span>
         
+        <span class="sql-dataset-owner-modified">{{ dataset.owner }} {{ dataset.date_modified }}</span>
+        
+        {% if dataset.description %}
         <div class="sql-dataset-desc">{{ dataset.description }}</div>
+        {% endif %}
+        
     </a>
 {% endfor %}
 </div>
