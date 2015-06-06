@@ -200,7 +200,7 @@ def run_download(request):
 
 def download_status(request, query_id, token=None):
     """
-    This view returns content for a download.  The download can be in process,
+    This view returns a download link.  The download can be in process,
     or it can be a download link.
     """
     data = get_query_data(request, query_id)
