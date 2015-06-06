@@ -2,9 +2,9 @@ from django.conf import settings
 from sanction import Client, transport_headers
 from urllib2 import urlopen, HTTPError
 from django.http import HttpResponseRedirect
+import hashlib
 import json
-import uuid
-import csv
+import os
 
 
 class MockResponse(object):
@@ -147,7 +147,15 @@ def send_request(request, method, url, headers={}, body=None,
     return MockResponse(resp.getcode(), body, headers)
 
 
+<<<<<<< HEAD
 def build_download_url(query_id, token):
     host = getattr(settings, "SQLSHARE_REST_HOST", None)
     api_uri = getattr(settings, "SQLSHARE_DOWNLOAD_API", "/v3/db/query/")
     return host + api_uri + query_id + "/download/" + token
+=======
+def get_file_path(username, file_name, chunk):
+    return os.path.join(settings.SQLSHARE_FILE_CHUNK_PATH,
+                        username,
+                        hashlib.md5(file_name).hexdigest(),
+                        chunk)
+>>>>>>> cce1ad95c13615070d88fb4bd0b0935ce6b2a1c3

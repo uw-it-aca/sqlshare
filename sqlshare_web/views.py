@@ -1,18 +1,21 @@
 from django.conf import settings
 from django.template import RequestContext
-from django.shortcuts import render_to_response
-from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.shortcuts import render_to_response, redirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 
 from sqlshare_web.utils import oauth_access_token
 from sqlshare_web.utils import get_or_create_user, OAuthNeededException
 from sqlshare_web.utils import build_download_url
-from sqlshare_web.dao import get_datasets, get_dataset, save_dataset_from_query
-from sqlshare_web.dao import enqueue_sql_statement, get_query_data
 from sqlshare_web.dao import get_download_token_for_query
+from sqlshare_web.utils import get_file_path
+from sqlshare_web.dao import get_datasets, get_dataset, get_parser_values
+from sqlshare_web.dao import update_parser_values, append_upload_file
+from sqlshare_web.dao import finalize_upload, save_dataset_from_query
+from sqlshare_web.dao import enqueue_sql_statement, get_query_data
+from sqlshare_web.dao import get_upload_status
 
-import urllib
-import json
+import os
 import re
 
 
@@ -42,6 +45,9 @@ def dataset_detail(request, owner, name):
 
     dataset = get_dataset(request, owner, name)
 
+    if not dataset:
+        raise Http404("Dataset Not Found")
+
     data = {
         "dataset": dataset,
         "user": user,
@@ -53,8 +59,178 @@ def dataset_detail(request, owner, name):
 
 
 def dataset_upload(request):
+    try:
+        user = get_or_create_user(request)
+    except OAuthNeededException as ex:
+        return ex.redirect
     return render_to_response('sqlshare_web/upload.html',
+                              {"user": user},
                               context_instance=RequestContext(request))
+
+
+def finalize_process(request, filename):
+    try:
+        user = get_or_create_user(request)
+    except OAuthNeededException as ex:
+        return ex.redirect
+
+    if request.META['REQUEST_METHOD'] == "GET":
+        return _get_finalize_status(request, filename, user)
+
+    else:
+        return _update_finalize_process(request, filename, user)
+
+
+def _get_finalize_status(request, filename, user):
+    status = get_upload_status(request, filename)
+    if status == 202:
+        return HttpResponse("finalizing")
+
+    elif status == 201:
+        key1 = "ss_file_id_%s" % filename
+        key2 = "ss_max_chunk_%s" % filename
+
+        max_chunks = request.session[key2]
+        for i in range(1, int(max_chunks)+1):
+            file_path = get_file_path(user["username"],
+                                      filename,
+                                      "%s" % i,
+                                      )
+
+            os.remove(file_path)
+
+        del request.session[key1]
+        del request.session[key2]
+
+        response = HttpResponse("Done")
+        return response
+    else:
+        print "S: ", status
+
+
+def _update_finalize_process(request, filename, user):
+    if "chunk" in request.POST:
+        chunk = request.POST["chunk"]
+        file_path = get_file_path(user["username"],
+                                  filename,
+                                  chunk,
+                                  )
+
+        if not os.path.exists(file_path):
+            return HttpResponse("upload_complete")
+        else:
+            append_upload_file(request, user, filename, chunk)
+            return HttpResponse("next_chunk")
+
+    if "finalize" in request.POST:
+        name = request.POST["dataset_name"]
+        description = request.POST["dataset_description"]
+        is_public = request.POST["is_public"]
+
+        finalize_upload(request, filename, name, description)
+
+        response = HttpResponse("finalizing")
+        return response
+
+
+def upload_finalize(request, filename):
+    try:
+        user = get_or_create_user(request)
+    except OAuthNeededException as ex:
+        return ex.redirect
+
+    session_key = "ss_max_chunk_%s" % filename
+    chunk_count = request.session.get(session_key, 0)
+    context = {
+        "filename": filename,
+        "file_chunk_count": chunk_count,
+        "user": user,
+    }
+    return render_to_response('sqlshare_web/upload_finalize.html',
+                              context,
+                              context_instance=RequestContext(request))
+
+
+def upload_parser(request, filename):
+    try:
+        user = get_or_create_user(request)
+    except OAuthNeededException as ex:
+        return ex.redirect
+
+    if request.META['REQUEST_METHOD'] == "POST":
+        has_header_row = request.POST.get("has_header", False)
+        delimiter = request.POST["delimiter"]
+        if delimiter == "TAB":
+            delimiter = "\t"
+        update_parser_values(request, user, filename, delimiter,
+                             has_header_row)
+
+        if request.POST["update_preview"] == "0":
+            return redirect("upload_finalize", filename=filename)
+
+    try:
+        parser_values = get_parser_values(request, user, filename)
+
+        parser_values["user"] = user
+        return render_to_response('sqlshare_web/parser.html',
+                                  parser_values,
+                                  context_instance=RequestContext(request))
+    except IOError:
+        raise Http404("")
+
+
+def dataset_upload_chunk(request):
+    try:
+        user = get_or_create_user(request)
+    except OAuthNeededException as ex:
+        return ex.redirect
+
+    if request.META['REQUEST_METHOD'] == "GET":
+        return _check_upload_chunk(request, user)
+
+    return _save_upload_chunk(request, user)
+
+
+def _save_upload_chunk(request, user):
+    file_name = request.POST['resumableFilename']
+    chunk_number = request.POST['resumableChunkNumber']
+    file_path = get_file_path(user["username"],
+                              file_name,
+                              chunk_number,
+                              )
+
+    session_key = "ss_max_chunk_%s" % file_name
+    current = request.session.get(session_key, 0)
+
+    if chunk_number > current:
+        request.session[session_key] = chunk_number
+
+    if not os.path.exists(os.path.dirname(file_path)):
+        try:
+            os.makedirs(os.path.dirname(file_path))
+        except OSError:
+            # Hopefully this is just a race condition with another process
+            # making the directory...
+            pass
+
+    with open(file_path, 'wb+') as destination:
+        for chunk in request.FILES['file'].chunks():
+            destination.write(chunk)
+
+    return HttpResponse("")
+
+
+def _check_upload_chunk(request, user):
+    file_path = get_file_path(user["username"],
+                              request.GET['resumableFilename'],
+                              request.GET['resumableChunkNumber'],
+                              )
+
+    response = HttpResponse("")
+    if not os.path.exists(file_path):
+        raise Http404("")
+
+    return response
 
 
 def new_query(request):

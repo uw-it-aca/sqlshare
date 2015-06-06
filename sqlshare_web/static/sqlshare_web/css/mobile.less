@@ -1,3 +1,5 @@
+.sql-sidebar { font-family: 'Oswald', sans-serif;  font-size: 16px; font-weight: 300;  color: #999; text-transform: uppercase; }
+
 .sql-content {
     
     .sql-dataset-list {
@@ -7,25 +9,24 @@
         .sql-dataset-modified { color: #ccc; }
     }
     
-    
 }
 
 .sql-footer { margin: 20px 10px; }
 
 .CodeMirror {
+    width: 100%;
+    height: 100px;
     padding: 0;
     margin-bottom: 14px;
     background-color: #fff;
     border: 1px solid #e1e1e8;
     border-radius: 4px;
-    height: 100px;
-    width: 100%;
     
     .CodeMirror-scroll {
-        min-height: 100px;
         height: auto;
-        overflow-y: hidden;
+        min-height: 100px;
         overflow-x: auto;
+        overflow-y: hidden;
     }
 
     .CodeMirror-placeholder { color: #999; }
