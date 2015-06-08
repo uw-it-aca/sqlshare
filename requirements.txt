@@ -1,3 +1,9 @@
 ### This is just here for Ansible installations.
 ### *All* requirements must live in the setup.py file
--e .
+setuptools
+django==1.8
+django-compressor
+django-templatetag-handlebars
+django_mobileesp
+sanction
+
