@@ -1,4 +1,5 @@
 var prep_run_download_page = (function() {
+    "use strict";
     var current_process = null,
         current_timeout = null,
         current_delay = null,
@@ -59,7 +60,7 @@ var prep_run_download_page = (function() {
         frame.attr('src', url);
         frame.attr('height', "1px");
         frame.attr('width', "1px");
-        return frame
+        return frame;
 
     }
 
