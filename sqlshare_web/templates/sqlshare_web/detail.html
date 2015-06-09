@@ -28,8 +28,9 @@
 
 </div>
     
+<hr>
 
-<div  style="margin-top: 3em; position: relative;">
+<div  style="position: relative;">
     {% csrf_token %}
     
     <h3>SQL</h3>
@@ -61,8 +62,10 @@
     </div>
 </div> 
 
+
+<hr>
     
-<div id="query_preview_panel" style="margin-top:3em; display: none;">
+<div id="query_preview_panel" style="display: none;">
     <h3>Preview</h3>
 
     <div id="query_running_panel" style="display: none;"><i class="fa fa-circle-o-notch fa-spin"></i> Running...</div>
@@ -71,45 +74,45 @@
 </div>
     
 
-<div style="position:relative; margin-top:3em;" id="original_results_panel" >
+<div style="position:relative;" id="original_results_panel" >
     
     <h3>Dataset Preview</h3>
     
     {% if dataset.sample_data_status == "working" %}
-        <p class="text-muted"><i class="fa fa-circle-o-notch fa-spin"></i> Building preview...</p>
+        <p class="text-muted" style="line-height:100px; text-align:center;"><i class="fa fa-circle-o-notch fa-spin"></i> Building preview...</p>
     {% endif %}
     
     {% if dataset.sample_data_status == "error" %}
-        <p class="text-danger">Error creating preview: {{ dataset.sample_data_error }}</p>
+        <p class="text-danger" style="line-height:100px; text-align:center;">Error creating preview: {{ dataset.sample_data_error }}</p>
     {% endif %}
     
 
     {% if dataset.sample_data_status == "success" %}
     <div class="well table-responsive" style="background:#fff; margin: 15px 0;">
-    <table class="table table-striped" style="font-size:12px !important;">
-        <thead style="font-size:12px !important;">
-        <tr role="row">
-            {% for col in dataset.columns %}
-                <th class="sorting_asc" tabindex="0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="ID: activate to sort column descending" style="width: 42px;">{{ col.name }}</th>
-            {% endfor %}
-            </tr>
-        </thead>
-        <tbody role="alert" aria-live="polite" aria-relevant="all" style="font-size:12px !important;">
-            {% for row in dataset.sample_data %}
-            <tr>
-                {% for col in row %}
-                    <td>{{ col }}</td>
+        <table class="table table-striped" style="font-size:12px !important;">
+            <thead style="font-size:12px !important;">
+            <tr role="row">
+                {% for col in dataset.columns %}
+                    <th class="sorting_asc" tabindex="0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="ID: activate to sort column descending" style="width: 42px;">{{ col.name }}</th>
                 {% endfor %}
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                </tr>
+            </thead>
+            <tbody role="alert" aria-live="polite" aria-relevant="all" style="font-size:12px !important;">
+                {% for row in dataset.sample_data %}
+                <tr>
+                    {% for col in row %}
+                        <td>{{ col }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-    {% endif %}
     
     <div class="sql-dataset-actions">
         <button type="button" class="btn btn-default btn-xs" id=""><i class="fa fa-download"></i> <span>DOWNLOAD</span></button>
     </div>
+    {% endif %}
     
 </div>
 
