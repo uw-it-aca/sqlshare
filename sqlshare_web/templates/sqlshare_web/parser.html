@@ -12,31 +12,6 @@
 
 {% csrf_token %}
 
-<div id="dataset_parser_settings_panel" style="margin-bottom:2em;">
-    
-    <input type="hidden" name="update_preview" id="update_preview" value="0" />
-        
-    <div class="checkbox">
-        <label>
-          <input id="has_column_headers" type="checkbox" name="has_header" value="1" {% if parser_values.parser.has_column_headers %}checked="checked"{% endif %} /> Has column headers
-        </label>
-    </div>
-    
-    <div class="form-group">
-        <label for="dataset_delimiter">Delimiter:</label>
-        <select name="delimiter" id="dataset_delimiter" class="form-control">
-            <option value="," {% if parser_values.parser.delimiter == "," %}selected=selected{% endif %}>,</option>
-            <option value="|" {% if parser_values.parser.delimiter == "|" %}selected=selected{% endif %}>|</option>
-            <option value="TAB" {% if parser_values.parser.delimiter == "TAB" %}selected=selected{% endif %}>TAB</option>
-        </select>
-    </div>
-     
-    <!--<input class="btn btn-default" type="submit" value="Next...">-->
-    
-</div>
-
-<!-- the save stuff needs to get wired up -->
-
 <div id="final_settings_panel" style="margin-bottom:2em;">
     
     {% csrf_token %}
@@ -59,7 +34,7 @@
         </label>
     </div>
             
-    <button class="btn btn-default" id="save_button">Save</button>
+    <button class="btn btn-primary" id="save_button">Save</button>
 
 </div>
 
@@ -67,9 +42,35 @@
 Saving dataset...
 </div>
 
+<div id="dataset_parser_settings_panel" style="margin-bottom:2em; position:relative;">
+    
+    <h3>Dataset Preview</h3>
+    
+    <div style="position:absolute; top:0; right:0; background:yellow; width: 50%; text-align:right;" class="form-inline">
+        
+        <input type="hidden" name="update_preview" id="update_preview" value="0" />
+            
+        <div class="checkbox" style="margin-right:20px;">
+            <label>
+              <input id="has_column_headers" type="checkbox" name="has_header" value="1" {% if parser_values.parser.has_column_headers %}checked="checked"{% endif %} /> Has column headers
+            </label>
+        </div>
+        
+        <div class="form-group">
+            <label for="dataset_delimiter">Delimiter:</label>
+            <select name="delimiter" id="dataset_delimiter" class="form-control input-sm">
+                <option value="," {% if parser_values.parser.delimiter == "," %}selected=selected{% endif %}>,</option>
+                <option value="|" {% if parser_values.parser.delimiter == "|" %}selected=selected{% endif %}>|</option>
+                <option value="TAB" {% if parser_values.parser.delimiter == "TAB" %}selected=selected{% endif %}>TAB</option>
+            </select>
+        </div>
+        
+    </div>
+     
+</div>
 
 <div id="dataset_preview_panel" class="table-responsive" style="background:#fff; margin-bottom:2em;">
-    <h3>Dataset Preview</h3>
+    
     <table class="table table-striped">
         <thead>
             <tr>
