@@ -24,7 +24,7 @@ class TestUploads(TestCase):
 
         view_context = response.context[-1]
         self.assertEquals(view_context["user"]["username"], "upload_file_user")
-        self.assertEquals(response.templates[0].name, "sqlshare_web/upload.html")
+        self.assertEquals(response.templates[0].name, "sqlshare_web/upload/upload.html")
 
         response = self.client.get(reverse("dataset_upload_chunk"), {
             "resumableChunkNumber": 1,
@@ -76,7 +76,7 @@ class TestUploads(TestCase):
         })
 
         response = self.client.get(reverse("upload_parser", kwargs={"filename": "test_upload.csv"}))
-        self.assertEquals(response.templates[0].name, "sqlshare_web/parser.html")
+        self.assertEquals(response.templates[0].name, "sqlshare_web/upload/parser.html")
         view_context = response.context[-1]
         self.assertEquals(view_context["user"]["username"], "upload_file_user")
 
@@ -86,7 +86,7 @@ class TestUploads(TestCase):
 
         # Make sure we stay on the page w/ an update...
         response = self.client.post(reverse("upload_parser", kwargs={"filename": "test_upload.csv"}), {"delimiter": "a", "has_header": False, "update_preview": True,  "dataset_name": "test_upload.csv", "dataset_description": "Desc", "is_public": True })
-        self.assertEquals(response.templates[0].name, "sqlshare_web/parser.html")
+        self.assertEquals(response.templates[0].name, "sqlshare_web/upload/parser.html")
 
         # Moving on...
         response = self.client.post(reverse("upload_parser", kwargs={"filename": "test_upload.csv"}), {"delimiter": ",", "has_header": True, "update_preview": False,  "dataset_name": "test_upload.csv", "dataset_description": "Desc", "is_public": True })
