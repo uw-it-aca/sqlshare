@@ -12,6 +12,7 @@ setup(
     packages=['sqlshare_web'],
     include_package_data=True,
     install_requires = [
+        # For ansible deployments, you also need to update requirements.txt :(
         'setuptools',
         'django==1.8',
         'django-compressor',

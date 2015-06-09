@@ -6,15 +6,28 @@
 
 {% block content %}
 
+<div class="sql-search-bar">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Filter dataset by keyword..." style="float:none;">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="button">Filter</button>
+      </span>
+    </div>
+</div>
+        
 <h2>Your datasets</h2>
 
 <div class="list-group sql-dataset-list">
 {% for dataset in datasets %}
     <a class="list-group-item" href="/detail/{{ dataset.owner }}/{{ dataset.name }}">
         <span class="sql-dataset-name">{{ dataset.name }}</span>
-        <span class="sql-dataset-desc">{{ dataset.description }}</span>
-        <span class="sql-dataset-owner">{{ dataset.owner }}</span>
-        <span class="sql-dataset-modified">modified on {{ dataset.date_modified }}</span>
+        
+        <span class="sql-dataset-owner-modified">{{ dataset.owner }} {{ dataset.date_modified }}</span>
+        
+        {% if dataset.description %}
+        <div class="sql-dataset-desc">{{ dataset.description }}</div>
+        {% endif %}
+        
     </a>
 {% endfor %}
 </div>
