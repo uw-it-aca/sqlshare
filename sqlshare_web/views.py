@@ -17,6 +17,7 @@ from sqlshare_web.dao import update_dataset_public_state, delete_dataset
 from sqlshare_web.dao import get_user_search_results
 from sqlshare_web.dao import update_dataset_permissions
 from sqlshare_web.dao import get_dataset_permissions
+from sqlshare_web.dao import make_dataset_snapshot
 
 import datetime
 import urllib
@@ -78,6 +79,24 @@ def dataset_snapshot(request, owner, name):
     if not dataset:
         raise Http404("Dataset Not Found")
 
+    errors = {}
+    if "save" in request.POST:
+        name = request.POST.get("name", "")
+        description = request.POST.get("description", "")
+        is_public = request.POST.get("is_public", False)
+        if is_public:
+            is_public = True
+
+        if not name:
+            errors["name"] = True
+
+        else:
+            new_url = make_dataset_snapshot(request, dataset, name,
+                                            description, is_public)
+            if new_url:
+                response = HttpResponseRedirect(new_url)
+                return response
+
     default_name = "Snapshot of %s" % name
     date = datetime.date.today().strftime("%B %-d, %Y")
     default_description = "Snapshot of %s on %s" % (dataset["sql_code"], date)
@@ -95,6 +114,7 @@ def dataset_snapshot(request, owner, name):
         "description": request.POST.get("description", default_description),
         "is_public": is_public,
         "user": user,
+        "errors": errors,
         "dataset_url": reverse("dataset_detail",
                                kwargs={"owner": owner, "name": name}),
     }

@@ -1,6 +1,7 @@
 from sqlshare_web.utils import send_request, get_file_path
 from urllib import quote
 import json
+import re
 
 
 def get_datasets(request):
@@ -53,6 +54,22 @@ def update_dataset_public_state(request, dataset, is_public):
     data = json.dumps({"is_public": is_public})
     response = send_request(request, 'PATCH', url,
                             {"Accept": "application/json"}, body=data)
+
+
+def make_dataset_snapshot(request, dataset, name, description, is_public):
+    url = '/v3/db/dataset/%s/%s/snapshot' % (quote(dataset["owner"]),
+                                             quote(dataset["name"]))
+    data = json.dumps({"name": name,
+                       "description": description,
+                       "is_public": is_public})
+    response = send_request(request, 'POST', url,
+                            {"Accept": "application/json"}, body=data)
+
+    base_location = response.headers["location"]
+
+    segment = re.match('.*?/v3/db/dataset/(.*)', base_location).groups(1)
+
+    return "/detail/%s" % segment
 
 
 def get_parser_values(request, user, filename):
