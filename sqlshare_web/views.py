@@ -63,7 +63,7 @@ def dataset_upload(request):
         user = get_or_create_user(request)
     except OAuthNeededException as ex:
         return ex.redirect
-    return render_to_response('sqlshare_web/upload.html',
+    return render_to_response('sqlshare_web/upload/upload.html',
                               {"user": user},
                               context_instance=RequestContext(request))
 
@@ -133,24 +133,6 @@ def _update_finalize_process(request, filename, user):
         return response
 
 
-def upload_finalize(request, filename):
-    try:
-        user = get_or_create_user(request)
-    except OAuthNeededException as ex:
-        return ex.redirect
-
-    session_key = "ss_max_chunk_%s" % filename
-    chunk_count = request.session.get(session_key, 0)
-    context = {
-        "filename": filename,
-        "file_chunk_count": chunk_count,
-        "user": user,
-    }
-    return render_to_response('sqlshare_web/upload_finalize.html',
-                              context,
-                              context_instance=RequestContext(request))
-
-
 def upload_parser(request, filename):
     try:
         user = get_or_create_user(request)
@@ -165,14 +147,20 @@ def upload_parser(request, filename):
         update_parser_values(request, user, filename, delimiter,
                              has_header_row)
 
-        if request.POST["update_preview"] == "0":
-            return redirect("upload_finalize", filename=filename)
-
     try:
         parser_values = get_parser_values(request, user, filename)
 
+        if request.META['REQUEST_METHOD'] == "POST":
+            parser_values["new_name"] = request.POST["dataset_name"]
+            parser_values["description"] = request.POST["dataset_description"]
+            parser_values["is_public"] = request.POST["is_public"]
+
+        if "new_name" not in parser_values or parser_values["new_name"] == "":
+            parser_values["new_name"] = filename
+
         parser_values["user"] = user
-        return render_to_response('sqlshare_web/parser.html',
+        parser_values["filename"] = filename
+        return render_to_response('sqlshare_web/upload/parser.html',
                                   parser_values,
                                   context_instance=RequestContext(request))
     except IOError:
