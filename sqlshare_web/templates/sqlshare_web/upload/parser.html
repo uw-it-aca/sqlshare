@@ -1,0 +1,103 @@
+{% extends "sqlshare_web/base.html" %}
+
+{% block title %}SQLSHARE: Dataset Upload{% endblock %}
+
+{% load staticfiles %}
+
+{% block content %}
+
+<h2>Save Upload</h2>
+
+<form method="POST" id="dataset_parser_form">
+
+{% csrf_token %}
+
+<div id="final_settings_panel" style="margin-bottom:2em;">
+    
+    {% csrf_token %}
+    <input type="hidden" name="original_name" value="{{ filename }}"/>
+    
+    <div class="form-group">
+        <label for="id_dataset_name">Title:</label>
+        <input type="text" class="form-control" name="dataset_name" id="id_dataset_name" value="{{ new_name }}"/> 
+        <span id="title_required" style="display: none;">Required</span>
+    </div>
+  
+    <div class="form-group">
+        <label for="id_dataset_description">Description:</label>
+        <textarea class="form-control" rows="3" id="id_dataset_description" name="dataset_description">{{ description }}</textarea>
+    </div>
+    
+    <div class="checkbox">
+        <label>
+          <input type="checkbox" name="is_public" value="1" checked="checked" /> Is Public
+        </label>
+    </div>
+            
+    <button class="btn btn-primary" id="save_button">Save</button>
+
+</div>
+
+<div id="uploading_panel" style="display: none;">
+Saving dataset...
+</div>
+
+<div id="dataset_parser_settings_panel" style="margin-bottom:2em; position:relative;">
+    
+    <h3>Dataset Preview</h3>
+    
+    <div style="position:absolute; top:0; right:0; background:yellow; width: 50%; text-align:right;" class="form-inline">
+        
+        <input type="hidden" name="update_preview" id="update_preview" value="0" />
+            
+        <div class="checkbox" style="margin-right:20px;">
+            <label>
+              <input id="has_column_headers" type="checkbox" name="has_header" value="1" {% if parser_values.parser.has_column_headers %}checked="checked"{% endif %} /> Has column headers
+            </label>
+        </div>
+        
+        <div class="form-group">
+            <label for="dataset_delimiter">Delimiter:</label>
+            <select name="delimiter" id="dataset_delimiter" class="form-control input-sm">
+                <option value="," {% if parser_values.parser.delimiter == "," %}selected=selected{% endif %}>,</option>
+                <option value="|" {% if parser_values.parser.delimiter == "|" %}selected=selected{% endif %}>|</option>
+                <option value="TAB" {% if parser_values.parser.delimiter == "TAB" %}selected=selected{% endif %}>TAB</option>
+            </select>
+        </div>
+        
+    </div>
+     
+</div>
+
+<div id="dataset_preview_panel" class="table-responsive" style="background:#fff; margin-bottom:2em;">
+    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                {% for row in parser_values.columns %}
+                <th>{{ row.name }}</th>
+                {% endfor %}
+            </tr>  
+        </thead>
+        <tbody> 
+            {% for row in parser_values.sample_data %}
+            <tr>
+                {% for col in row %}
+                <td>{{ col }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+</form>
+
+<script>
+    document.body.onload = function() {
+        add_parser_form_events();
+    };
+</script>
+
+{% endblock %}
