@@ -63,7 +63,7 @@ def dataset_upload(request):
         user = get_or_create_user(request)
     except OAuthNeededException as ex:
         return ex.redirect
-    return render_to_response('sqlshare_web/upload.html',
+    return render_to_response('sqlshare_web/upload/upload.html',
                               {"user": user},
                               context_instance=RequestContext(request))
 
@@ -160,7 +160,7 @@ def upload_parser(request, filename):
 
         parser_values["user"] = user
         parser_values["filename"] = filename
-        return render_to_response('sqlshare_web/parser.html',
+        return render_to_response('sqlshare_web/upload/parser.html',
                                   parser_values,
                                   context_instance=RequestContext(request))
     except IOError:
