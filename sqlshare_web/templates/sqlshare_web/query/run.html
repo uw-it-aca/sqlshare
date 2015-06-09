@@ -20,7 +20,6 @@
     </div>
 
     <button type="button" class="btn btn-default" id="run_query">RUN QUERY</button>
-    <button type="button" class="btn btn-default" id="download_query">DOWNLOAD RESULTS</button>
     <button type="submit" class="btn btn-default">SAVE DATASET</button>
     
     <div id="query_preview_panel" style="display: none; position:relative;">
@@ -30,7 +29,7 @@
         <div id="query_results_panel" style="display: none;"></div>
         
         <div class="sql-dataset-actions">
-            <button type="button" class="btn btn-default btn-xs" id=""><i class="fa fa-download"></i> <span>DOWNLOAD</span></button>
+            <button type="button" class="btn btn-default btn-xs" id="download_query"><i class="fa fa-download"></i> <span>DOWNLOAD</span></button>
         </div>
         
     </div>
@@ -40,8 +39,10 @@
 </form>
 
 <script>
-    document.body.onload = function() { prep_run_query_page(); };
-    document.body.onload = function() { prep_run_download_page(); };
+    document.body.onload = function() { 
+        prep_run_query_page(); 
+        prep_run_download_page(); 
+    };
 </script>
 
 {% endblock %}
