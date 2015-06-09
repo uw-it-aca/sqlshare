@@ -36,9 +36,9 @@
             <!-- critical css (above the fold styles) -->
             <style rel="stylesheet" type="text/less">
                 
-                body { margin: 0; background: #f7f7f9 !important; }
+                body { margin: 0; background: #e9eaed !important; }
                                 
-                .sql-header { background: #fff; border-top: solid 10px #2980b9; border-bottom: solid 1px #e1e1e8; height: 66px; position: relative; text-transform: uppercase; font-family: 'Oswald', sans-serif;
+                .sql-header { background: #fff; border-top: solid 10px #2980b9; border-bottom: solid 1px #d0d1d5; height: 66px; position: relative; text-transform: uppercase; font-family: 'Oswald', sans-serif;
                     
                     h1 { margin: 0 10px; line-height: 56px; height:56px; font-weight: 400; font-size: 30px; 
                         
@@ -52,13 +52,15 @@
                 
                 }
                 
-                .sql-search-bar { margin: 10px; 
-                    button { text-transform: uppercase; font-family: 'Oswald', sans-serif; font-weight: 400; }
-                }
-                
                 .sql-content { margin: 0; background: #fff;
                     
-                    .sql-content-inner { padding: 10px; }
+                    .sql-content-inner { padding: 10px; 
+                                                
+                        .sql-search-bar {  background: #e9eaed; margin: -10px; padding: 10px; margin-bottom: 0;
+                            button { text-transform: uppercase; font-family: 'Oswald', sans-serif; font-weight: 400; }
+                        }
+                    
+                    }
                     
                     h2 {  font-family: 'Oswald', sans-serif; text-transform: uppercase; font-weight: 400; font-size: 18px; position: relative;
                         span { position: absolute; right: 0; font-size: 14px; font-weight: 300; }
@@ -75,7 +77,8 @@
         {% endcompress %}
         
         <!-- webfonts -->
-        <link href='http://fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
+        <link href='//fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
+        <link href='//fonts.googleapis.com/css?family=Roboto:400,500,700,900' rel='stylesheet' type='text/css'>
         
         {% if request.is_mobile %}
         {% compress css %}
@@ -136,14 +139,7 @@
             <button onclick="document.getElementById('sidebar').classList.toggle('closed');" type="button" class="btn sql-menu-button"><i class="fa fa-bars"></i></button>
         </div>         
         
-        <div class="sql-search-bar">
-            <div class="input-group">
-              <input type="text" class="form-control" placeholder="Filter dataset by keyword..." style="float:none;">
-              <span class="input-group-btn">
-                <button class="btn btn-default" type="button">Filter</button>
-              </span>
-            </div>
-        </div>
+        
             
         <div id="sidebar" class="sql-sidebar {% if request.is_mobile or request.is_tablet %}closed{% endif %}">
             <div class="sql-sidebar-actions">
@@ -151,6 +147,7 @@
                     <li><a href="/">Yours</a></li>
                     <li>All</li>
                     <li>Shared</li>
+                    <li>Recent</li>
                 </ul>
                 <ul>
                     <li><a href="/upload">Upload</a></li>
