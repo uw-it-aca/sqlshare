@@ -20,7 +20,7 @@ from sqlshare_web.dao import get_dataset_permissions
 from sqlshare_web.dao import make_dataset_snapshot
 
 import datetime
-import urllib
+from urllib import urlencode
 import json
 import os
 import re
@@ -41,10 +41,17 @@ def dataset_list(request):
     if q is None:
         q = ""
 
+    next_page = "%s?%s" % (reverse("sqlshare_web.views.dataset_list_page"),
+                           urlencode({
+                            "page": 2,
+                            "q": q,
+                           }))
+
     data = {
         "datasets": datasets,
         "user": user,
-        "current_query": q
+        "current_query": q,
+        "next_page_url": next_page,
     }
 
     return render_to_response('sqlshare_web/list.html',
@@ -59,15 +66,24 @@ def dataset_list_page(request):
         return ex.redirect
 
     q = None
-    if "q" in request.GET:
+    if "q" in request.GET and request.GET["q"] != "":
         q = request.GET["q"]
 
-    datasets = get_datasets(request, page=2, query=q)
+    page = request.GET["page"]
+    datasets = get_datasets(request, page=page, query=q)
+    next_page = reverse("sqlshare_web.views.dataset_list_page")
+
+    if q is None:
+        q = ""
+    next_page = "%s?%s" % (reverse("sqlshare_web.views.dataset_list_page"),
+                           urlencode({
+                            "page": int(page) + 1,
+                            "q": q,
+                           }))
 
     data = {
         "datasets": datasets,
-        "user": user,
-        "current_query": q
+        "next_page_url": next_page,
     }
 
     return render_to_response('sqlshare_web/list_page.html',

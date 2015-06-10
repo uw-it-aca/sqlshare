@@ -11,5 +11,7 @@
     </a>
 
     {% endfor %}
-    <a href="{% url 'sqlshare_web.views.dataset_list_page' %}">next page</a>
+    {% if datasets %}
+    <a href="{{ next_page_url }}">next page</a>
+    {% endif %}
 
