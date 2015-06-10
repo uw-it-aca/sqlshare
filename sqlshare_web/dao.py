@@ -4,7 +4,7 @@ import json
 import re
 
 
-def get_datasets(request, page=1, query=None):
+def get_datasets(request, page=1, query=None, list_type="yours"):
     page_size = 2
     order_by = "updated"
 
@@ -16,8 +16,15 @@ def get_datasets(request, page=1, query=None):
     if query:
         input_data["q"] = query
 
+    url_suffix = ""
+    if list_type == "all":
+        url_suffix = "/all"
+    elif list_type == "shared":
+        url_suffix = "/shared"
+
     params = urlencode(input_data)
-    response = send_request(request, 'GET', '/v3/db/dataset/all?%s' % params,
+    response = send_request(request, 'GET',
+                            '/v3/db/dataset%s?%s' % (url_suffix, params),
                             {"Accept": "application/json"})
 
     data = json.loads(response.content)

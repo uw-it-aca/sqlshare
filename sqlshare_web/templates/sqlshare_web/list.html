@@ -6,7 +6,15 @@
 
 {% block content %}
       
+{% if is_yours %}
 <h2>Your datasets</h2>
+{% endif %}
+{% if is_shared %}
+<h2>Datasets shared with you</h2>
+{% endif %}
+{% if is_all %}
+<h2>All datasets</h2>
+{% endif %}
 
 <div class="list-group sql-dataset-list" id="dataset_list_scroll">
     {% include 'sqlshare_web/list_page.html' %}

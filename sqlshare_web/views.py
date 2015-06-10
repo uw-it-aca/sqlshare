@@ -26,7 +26,7 @@ import os
 import re
 
 
-def dataset_list(request):
+def dataset_list(request, list_type):
     try:
         user = get_or_create_user(request)
     except OAuthNeededException as ex:
@@ -36,7 +36,7 @@ def dataset_list(request):
     if "q" in request.GET:
         q = request.GET["q"]
 
-    datasets = get_datasets(request, page=1, query=q)
+    datasets = get_datasets(request, page=1, query=q, list_type=list_type)
 
     if q is None:
         q = ""
@@ -45,13 +45,19 @@ def dataset_list(request):
                            urlencode({
                             "page": 2,
                             "q": q,
+                            "list_type": list_type,
                            }))
 
+    if list_type == "yours":
+        is_yours = True
     data = {
         "datasets": datasets,
         "user": user,
         "current_query": q,
         "next_page_url": next_page,
+        "is_yours": list_type == "yours",
+        "is_shared": list_type == "shared",
+        "is_all": list_type == "all",
     }
 
     return render_to_response('sqlshare_web/list.html',
@@ -70,8 +76,9 @@ def dataset_list_page(request):
         q = request.GET["q"]
 
     page = request.GET["page"]
-    datasets = get_datasets(request, page=page, query=q)
-    next_page = reverse("sqlshare_web.views.dataset_list_page")
+    list_type = request.GET["list_type"]
+
+    datasets = get_datasets(request, page=page, query=q, list_type=list_type)
 
     if q is None:
         q = ""
@@ -79,6 +86,7 @@ def dataset_list_page(request):
                            urlencode({
                             "page": int(page) + 1,
                             "q": q,
+                            "list_type": list_type,
                            }))
 
     data = {

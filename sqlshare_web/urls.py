@@ -3,7 +3,12 @@ from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns(
     '',
-    url(r'^$', 'sqlshare_web.views.dataset_list', name='dataset_list'),
+    url(r'^$', 'sqlshare_web.views.dataset_list',
+        {"list_type": "yours"}, name="dataset_list"),
+    url(r'^shared$', 'sqlshare_web.views.dataset_list',
+        {"list_type": "shared"}),
+    url(r'^all$', 'sqlshare_web.views.dataset_list',
+        {"list_type": "all"}),
 
     url(r'^detail/(?P<owner>.*)/(?P<name>.*)/patch_sql',
         'sqlshare_web.views.patch_dataset_sql'),
