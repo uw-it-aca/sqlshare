@@ -1,0 +1,15 @@
+    {% for dataset in datasets %}
+    <a class="list-group-item" href="/detail/{{ dataset.owner }}/{{ dataset.name }}">
+        <span class="sql-dataset-name">{{ dataset.name }}</span>
+
+        <span class="sql-dataset-owner-modified">{{ dataset.owner }} {{ dataset.date_modified }}</span>
+
+        {% if dataset.description %}
+        <div class="sql-dataset-desc">{{ dataset.description }}</div>
+        {% endif %}
+
+    </a>
+
+    {% endfor %}
+    <a href="{% url 'sqlshare_web.views.dataset_list_page' %}">next page</a>
+

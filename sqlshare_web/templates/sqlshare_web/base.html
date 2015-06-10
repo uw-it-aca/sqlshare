@@ -36,9 +36,9 @@
             <!-- critical css (above the fold styles) -->
             <style rel="stylesheet" type="text/less">
                 
-                body { margin: 0; background: #f7f7f9 !important; }
+                body { margin: 0; background: #e9eaed !important; }
                                 
-                .sql-header { background: #fff; border-top: solid 10px #2980b9; border-bottom: solid 1px #e1e1e8; height: 66px; position: relative; text-transform: uppercase; font-family: 'Oswald', sans-serif;
+                .sql-header { background: #fff; border-top: solid 10px #2980b9; border-bottom: solid 1px #d0d1d5; height: 66px; position: relative; text-transform: uppercase; font-family: 'Oswald', sans-serif;
                     
                     h1 { margin: 0 10px; line-height: 56px; height:56px; font-weight: 400; font-size: 30px; 
                         
@@ -52,19 +52,21 @@
                 
                 }
                 
-                .sql-search-bar { margin: 10px; 
-                    button { text-transform: uppercase; font-family: 'Oswald', sans-serif; font-weight: 400; }
-                }
-                
                 .sql-content { margin: 0; background: #fff;
                     
-                    .sql-content-inner { padding: 10px; }
+                    .sql-content-inner { padding: 10px; 
+                                                
+                        .sql-search-bar {  background: #e9eaed; margin: -10px; padding: 10px; margin-bottom: 0;
+                            button { text-transform: uppercase; font-family: 'Oswald', sans-serif; font-weight: 400; }
+                        }
                     
-                    h2 {  font-family: 'Oswald', sans-serif; text-transform: uppercase; font-weight: 400; font-size: 18px; position: relative;
+                    }
+                    
+                    h2 {  font-family: 'Oswald', sans-serif; text-transform: uppercase; font-weight: 400; font-size: 20px; position: relative;
                         span { position: absolute; right: 0; font-size: 14px; font-weight: 300; }
                     }
                     
-                    h3 { text-transform: uppercase; font-family: 'Oswald', sans-serif; font-weight: 400; font-size: 14px; color: #666;}
+                    h3 { text-transform: uppercase; font-family: 'Oswald', sans-serif; font-weight: 400; font-size: 16px; color: #666;}
                    
                     .sql-new-query-textarea { resize: vertical; }
                     
@@ -75,13 +77,14 @@
         {% endcompress %}
         
         <!-- webfonts -->
-        <link href='http://fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
+        <link href='//fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
+        <link href='//fonts.googleapis.com/css?family=Roboto:400,500,700,900' rel='stylesheet' type='text/css'>
         
         {% if request.is_mobile %}
         {% compress css %}
         <!-- bootstrap & font awesome -->
         <link rel="stylesheet" href="{% static "vendor/css/bootstrap-3.3.4.min.css" %}">
-        <link rel="stylesheet" href="{% static "vendor/css/font-awesome-4.0.3.min.css" %}">
+        <link rel="stylesheet" href="{% static "vendor/css/font-awesome-4.3.0.min.css" %}">
         <!-- codemirror -->
         <link rel="stylesheet" href="{% static "vendor/css/codemirror-5.3.css" %}">
         <!-- devtools -->
@@ -95,7 +98,7 @@
         {% compress css %}
         <!-- bootstrap & font awesome -->
         <link rel="stylesheet" href="{% static "vendor/css/bootstrap-3.3.4.min.css" %}">
-        <link rel="stylesheet" href="{% static "vendor/css/font-awesome-4.0.3.min.css" %}">
+        <link rel="stylesheet" href="{% static "vendor/css/font-awesome-4.3.0.min.css" %}">
         <!-- codemirror -->
         <link rel="stylesheet" href="{% static "vendor/css/codemirror-5.3.css" %}">
         <!-- devtools -->
@@ -110,7 +113,7 @@
         {% compress css %}
         <!-- bootstrap & font awesome -->
         <link rel="stylesheet" href="{% static "vendor/css/bootstrap-3.3.4.min.css" %}">
-        <link rel="stylesheet" href="{% static "vendor/css/font-awesome-4.0.3.min.css" %}">
+        <link rel="stylesheet" href="{% static "vendor/css/font-awesome-4.3.0.min.css" %}">
         <!-- codemirror -->
         <link rel="stylesheet" href="{% static "vendor/css/codemirror-5.3.css" %}">
         <!-- devtools -->
@@ -135,8 +138,7 @@
             <span class="sql-user-name">{{ user.username }}</span>
             <button onclick="document.getElementById('sidebar').classList.toggle('closed');" type="button" class="btn sql-menu-button"><i class="fa fa-bars"></i></button>
         </div>         
-        {% block searchbar %}{% endblock %}
-            
+
         <div id="sidebar" class="sql-sidebar {% if request.is_mobile or request.is_tablet %}closed{% endif %}">
             <div class="sql-sidebar-actions">
                 <ul>
@@ -147,15 +149,18 @@
                 </ul>
                 <ul>
                     <li><a href="/upload">Upload</a></li>
-                    <li><a href="/new">New Query</a></li>
+                    <li><a href="/new">New Dataset</a></li>
                 </ul>
             </div>
         </div>       
                 
         <div id="content" class="sql-content">
+            
             <div class="sql-content-inner">
-            {% block content %}{% endblock %}
+                {% block searchbar %}{% endblock %}   
+                {% block content %}{% endblock %}
             </div>
+            
         </div>
 
         <div id="footer" class="sql-footer">
@@ -171,15 +176,18 @@
         <!-- global javascript -->
         <script src="{% static "vendor/js/jquery-1.11.0.min.js" %}"></script>
         <script src="{% static "vendor/js/bootstrap-3.3.4.min.js" %}"></script>
+        <script src="{% static "vendor/js/handlebars-v3.0.3.js" %}"></script>
         <script src="{% static "vendor/js/aca-devtools.min.js" %}"></script>
         <script src="{% static "vendor/js/resumable-1.0-github-master.js" %}"></script>
         <script src="{% static "vendor/js/codemirror-5.3.js" %}"></script>
         <script src="{% static "vendor/js/codemirror-sql-5.3.js" %}"></script>
         <script src="{% static "vendor/js/codemirror-placeholder-5.3.js" %}"></script>
         <script src="{% static "vendor/js/jquery.jscroll-2.3.4.js" %}"></script>
+        <script src="{% static "vendor/js/typeahead.bundle-0.11.1.js" %}"></script>
         <!-- app js -->
         <script src="{% static "sqlshare_web/js/main.js" %}"></script>
         <script src="{% static "sqlshare_web/js/run_query.js" %}"></script>
+        <script src="{% static "sqlshare_web/js/details.js" %}"></script>
         {% endcompress %}
             
         {% if google_analytics %}

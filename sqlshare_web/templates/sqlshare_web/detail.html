@@ -8,48 +8,186 @@
 
 <h2>{{ dataset.name }}</h2>
 
-<p class="sql-dataset-desc">{{ dataset.description }}</p>
-<p class="sql-dataset-owner">{{ dataset.owner }}</p>
-<p class="sql-dataset-modified">modified on {{ dataset.date_modified }}</p>
-
-<div class="well" style="background:#fff;">
-    {{ dataset.sql_code }}
-</div>
-
-<p>EDIT, DERIVE, CREATE SNAPSHOT, MORE OPTIONS</p>
-
-<h3>Dataset Preview</h3>
-
-{% if dataset.sample_data_status == "working" %}
-    Building preview...
-{% endif %}
-
-{% if dataset.sample_data_status == "error" %}
-    Error creating preview: {{ dataset.sample_data_error }}
-{% endif %}
-
-{% if dataset.sample_data_status == "success" %}
-<div class="well table-responsive" style="background:#fff;">
-<table class="table table-striped" style="font-size:12px !important;">
-    <thead style="font-size:12px !important;">
-    <tr role="row">
-        {% for col in dataset.columns %}
-            <th class="sorting_asc" tabindex="0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="ID: activate to sort column descending" style="width: 42px;">{{ col.name }}</th>
-        {% endfor %}
-        </tr>
-    </thead>
-    <tbody role="alert" aria-live="polite" aria-relevant="all" style="font-size:12px !important;">
-        {% for row in dataset.sample_data %}
-        <tr>
-            {% for col in row %}
-                <td>{{ col }}</td>
-            {% endfor %}
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-{% endif %}
+<div style="position:relative;">
+    
+    <span class="sql-dataset-owner"><i class="fa fa-user"></i> {{ dataset.owner }}</span>
+    <span class="sql-dataset-modified"><i class="fa fa-wrench"></i> {{ dataset.date_modified }}</span>
+    
+    <div class="form-group sql-dataset-desc" style="margin: 15px 0;">
+        <label for="query_sql" class="sr-only">Description:</label>    
+        <textarea class="form-control" id="dataset_description" rows="4">{{ dataset.description }}</textarea>
+    </div>
+    
+    <div class="sql-dataset-actions">
+        <button type="button" class="btn btn-default btn-xs" id="make_dataset_private" {% if not dataset.is_public %}style="display:none;"{% endif %}><i class="fa fa-eye"></i> <span>PUBLIC</span></button>
+        <button type="button" class="btn btn-default btn-xs" id="make_dataset_public" {% if dataset.is_public %}style="display:none;"{% endif %}><i class="fa fa-eye-slash"></i> <span>PRIVATE</span></button>
+        
+        <button type="button" class="btn btn-default btn-xs" id="" data-toggle="modal" data-target="#share_modal"><i class="fa fa-share"></i> <span>SHARE</span></button>
+        <button type="button" class="btn btn-danger btn-xs" id="" data-toggle="modal" data-target="#delete_modal"><i class="fa fa-trash"></i> <span>DELETE</span></button>
+    </div>
 
 </div>
+    
+<hr>
+
+<div  style="position: relative;">
+    {% csrf_token %}
+    
+    <h3>SQL</h3>
+    
+    <div class="form-group">
+        <label for="query_sql" class="sr-only">SQL Query:</label>    
+        <textarea id="dataset_sql" name='dataset_sql' class="well" style="background:#fff;">{{ dataset.sql_code }}</textarea>
+    </div>
+    
+    <div style="margin-bottom:1em;">
+        <button type="button" class="btn btn-primary" id="run_query">RUN QUERY</button>
+        <button type="button" class="btn btn-default" id="update_dataset_sql" style="display: none;">UPDATE DATASET</button>
+    </div>
+    
+    <div class="sql-dataset-actions">
+        <form action="/new/" method="POST" id="new_dataset_from_query_form">
+        {% csrf_token %}
+        <input type="hidden" name="sql" value="" id="new_query_sql"/>
+        <input type="hidden" name="show_initial" value="1" />
+        <button type="button" class="btn btn-default btn-xs" id="new_dataset_from_query"><i class="fa fa-plus-square"></i> <span>NEW DATASET FROM QUERY</span></button>
+        </form>
+        <form action="/new/" method="POST" id="new_dataset_by_derive_form">
+        {% csrf_token %}
+        <input type="hidden" name="sql" value="{{ derive_dataset_sql }}" />
+        <input type="hidden" name="show_initial" value="1" />
+        <button type="button" class="btn btn-default btn-xs" id="new_dataset_derive"><i class="fa fa-code-fork"></i> <span>DERIVE</span></button>
+        </form>
+        <a href="{{ snapshot_url }}" class="btn btn-default btn-xs"><i class="fa fa-camera"></i> <span>SNAPSHOT</span></a>
+    </div>
+</div> 
+
+
+<hr>
+    
+<div id="query_preview_panel" style="display: none;">
+    <h3>Dataset Preview</h3>
+
+    <div id="query_running_panel" class="well" style="display: none;">
+        <p class="text-muted"><i class="fa fa-circle-o-notch fa-spin"></i> Running query...</p>
+    </div>
+    <div id="query_results_panel" class="well" style="display: none;"></div>
+
+</div>
+    
+
+<div style="position:relative;" id="original_results_panel" >
+    
+    <h3>Dataset Preview</h3>
+    
+    {% if dataset.sample_data_status == "working" %}
+    <div class="well">
+        <p class="text-muted"><i class="fa fa-circle-o-notch fa-spin"></i> Building preview...</p>
+    </div>
+    {% endif %}
+    
+    {% if dataset.sample_data_status == "error" %}
+    <div class="well">
+        <p class="text-danger">Error creating preview: {{ dataset.sample_data_error }}</p>
+    </div>
+    {% endif %}
+    
+
+    {% if dataset.sample_data_status == "success" %}
+    <div class="well table-responsive">
+        <table class="table table-striped" style="font-size:12px !important;">
+            <thead style="font-size:12px !important;">
+            <tr role="row">
+                {% for col in dataset.columns %}
+                    <th class="sorting_asc" tabindex="0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="ID: activate to sort column descending" style="width: 42px;">{{ col.name }}</th>
+                {% endfor %}
+                </tr>
+            </thead>
+            <tbody role="alert" aria-live="polite" aria-relevant="all" style="font-size:12px !important;">
+                {% for row in dataset.sample_data %}
+                <tr>
+                    {% for col in row %}
+                        <td>{{ col }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="sql-dataset-actions">
+        <button type="button" class="btn btn-default btn-xs" id=""><i class="fa fa-download"></i> <span>DOWNLOAD</span></button>
+    </div>
+    {% endif %}
+    
+</div>
+
+<!-- share dataset modal -->
+<div class="modal fade" id="share_modal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div id="sharing-modal-loading">
+          Loading...
+      </div>
+      <div id="sharing-modal-display">
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title" id="myModalLabel">Share Dataset</h3>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted">Enter UW NetID of users you want to share with!</p>
+        
+        <div class="form-group" id="user-autocomplete-container">
+            <label for="exampleInputEmail1">Email address</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+        </div>
+
+        <div>
+            Users:
+            <div id="dataset_access_list">
+            </div>
+        </div>
+  
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="save_permissions_button">Save changes</button>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>  
+
+<!-- delete dataset modal -->
+<div class="modal fade" id="delete_modal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title" id="myModalLabel">Delete Dataset</h3>
+      </div>
+      <div class="modal-body">
+        <p class="text-danger">Are you sure you want to delete {{ dataset.name }}?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" id="delete_dataset">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>  
+    
+<script>
+    document.body.onload = function() { prep_details_page(); };
+</script>
+
+<script id="user-access-item" type="text/x-handlebars-template">
+{% verbatim %}
+<div>
+    <label><input type="checkbox" checked="checked" value="{{username}}" name="dataset_account"><span>{{ username }}</span></label>
+</div>
+{% endverbatim %}
+</script>
 
 {% endblock %}

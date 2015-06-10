@@ -1,10 +1,11 @@
 from sqlshare_web.utils import send_request, get_file_path
 from urllib import quote, urlencode
 import json
+import re
 
 
 def get_datasets(request, page=1, query=None):
-    page_size = 1
+    page_size = 2
     order_by = "updated"
 
     input_data = {"page": page,
@@ -34,6 +35,53 @@ def get_dataset(request, owner, name):
 
         return data
     return None
+
+
+def delete_dataset(request, dataset):
+    url = '/v3/db/dataset/%s/%s' % (quote(dataset["owner"]),
+                                    quote(dataset["name"]))
+    response = send_request(request, 'DELETE', url,
+                            {"Accept": "application/json"})
+
+
+def update_dataset_sql(request, dataset, sql):
+    url = '/v3/db/dataset/%s/%s' % (quote(dataset["owner"]),
+                                    quote(dataset["name"]))
+    data = json.dumps({"sql_code": sql})
+    response = send_request(request, 'PATCH', url,
+                            {"Accept": "application/json"}, body=data)
+
+
+def update_dataset_description(request, dataset, description):
+    url = '/v3/db/dataset/%s/%s' % (quote(dataset["owner"]),
+                                    quote(dataset["name"]))
+    data = json.dumps({"description": description})
+    response = send_request(request, 'PATCH', url,
+                            {"Accept": "application/json"}, body=data)
+
+
+def update_dataset_public_state(request, dataset, is_public):
+    url = '/v3/db/dataset/%s/%s' % (quote(dataset["owner"]),
+                                    quote(dataset["name"]))
+    data = json.dumps({"is_public": is_public})
+    response = send_request(request, 'PATCH', url,
+                            {"Accept": "application/json"}, body=data)
+
+
+def make_dataset_snapshot(request, dataset, name, description, is_public):
+    url = '/v3/db/dataset/%s/%s/snapshot' % (quote(dataset["owner"]),
+                                             quote(dataset["name"]))
+    data = json.dumps({"name": name,
+                       "description": description,
+                       "is_public": is_public})
+    response = send_request(request, 'POST', url,
+                            {"Accept": "application/json"}, body=data)
+
+    base_location = response.headers["location"]
+
+    segment = re.match('.*?/v3/db/dataset/(.*)', base_location).groups(1)
+
+    return "/detail/%s" % segment
 
 
 def get_parser_values(request, user, filename):
@@ -180,3 +228,42 @@ def get_query_data(request, query_id):
     response = send_request(request, 'GET', url)
 
     return json.loads(response.content)
+
+
+def get_user_search_results(request, term):
+    response = send_request(request, 'GET', '/v3/users?q=%s' % (term),
+                            {"Accept": "application/json"})
+
+    data = json.loads(response.content)
+    return data
+
+
+def update_dataset_permissions(request, dataset, accounts):
+    url = '/v3/db/dataset/%s/%s/permissions' % (quote(dataset["owner"]),
+                                                quote(dataset["name"]))
+
+    data = json.dumps({"authlist": accounts})
+    response = send_request(request, 'PUT', url,
+                            {"Accept": "application/json"},
+                            body=data)
+
+
+def get_dataset_permissions(request, dataset):
+    url = '/v3/db/dataset/%s/%s/permissions' % (quote(dataset["owner"]),
+                                                quote(dataset["name"]))
+
+    response = send_request(request, 'GET', url,
+                            {"Accept": "application/json"})
+
+    data = json.loads(response.content)
+
+    accounts = []
+
+    for email in data["emails"]:
+        accounts.append(email)
+
+    for account in data["accounts"]:
+        accounts.append(account["login"])
+
+    accounts.sort()
+    return accounts
