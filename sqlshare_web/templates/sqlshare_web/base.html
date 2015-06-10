@@ -138,9 +138,7 @@
             <span class="sql-user-name">{{ user.username }}</span>
             <button onclick="document.getElementById('sidebar').classList.toggle('closed');" type="button" class="btn sql-menu-button"><i class="fa fa-bars"></i></button>
         </div>         
-        
-        
-            
+
         <div id="sidebar" class="sql-sidebar {% if request.is_mobile or request.is_tablet %}closed{% endif %}">
             <div class="sql-sidebar-actions">
                 <ul>
@@ -157,9 +155,12 @@
         </div>       
                 
         <div id="content" class="sql-content">
+            
             <div class="sql-content-inner">
-            {% block content %}{% endblock %}
+                {% block searchbar %}{% endblock %}   
+                {% block content %}{% endblock %}
             </div>
+            
         </div>
 
         <div id="footer" class="sql-footer">
