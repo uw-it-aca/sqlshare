@@ -21,3 +21,16 @@
 </div>
 
 {% endblock %}
+
+{% block searchbar %}
+<div class="sql-search-bar">
+    <div class="input-group">
+      <form method="GET">
+      <input type="text" class="form-control" placeholder="Filter dataset by keyword..." style="float:none;" name="q" value="{{ current_query }}">
+      <span class="input-group-btn">
+        <input type="submit" value="Filter" />
+      </span>
+      </form>
+    </div>
+</div>
+{% endblock %}

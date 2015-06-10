@@ -3,7 +3,7 @@ from urllib import quote
 import json
 
 
-def get_datasets(request):
+def get_datasets(request, page=1, query=None):
     response = send_request(request, 'GET', '/v3/db/dataset/all',
                             {"Accept": "application/json"})
 

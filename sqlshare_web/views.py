@@ -25,11 +25,16 @@ def dataset_list(request):
     except OAuthNeededException as ex:
         return ex.redirect
 
-    datasets = get_datasets(request)
+    q = None
+    if "q" in request.GET:
+        q = request.GET["q"]
+
+    datasets = get_datasets(request, page=1, query=q)
 
     data = {
         "datasets": datasets,
         "user": user,
+        "current_query": q
     }
 
     return render_to_response('sqlshare_web/list.html',
