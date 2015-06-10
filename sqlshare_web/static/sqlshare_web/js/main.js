@@ -151,8 +151,6 @@ function add_parser_form_events() {
 }
 
 function add_datasetlist_events() {
-    $("#dataset_list_scroll").jscroll({
-        autoTrigger: false,
-    });
+    $("#dataset_list_scroll").jscroll({});
 }
 
