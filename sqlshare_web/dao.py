@@ -21,6 +21,8 @@ def get_datasets(request, page=1, query=None, list_type="yours"):
         url_suffix = "/all"
     elif list_type == "shared":
         url_suffix = "/shared"
+    elif list_type == "recent":
+        url_suffix = "/recent"
 
     params = urlencode(input_data)
     response = send_request(request, 'GET',

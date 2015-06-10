@@ -9,6 +9,8 @@ urlpatterns = patterns(
         {"list_type": "shared"}),
     url(r'^all$', 'sqlshare_web.views.dataset_list',
         {"list_type": "all"}),
+    url(r'^recent$', 'sqlshare_web.views.dataset_list',
+        {"list_type": "recent"}),
 
     url(r'^detail/(?P<owner>.*)/(?P<name>.*)/patch_sql',
         'sqlshare_web.views.patch_dataset_sql'),

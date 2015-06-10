@@ -58,6 +58,7 @@ def dataset_list(request, list_type):
         "is_yours": list_type == "yours",
         "is_shared": list_type == "shared",
         "is_all": list_type == "all",
+        "is_recent": list_type == "recent",
     }
 
     return render_to_response('sqlshare_web/list.html',

@@ -15,6 +15,9 @@
 {% if is_all %}
 <h2>All datasets</h2>
 {% endif %}
+{% if is_recent %}
+<h2>Recent datasets</h2>
+{% endif %}
 
 <div class="list-group sql-dataset-list" id="dataset_list_scroll">
     {% include 'sqlshare_web/list_page.html' %}
