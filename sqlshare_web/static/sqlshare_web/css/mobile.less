@@ -104,3 +104,12 @@
     .tt-cursor { }
     .tt-highlight { background: yellow; }
 }
+
+/* jscroll + bootstrap overrides */
+
+.jscroll-added {
+    .list-group-item {
+        &:first-child { border-top-right-radius: 0; border-top-left-radius: 0; }
+        &:last-child {  margin-bottom: -1px; border-bottom-right-radius: 0; border-bottom-left-radius: 0; }
+    }
+}
