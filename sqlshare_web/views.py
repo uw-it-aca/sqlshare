@@ -64,7 +64,6 @@ def dataset_list_page(request):
 
     datasets = get_datasets(request, page=2, query=q)
 
-
     data = {
         "datasets": datasets,
         "user": user,
@@ -74,6 +73,7 @@ def dataset_list_page(request):
     return render_to_response('sqlshare_web/list_page.html',
                               data,
                               context_instance=RequestContext(request))
+
 
 def dataset_detail(request, owner, name):
     try:
