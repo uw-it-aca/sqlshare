@@ -36,12 +36,15 @@
             
         }
         
+        .well { margin: 15px 0;  background: #fff; border-color: #ccc;
+            p {  margin: 0; line-height: 50px; text-align: center; }
+        }
         
         .sql-dataset-owner { color: #aaa; }
         .sql-dataset-modified { color: #aaa; }
             
         .sql-dataset-desc { 
-            textarea { resize: vertical; }
+            textarea { border-color: #ccc; resize: vertical;}
         }
         
         .sql-dataset-actions { position:absolute; top:0; right:0; width:280px; text-align:right;  margin-bottom: 1em; text-align: right; 
@@ -72,8 +75,9 @@
     padding: 0;
     margin: 15px 0;
     background-color: #fff;
-    border: 1px solid #e1e1e8;
+    border: 1px solid #ccc;
     border-radius: 4px;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
     
     .CodeMirror-scroll {
         height: auto;

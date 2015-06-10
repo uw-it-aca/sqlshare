@@ -15,7 +15,7 @@
     
     <div class="form-group sql-dataset-desc" style="margin: 15px 0;">
         <label for="query_sql" class="sr-only">Description:</label>    
-        <textarea class="form-control" id="dataset_description">{{ dataset.description }}</textarea>
+        <textarea class="form-control" id="dataset_description" rows="4">{{ dataset.description }}</textarea>
     </div>
     
     <div class="sql-dataset-actions">
@@ -68,10 +68,10 @@
 <div id="query_preview_panel" style="display: none;">
     <h3>Dataset Preview</h3>
 
-    <div id="query_running_panel" style="display: none;">
-        <p class="text-muted" style="line-height:100px; text-align:center; "><i class="fa fa-circle-o-notch fa-spin"></i> Running query...</p>
+    <div id="query_running_panel" class="well" style="display: none;">
+        <p class="text-muted"><i class="fa fa-circle-o-notch fa-spin"></i> Running query...</p>
     </div>
-    <div id="query_results_panel" style="display: none;"></div>
+    <div id="query_results_panel" class="well" style="display: none;"></div>
 
 </div>
     
@@ -81,16 +81,20 @@
     <h3>Dataset Preview</h3>
     
     {% if dataset.sample_data_status == "working" %}
-        <p class="text-muted" style="line-height:100px; text-align:center;"><i class="fa fa-circle-o-notch fa-spin"></i> Building preview...</p>
+    <div class="well">
+        <p class="text-muted"><i class="fa fa-circle-o-notch fa-spin"></i> Building preview...</p>
+    </div>
     {% endif %}
     
     {% if dataset.sample_data_status == "error" %}
-        <p class="text-danger" style="line-height:100px; text-align:center;">Error creating preview: {{ dataset.sample_data_error }}</p>
+    <div class="well">
+        <p class="text-danger">Error creating preview: {{ dataset.sample_data_error }}</p>
+    </div>
     {% endif %}
     
 
     {% if dataset.sample_data_status == "success" %}
-    <div class="well table-responsive" style="background:#fff; margin: 15px 0;">
+    <div class="well table-responsive">
         <table class="table table-striped" style="font-size:12px !important;">
             <thead style="font-size:12px !important;">
             <tr role="row">
