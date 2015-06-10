@@ -150,3 +150,9 @@ function add_finalize_form_events() {
     });
 }
 
+function add_datasetlist_events() {
+    $("#dataset_list_scroll").jscroll({
+        autoTrigger: false,
+    });
+}
+

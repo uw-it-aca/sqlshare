@@ -28,5 +28,6 @@ urlpatterns = patterns(
     url(r'^new/', 'sqlshare_web.views.new_query'),
     url(r'^run_query/', 'sqlshare_web.views.run_query'),
     url(r'^query/(?P<query_id>.*)', 'sqlshare_web.views.query_status'),
+    url(r'^dataset_list/next_page', 'sqlshare_web.views.dataset_list_page'),
     url(r'^oauth/', 'sqlshare_web.views.oauth_return'),
 )

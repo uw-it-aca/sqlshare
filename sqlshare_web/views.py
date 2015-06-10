@@ -42,6 +42,14 @@ def dataset_list(request):
                               context_instance=RequestContext(request))
 
 
+def dataset_list_page(request):
+    try:
+        user = get_or_create_user(request)
+    except OAuthNeededException as ex:
+        return ex.redirect
+
+    return HttpResponse("OK?  <a href='/dataset_list/next_page'>next page</a>");
+
 def dataset_detail(request, owner, name):
     try:
         user = get_or_create_user(request)

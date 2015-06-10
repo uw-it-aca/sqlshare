@@ -8,7 +8,7 @@
 
 <h2>Your datasets</h2>
 
-<div class="list-group sql-dataset-list">
+<div class="list-group sql-dataset-list" id="dataset_list_scroll">
 {% for dataset in datasets %}
     <a class="list-group-item" href="/detail/{{ dataset.owner }}/{{ dataset.name }}">
         <span class="sql-dataset-name">{{ dataset.name }}</span>
@@ -17,8 +17,13 @@
         
         <div class="sql-dataset-desc">{{ dataset.description }}</div>
     </a>
+    <a href="{% url 'sqlshare_web.views.dataset_list_page' %}">next page</a>
 {% endfor %}
 </div>
+
+<script>
+    window.onload = function() { add_datasetlist_events(); };
+</script>
 
 {% endblock %}
 

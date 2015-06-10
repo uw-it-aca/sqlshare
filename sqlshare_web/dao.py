@@ -1,10 +1,22 @@
 from sqlshare_web.utils import send_request, get_file_path
-from urllib import quote
+from urllib import quote, urlencode
 import json
 
 
 def get_datasets(request, page=1, query=None):
-    response = send_request(request, 'GET', '/v3/db/dataset/all',
+    page_size = 1
+    order_by = "updated"
+
+    input_data = {"page": page,
+                  "page_size": page_size,
+                  "order_by": order_by
+                  }
+
+    if query:
+        input_data["q"] = query
+
+    params = urlencode(input_data)
+    response = send_request(request, 'GET', '/v3/db/dataset/all?%s' % params,
                             {"Accept": "application/json"})
 
     data = json.loads(response.content)
