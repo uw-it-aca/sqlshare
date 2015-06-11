@@ -152,5 +152,9 @@ function add_parser_form_events() {
 
 function add_datasetlist_events() {
     $("#dataset_list_scroll").jscroll({});
+    $("#dataset_search_input").on("keydown", function() {
+        $("#clear_dataset_search_button").hide();
+        $("#run_dataset_search_button").show();
+    });
 }
 
