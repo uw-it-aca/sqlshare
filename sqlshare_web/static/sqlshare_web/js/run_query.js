@@ -82,6 +82,59 @@ var prep_run_query_page = (function() {
         });
 
         codemirror.focus();
+        $("#download_query").on("click", start_download);
+    }
+
+    function start_download() {
+        var sql = codemirror.getValue();
+
+        if (current_process) {
+            current_process.abort();
+        }
+        if (current_timeout) {
+            window.clearTimeout(current_timeout);
+        }
+
+        reset_polling_delay();
+        current_process = $.ajax({
+            type: "POST",
+            url: "/run_download/",
+            data: {
+                "sql": sql,
+                'csrfmiddlewaretoken': $("input[name='csrfmiddlewaretoken']").val()
+            },
+            success: handle_dl_polling,
+        });
+    }
+
+    function handle_dl_polling(data, status, xhr) {
+        current_process = null;
+        if (xhr.status == 202) {
+            current_timeout = window.setTimeout(function() {
+                var location = xhr.getResponseHeader("Location");
+                current_process = $.ajax({
+                    type: "GET",
+                    url: location,
+                    success: handle_dl_polling,
+                });
+            }, get_next_polling_delay());
+
+            return;
+        }
+        var download_uri = xhr.responseText;
+
+        $("#download_container").html(create_dl_iframe(download_uri));
+
+    }
+
+    function create_dl_iframe(url) {
+        var frame = $('<iframe>');
+
+        frame.attr('src', url);
+        frame.attr('height', "1px");
+        frame.attr('width', "1px");
+        return frame;
+
     }
 
     return add_events;
