@@ -142,10 +142,10 @@
         <div id="sidebar" class="sql-sidebar {% if request.is_mobile or request.is_tablet %}closed{% endif %}">
             <div class="sql-sidebar-actions">
                 <ul>
-                    <li><a href="/">Yours</a></li>
-                    <li><a href="/all">All</a></li>
-                    <li><a href="/shared">Shared</a></li>
-                    <li><a href="/recent">Recent</a></li>
+                    <li><a href="/{% if current_query %}?q={{ current_query }}{% endif %}">Yours</a></li>
+                    <li><a href="/all{% if current_query %}?q={{ current_query }}{% endif %}">All</a></li>
+                    <li><a href="/shared{% if current_query %}?q={{ current_query }}{% endif %}">Shared</a></li>
+                    <li><a href="/recent{% if current_query %}?q={{ current_query }}{% endif %}">Recent</a></li>
                 </ul>
                 <ul>
                     <li><a href="/upload">Upload</a></li>
