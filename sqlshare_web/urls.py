@@ -49,6 +49,9 @@ urlpatterns = patterns(
     url(r'^user_search/(?P<term>.*)', 'sqlshare_web.views.user_search'),
     url(r'^query/(?P<query_id>.*)', 'sqlshare_web.views.query_status'),
     url(r'^dataset_list/next_page', 'sqlshare_web.views.dataset_list_page'),
+    url(r'^run_download/', 'sqlshare_web.views.run_download'),
+    url(r'^download/(?P<query_id>[0-9]+)/download/(?P<token>[a-z0-9]+)',
+        'sqlshare_web.views.download_status'),
     url(r'^oauth/', 'sqlshare_web.views.oauth_return'),
 
 )

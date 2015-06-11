@@ -276,3 +276,14 @@ def get_dataset_permissions(request, dataset):
 
     accounts.sort()
     return accounts
+
+
+def get_download_token_for_query(request, query_id):
+    """
+    Get a single use download token for a given query id
+    """
+    url = '/v3/db/query/%s/download' % query_id
+
+    response = send_request(request, 'POST', url)
+
+    return json.loads(response.content)
