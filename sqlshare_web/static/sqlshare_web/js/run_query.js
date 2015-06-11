@@ -1,5 +1,16 @@
 var prep_run_query_page = (function() {
     "use strict";
+
+    function add_events() {
+        prep_polling_query();
+    }
+
+    return add_events;
+})();
+
+
+var prep_polling_query = (function() {
+    "use strict";
     var current_process = null,
         current_timeout = null,
         current_delay = null,
@@ -17,6 +28,7 @@ var prep_run_query_page = (function() {
         }
         
         $("#query_preview_panel").show();
+        $("#original_results_panel").hide();
         
         $("#query_results_panel").hide();
         $("#query_actions_panel").hide();
@@ -48,11 +60,9 @@ var prep_run_query_page = (function() {
 
             return;
         }
-        
         $("#query_results_panel").html(xhr.responseText);
         $("#query_running_panel").hide();
         $("#query_results_panel").show();
-        
     }
 
     function reset_polling_delay() {
@@ -67,7 +77,8 @@ var prep_run_query_page = (function() {
         return current_delay;
     }
 
-    function add_events() {
+    function add_events(code_mirror) {
+        codemirror = code_mirror;
         $("#run_query").on("click", start_query);
 
         codemirror = CodeMirror.fromTextArea(document.getElementById("query_sql"), {
@@ -134,8 +145,8 @@ var prep_run_query_page = (function() {
         frame.attr('height', "1px");
         frame.attr('width', "1px");
         return frame;
-
     }
 
     return add_events;
 })();
+

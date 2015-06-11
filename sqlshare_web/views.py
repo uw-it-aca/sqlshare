@@ -13,26 +13,92 @@ from sqlshare_web.dao import get_datasets, get_dataset, get_parser_values
 from sqlshare_web.dao import update_parser_values, append_upload_file
 from sqlshare_web.dao import finalize_upload, save_dataset_from_query
 from sqlshare_web.dao import enqueue_sql_statement, get_query_data
-from sqlshare_web.dao import get_upload_status
+from sqlshare_web.dao import get_upload_status, update_dataset_sql
+from sqlshare_web.dao import update_dataset_description
+from sqlshare_web.dao import update_dataset_public_state, delete_dataset
+from sqlshare_web.dao import get_user_search_results
+from sqlshare_web.dao import update_dataset_permissions
+from sqlshare_web.dao import get_dataset_permissions
+from sqlshare_web.dao import make_dataset_snapshot
 
+import datetime
+from urllib import urlencode
+import json
+from sqlshare_web.dao import get_upload_status
 import os
 import re
 
 
-def dataset_list(request):
+def dataset_list(request, list_type):
     try:
         user = get_or_create_user(request)
     except OAuthNeededException as ex:
         return ex.redirect
 
-    datasets = get_datasets(request)
+    q = None
+    if "q" in request.GET:
+        q = request.GET["q"]
 
+    datasets = get_datasets(request, page=1, query=q, list_type=list_type)
+
+    if q is None:
+        q = ""
+
+    next_page = "%s?%s" % (reverse("sqlshare_web.views.dataset_list_page"),
+                           urlencode({
+                            "page": 2,
+                            "q": q,
+                            "list_type": list_type,
+                           }))
+
+    if list_type == "yours":
+        is_yours = True
     data = {
         "datasets": datasets,
         "user": user,
+        "current_query": q,
+        "next_page_url": next_page,
+        "is_yours": list_type == "yours",
+        "is_shared": list_type == "shared",
+        "is_all": list_type == "all",
+        "is_recent": list_type == "recent",
     }
 
     return render_to_response('sqlshare_web/list.html',
+                              data,
+                              context_instance=RequestContext(request))
+
+
+def dataset_list_page(request):
+    try:
+        user = get_or_create_user(request)
+    except OAuthNeededException as ex:
+        return ex.redirect
+
+    q = None
+    if "q" in request.GET and request.GET["q"] != "":
+        q = request.GET["q"]
+
+    page = request.GET["page"]
+    list_type = request.GET["list_type"]
+
+    datasets = get_datasets(request, page=page, query=q, list_type=list_type)
+
+    if q is None:
+        q = ""
+    next_page = "%s?%s" % (reverse("sqlshare_web.views.dataset_list_page"),
+                           urlencode({
+                            "page": int(page) + 1,
+                            "q": q,
+                            "list_type": list_type,
+                           }))
+
+    data = {
+        "datasets": datasets,
+        "next_page_url": next_page,
+    }
+
+    return render_to_response('sqlshare_web/list_page.html',
                               data,
                               context_instance=RequestContext(request))
 
@@ -51,9 +117,68 @@ def dataset_detail(request, owner, name):
     data = {
         "dataset": dataset,
         "user": user,
+        "derive_dataset_sql": "SELECT * FROM %s" % (dataset["qualified_name"]),
+        "snapshot_url": reverse("make_dataset_snapshot",
+                                kwargs={"owner": owner, "name": name}),
     }
 
     return render_to_response('sqlshare_web/detail.html',
+                              data,
+                              context_instance=RequestContext(request))
+
+
+def dataset_snapshot(request, owner, name):
+    try:
+        user = get_or_create_user(request)
+    except OAuthNeededException as ex:
+        return ex.redirect
+
+    dataset = get_dataset(request, owner, name)
+
+    if not dataset:
+        raise Http404("Dataset Not Found")
+
+    errors = {}
+    if "save" in request.POST:
+        name = request.POST.get("name", "")
+        description = request.POST.get("description", "")
+        is_public = request.POST.get("is_public", False)
+        if is_public:
+            is_public = True
+
+        if not name:
+            errors["name"] = True
+
+        else:
+            new_url = make_dataset_snapshot(request, dataset, name,
+                                            description, is_public)
+            if new_url:
+                response = HttpResponseRedirect(new_url)
+                return response
+
+    default_name = "Snapshot of %s" % name
+    date = datetime.date.today().strftime("%B %-d, %Y")
+    default_description = "Snapshot of %s on %s" % (dataset["sql_code"], date)
+
+    is_public = False
+    if "is_public" in request.POST:
+        is_public = True
+    else:
+        if not request.POST:
+            # Default to being public
+            is_public = True
+    data = {
+        "dataset": dataset,
+        "name": request.POST.get("name", default_name),
+        "description": request.POST.get("description", default_description),
+        "is_public": is_public,
+        "user": user,
+        "errors": errors,
+        "dataset_url": reverse("dataset_detail",
+                               kwargs={"owner": owner, "name": name}),
+    }
+
+    return render_to_response('sqlshare_web/snapshot.html',
                               data,
                               context_instance=RequestContext(request))
 
@@ -229,7 +354,7 @@ def new_query(request):
 
     if "save" in request.POST:
         return _save_query(request, user)
-    elif "sql" in request.POST:
+    elif "sql" in request.POST and "show_initial" not in request.POST:
         return _show_query_name_form(request, user)
 
     else:
@@ -287,6 +412,9 @@ def _show_new_query_form(request, user):
         "user": user,
     }
 
+    if "sql" in request.POST:
+        data["sql"] = request.POST["sql"]
+
     return render_to_response('sqlshare_web/query/run.html',
                               data,
                               context_instance=RequestContext(request))
@@ -339,6 +467,116 @@ def query_status(request, query_id):
                                        kwargs={"query_id": query_id})
 
         return response
+
+
+def patch_dataset_sql(request, owner, name):
+    try:
+        user = get_or_create_user(request)
+    except OAuthNeededException as ex:
+        return ex.redirect
+
+    dataset = get_dataset(request, owner, name)
+
+    if not dataset:
+        raise Http404("Dataset Not Found")
+
+    sql = request.POST["dataset_sql"]
+    update_dataset_sql(request, dataset, sql)
+
+    return HttpResponse("")
+
+
+def patch_dataset_description(request, owner, name):
+    try:
+        user = get_or_create_user(request)
+    except OAuthNeededException as ex:
+        return ex.redirect
+
+    dataset = get_dataset(request, owner, name)
+
+    if not dataset:
+        raise Http404("Dataset Not Found")
+
+    description = request.POST["description"]
+    update_dataset_description(request, dataset, description)
+
+    return HttpResponse("")
+
+
+def dataset_permissions(request, owner, name):
+    try:
+        user = get_or_create_user(request)
+    except OAuthNeededException as ex:
+        return ex.redirect
+
+    dataset = get_dataset(request, owner, name)
+
+    if not dataset:
+        raise Http404("Dataset Not Found")
+
+    if request.META["REQUEST_METHOD"] == "POST":
+        if "accounts[]" in request.POST:
+            accounts = request.POST["accounts[]"]
+        else:
+            accounts = []
+        update_dataset_permissions(request, dataset,
+                                   request.POST.getlist("accounts[]"))
+
+    data = get_dataset_permissions(request, dataset)
+    return HttpResponse(json.dumps(data), content_type="application/json")
+
+
+def patch_dataset_public(request, owner, name):
+    try:
+        user = get_or_create_user(request)
+    except OAuthNeededException as ex:
+        return ex.redirect
+
+    dataset = get_dataset(request, owner, name)
+
+    if not dataset:
+        raise Http404("Dataset Not Found")
+
+    is_public = request.POST["is_public"]
+
+    if is_public == "0":
+        is_public = False
+    else:
+        is_public = True
+
+    update_dataset_public_state(request, dataset, is_public)
+
+    return HttpResponse("")
+
+
+def run_delete_dataset(request, owner, name):
+    try:
+        user = get_or_create_user(request)
+    except OAuthNeededException as ex:
+        return ex.redirect
+
+    dataset = get_dataset(request, owner, name)
+
+    if not dataset:
+        raise Http404("Dataset Not Found")
+
+    if request.META["REQUEST_METHOD"] != "POST":
+        return HttpResponse("")
+
+    delete_dataset(request, dataset)
+
+    return HttpResponse("")
+
+
+def user_search(request, term):
+    try:
+        user = get_or_create_user(request)
+    except OAuthNeededException as ex:
+        return ex.redirect
+
+    results = get_user_search_results(request, term)
+
+    return HttpResponse(json.dumps(results["users"]))
 
 
 def run_download(request):

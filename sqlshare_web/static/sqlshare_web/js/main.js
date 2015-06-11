@@ -150,3 +150,13 @@ function add_parser_form_events() {
     });
 }
 
+function add_datasetlist_events() {
+    $("#dataset_list_scroll").jscroll({
+        loadingHtml: '<div style="line-height:80px; text-align:center;" class="text-muted"><i class="fa fa-spinner fa-spin"></i> Loading...</div>',
+    });
+    $("#dataset_search_input").on("keydown", function() {
+        $("#clear_dataset_search_button").hide();
+        $("#run_dataset_search_button").show();
+    });
+}
+
