@@ -2,19 +2,7 @@ var prep_run_query_page = (function() {
     "use strict";
 
     function add_events() {
-        var codemirror = CodeMirror.fromTextArea(document.getElementById("query_sql"), {
-            textWrapping: false,
-            autoMatchParens: true,
-            mode:  "text/x-mssql",
-            lineNumbers: true,
-            smartIndent: true,
-            extraKeys: {
-                Tab: false
-            }
-        });
-
-        codemirror.focus();
-        prep_polling_query(codemirror);
+        prep_polling_query();
     }
 
     return add_events;
