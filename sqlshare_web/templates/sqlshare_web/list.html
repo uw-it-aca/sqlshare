@@ -31,16 +31,19 @@
 
 {% block searchbar %}
 <div class="sql-search-bar">
-    <div class="input-group">
-      <form method="GET">
-      <input type="text" class="form-control" placeholder="Filter dataset by keyword..." style="float:none;" name="q" value="{{ current_query }}" id="dataset_search_input">
-      <span class="input-group-btn">
-        <input class="btn btn-default" type="submit" value="Filter" id="run_dataset_search_button"{% if current_query %}style="display: none;"{% endif %}/>
+      
+    <form method="GET" class="form-inline" style="display:inline;">
+      <input type="text" class="form-control" placeholder="Filter dataset by keyword..." name="q" value="{{ current_query }}" id="dataset_search_input">
+      <span class="" {% if current_query %}style="display: none;"{% endif %}>
+        <input class="btn btn-default" type="submit" value="Filter" id="run_dataset_search_button"/>
       </span>
-    </div>
     </form>
-    <form method="GET">
-        <input class="btn btn-default" type="submit" value="Clear" id="clear_dataset_search_button"{% if not current_query %}style="display: none;"{% endif %}/>
+    
+    <form method="GET" class="form-inline" style="display:inline;">
+        <span class=""{% if not current_query %}style="display: none;"{% endif %}>
+        <input class="btn btn-default" type="submit" value="Clear" id="clear_dataset_search_button"/>
+        </span>
     </form>
+    
 </div>
 {% endblock %}
