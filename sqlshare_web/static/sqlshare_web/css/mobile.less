@@ -21,7 +21,7 @@
 
             li { line-height: 30px; }
         }
-        a {  display: block; line-height: 30px; color: lighten(@base, 3%); }
+        a {  display: block; line-height: 30px; color: @base; }
     }
 	
 }
@@ -76,13 +76,17 @@
 
     }
     
-    .sql-upload-target { position:relative; width: 100%; height: 200px; margin-bottom:1em; text-align:center; border: 2px dashed #2b86c1; 
-        .sql-upload-link { position:absolute; top: 45%; width:100%; text-align:center; }
+    .sql-upload-target { position:relative; width: 100%; height: 200px; margin-bottom:1em; text-align:center; border: 2px dashed @base; 
+        .sql-upload-link { position:absolute; top: 45%; width:100%; text-align:center; 
+            a { color: @base; }
+        }
     }
     
 }
 
-.sql-footer { margin: 20px 10px; }
+.sql-footer { margin: 20px 10px; 
+    a { color: @base; }
+}
 
 /* code mirror */
 

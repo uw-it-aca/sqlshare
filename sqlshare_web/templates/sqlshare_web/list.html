@@ -35,13 +35,13 @@
     <form method="GET" class="form-inline" style="display:inline;">
       <input type="text" class="form-control" placeholder="Filter dataset by keyword..." name="q" value="{{ current_query }}" id="dataset_search_input">
       <span >
-        <input class="btn btn-default" type="submit" value="Filter" id="run_dataset_search_button" {% if current_query %}style="display: none;"{% endif %}/>
+        <input class="btn btn-primary" type="submit" value="Filter" id="run_dataset_search_button" {% if current_query %}style="display: none;"{% endif %}/>
       </span>
     </form>
     
     <form method="GET" class="form-inline" style="display:inline;">
         <span >
-        <input class="btn btn-default" type="submit" value="Clear" id="clear_dataset_search_button" {% if not current_query %}style="display: none;"{% endif %}/>
+        <input class="btn btn-primary" type="submit" value="Clear" id="clear_dataset_search_button" {% if not current_query %}style="display: none;"{% endif %}/>
         </span>
     </form>
     
