@@ -32,19 +32,30 @@
     .sql-content-inner { position: relative; 
         
         hr { height: 0; margin: 3em -10px 2em -10px; border: 0; border-top: 1px solid darken(@clouds, 5%); }
-
+        
+        .well { margin: 15px 0;  background: #fff; border-color: #ccc;
+            p {  margin: 0; line-height: 50px; text-align: center; }
+        }
+        
         .sql-dataset-list {
             
             .sql-dataset-name { display: block; margin-bottom: 5px;  font-family: 'Roboto', sans-serif; font-size: 14px; font-weight: 500; color: darken(@base,3%); text-transform: uppercase;  }
             .sql-dataset-owner-modified { display: inline-block; font-size: 12px; color: #aaa;  }
             .sql-dataset-desc { display: block; color: #aaa; }
             
+            
+            
+            .jscroll-inner {
+                .sql-dataset-list-item { position: relative; display: block; padding: 10px; border-top: solid 1px #ccc; 
+                    &:first-child { border: none; }
+                }
+                
+                .jscroll-added {
+                    .sql-dataset-list-item { position: relative; display: block; padding: 10px; border-top: solid 1px #ccc; }
+                }
+            }
         }
-        
-        .well { margin: 15px 0;  background: #fff; border-color: #ccc;
-            p {  margin: 0; line-height: 50px; text-align: center; }
-        }
-        
+                
         .sql-dataset-owner { color: #aaa; }
         .sql-dataset-modified { color: #aaa; }
             
