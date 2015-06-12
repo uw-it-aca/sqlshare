@@ -20,7 +20,11 @@
 {% endif %}
 
 <div class="well sql-dataset-list" id="dataset_list_scroll" style="padding:0;">
+    {% if datasets %}
     {% include 'sqlshare_web/list_page.html' %}
+    {% else %}
+    NO DATASETS TO SEE HERE
+    {% endif %}
 </div>
 
 <script>
