@@ -20,7 +20,7 @@ from sqlshare_web.dao import get_user_search_results
 from sqlshare_web.dao import update_dataset_permissions
 from sqlshare_web.dao import get_dataset_permissions
 from sqlshare_web.dao import make_dataset_snapshot
-from sqlshare_web.dao import get_recent_queries
+from sqlshare_web.dao import get_recent_queries, cancel_query_by_id
 
 import datetime
 from urllib import urlencode
@@ -75,6 +75,10 @@ def recent_queries(request):
         user = get_or_create_user(request)
     except OAuthNeededException as ex:
         return ex.redirect
+
+    if request.META["REQUEST_METHOD"] == "POST":
+        query_id = request.POST["query_id"]
+        cancel_query_by_id(request, query_id)
 
     queries = get_recent_queries(request)
 

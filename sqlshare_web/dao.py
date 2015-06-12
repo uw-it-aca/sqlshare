@@ -245,6 +245,13 @@ def get_recent_queries(request):
     return data
 
 
+def cancel_query_by_id(request, query_id):
+    """ Cancel a running query """
+    url = '/v3/db/query/%s' % query_id
+
+    response = send_request(request, 'DELETE', url)
+
+
 def get_query_data(request, query_id):
     """
     Get the status of a running or finished query, by query id.  The query id

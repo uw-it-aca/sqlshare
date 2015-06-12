@@ -9,7 +9,7 @@
 <div class="list-group sql-query-list">
     {% for query in queries %}
     <a class="list-group-item" href="/queries/{{ query.query_id }}">
-        <span>{{ query.sql }}<span>
+        <span>{{ query.sql_code }}<span>
 
         <span>{{ query.date_created }}</span>
 
@@ -22,6 +22,11 @@
                 {% endif %}
             {% else %}
             Running...
+            <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="query_id" value="{{ query.query_id }}"/>
+            <input type="submit" value="X" />
+            </form>
             {% endif %}
         </span>
     </a>
