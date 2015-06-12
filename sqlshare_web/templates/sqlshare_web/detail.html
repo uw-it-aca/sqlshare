@@ -19,11 +19,11 @@
     </div>
     
     <div class="sql-dataset-actions">
-        <button type="button" class="btn btn-default btn-xs" id="make_dataset_private" {% if not dataset.is_public %}style="display:none;"{% endif %}><i class="fa fa-eye"></i> <span>PUBLIC</span></button>
-        <button type="button" class="btn btn-default btn-xs" id="make_dataset_public" {% if dataset.is_public %}style="display:none;"{% endif %}><i class="fa fa-eye-slash"></i> <span>PRIVATE</span></button>
+        <button type="button" class="btn btn-default btn-sm" id="make_dataset_private" {% if not dataset.is_public %}style="display:none;"{% endif %}><i class="fa fa-eye"></i> <span>PUBLIC</span></button>
+        <button type="button" class="btn btn-default btn-sm" id="make_dataset_public" {% if dataset.is_public %}style="display:none;"{% endif %}><i class="fa fa-eye-slash"></i> <span>PRIVATE</span></button>
         
-        <button type="button" class="btn btn-default btn-xs" id="" data-toggle="modal" data-target="#share_modal"><i class="fa fa-share"></i> <span>SHARE</span></button>
-        <button type="button" class="btn btn-danger btn-xs" id="" data-toggle="modal" data-target="#delete_modal"><i class="fa fa-trash"></i> <span>DELETE</span></button>
+        <button type="button" class="btn btn-default btn-sm" id="" data-toggle="modal" data-target="#share_modal"><i class="fa fa-share"></i> <span>SHARE</span></button>
+        <button type="button" class="btn btn-default btn-sm" id="" data-toggle="modal" data-target="#delete_modal"><i class="fa fa-trash"></i> <span>DELETE</span></button>
     </div>
 
 </div>
@@ -50,15 +50,15 @@
         {% csrf_token %}
         <input type="hidden" name="sql" value="" id="new_query_sql"/>
         <input type="hidden" name="show_initial" value="1" />
-        <button type="button" class="btn btn-default btn-xs" id="new_dataset_from_query"><i class="fa fa-plus-square"></i> <span>NEW DATASET FROM QUERY</span></button>
+        <button type="button" class="btn btn-default btn-sm" id="new_dataset_from_query"><i class="fa fa-plus-square"></i> <span>NEW DATASET FROM QUERY</span></button>
         </form>
         <form action="/new/" method="POST" id="new_dataset_by_derive_form">
         {% csrf_token %}
         <input type="hidden" name="sql" value="{{ derive_dataset_sql }}" />
         <input type="hidden" name="show_initial" value="1" />
-        <button type="button" class="btn btn-default btn-xs" id="new_dataset_derive"><i class="fa fa-code-fork"></i> <span>DERIVE</span></button>
+        <button type="button" class="btn btn-default btn-sm" id="new_dataset_derive"><i class="fa fa-code-fork"></i> <span>DERIVE</span></button>
         </form>
-        <a href="{{ snapshot_url }}" class="btn btn-default btn-xs"><i class="fa fa-camera"></i> <span>SNAPSHOT</span></a>
+        <a href="{{ snapshot_url }}" class="btn btn-default btn-sm"><i class="fa fa-camera"></i> <span>SNAPSHOT</span></a>
     </div>
 </div> 
 
@@ -116,7 +116,7 @@
     </div>
     
     <div class="sql-dataset-actions">
-        <button type="button" class="btn btn-default btn-xs" id=""><i class="fa fa-download"></i> <span>DOWNLOAD</span></button>
+        <button type="button" class="btn btn-default btn-sm" id=""><i class="fa fa-download"></i> <span>DOWNLOAD</span></button>
     </div>
     {% endif %}
     
