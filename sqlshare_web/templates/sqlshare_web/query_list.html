@@ -1,0 +1,33 @@
+{% extends "sqlshare_web/base.html" %}
+
+{% block title %}SQLSHARE: Query List{% endblock %}
+
+{% load staticfiles %}
+
+{% block content %}
+
+<div class="list-group sql-query-list">
+    {% for query in queries %}
+    <a class="list-group-item" href="/queries/{{ query.query_id }}">
+        <span>{{ query.sql }}<span>
+
+        <span>{{ query.date_created }}</span>
+
+        <span>
+            {% if query.is_finished %}
+                {% if query.has_error %}
+                Error
+                {% else %}
+                Done
+                {% endif %}
+            {% else %}
+            Running...
+            {% endif %}
+        </span>
+    </a>
+
+    {% endfor %}
+</div>
+
+
+{% endblock %}

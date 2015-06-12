@@ -1,0 +1,17 @@
+{% extends "sqlshare_web/base.html" %}
+
+{% block title %}SQLSHARE: Query{% endblock %}
+
+{% load staticfiles %}
+
+{% block content %}
+
+<div>{{ query.sql_code }}</div>
+
+{% include "sqlshare_web/sample_data_preview.html" with dataset=query %}
+
+{{ query }}
+
+
+
+{% endblock %}

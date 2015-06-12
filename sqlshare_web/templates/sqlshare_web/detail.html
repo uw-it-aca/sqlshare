@@ -79,47 +79,7 @@
 <div style="position:relative;" id="original_results_panel" >
     
     <h3>Dataset Preview</h3>
-    
-    {% if dataset.sample_data_status == "working" %}
-    <div class="well">
-        <p class="text-muted"><i class="fa fa-circle-o-notch fa-spin"></i> Building preview...</p>
-    </div>
-    {% endif %}
-    
-    {% if dataset.sample_data_status == "error" %}
-    <div class="well">
-        <p class="text-danger">Error creating preview: {{ dataset.sample_data_error }}</p>
-    </div>
-    {% endif %}
-    
-
-    {% if dataset.sample_data_status == "success" %}
-    <div class="well table-responsive">
-        <table class="table table-striped" style="font-size:12px !important;">
-            <thead style="font-size:12px !important;">
-            <tr role="row">
-                {% for col in dataset.columns %}
-                    <th class="sorting_asc" tabindex="0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="ID: activate to sort column descending" style="width: 42px;">{{ col.name }}</th>
-                {% endfor %}
-                </tr>
-            </thead>
-            <tbody role="alert" aria-live="polite" aria-relevant="all" style="font-size:12px !important;">
-                {% for row in dataset.sample_data %}
-                <tr>
-                    {% for col in row %}
-                        <td>{{ col }}</td>
-                    {% endfor %}
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    
-    <div class="sql-dataset-actions">
-        <button type="button" class="btn btn-default btn-xs" id=""><i class="fa fa-download"></i> <span>DOWNLOAD</span></button>
-    </div>
-    {% endif %}
-    
+    {% include "sqlshare_web/sample_data_preview.html" %}
 </div>
 
 <!-- share dataset modal -->
