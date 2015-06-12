@@ -94,6 +94,8 @@ var prep_polling_query = (function() {
 
         codemirror.focus();
         $("#download_query").on("click", start_download);
+
+        return codemirror;
     }
 
     function start_download() {
