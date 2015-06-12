@@ -1,3 +1,8 @@
+@base: #16a085;
+
+@asbestos: #7f8c8d;
+@clouds: #ecf0f1;
+                
 .sql-header { position: relative; text-align: center;  
     
     .sql-user-name { padding-right: 20px; visibility: hidden; }
@@ -12,11 +17,11 @@
 	
 	.sql-sidebar-actions { padding: 0; 
 
-        ul { padding: 10px;  margin-bottom: 0; list-style: none; border-bottom: solid 1px #e9eaed; 
+        ul { padding: 10px;  margin-bottom: 0; list-style: none; border-bottom: solid 1px darken(@clouds, 5%); 
 
             li { line-height: 30px; }
         }
-        a {  display: block; line-height: 30px; }
+        a {  display: block; line-height: 30px; color: lighten(@base, 3%); }
     }
 	
 }
@@ -26,11 +31,11 @@
     
     .sql-content-inner { position: relative; 
         
-        hr { height: 0; margin: 3em -20px 2em -20px; border: 0; border-top: 1px dashed #e9eaed; }
+        hr { height: 0; margin: 3em -10px 2em -10px; border: 0; border-top: 1px solid darken(@clouds, 5%); }
 
         .sql-dataset-list {
             
-            .sql-dataset-name { display: block; margin-bottom: 5px;  font-family: 'Roboto', sans-serif; font-size: 14px; font-weight: 500; color: #444;text-transform: uppercase;  }
+            .sql-dataset-name { display: block; margin-bottom: 5px;  font-family: 'Roboto', sans-serif; font-size: 14px; font-weight: 500; color: darken(@base,3%); text-transform: uppercase;  }
             .sql-dataset-owner-modified { display: inline-block; font-size: 12px; color: #aaa;  }
             .sql-dataset-desc { display: block; color: #aaa; }
             
@@ -48,10 +53,11 @@
         }
         
         .sql-search-bar { 
-            input[type=text] { display:inline-block; width: 235px;}
+            input[type=text] { display:inline-block; width: 235px; }
         }
         
         .sql-dataset-actions { position:absolute; top:0; right:0; width:280px; text-align:right;  margin-bottom: 1em; text-align: right; 
+            
             form { display: inline-block; }
             button { 
                 span { display: none; }
@@ -59,7 +65,14 @@
             a { color: #333; text-decoration: none; 
                 span { display: none; }
             }
-        }        
+            
+            .btn { border-color: transparent; }
+            .btn-default { min-width: 23px; color: @asbestos; background: @clouds; border-color: transparent;  }
+        }
+        
+        .btn { border-color: transparent; }
+        .btn-default { color: @asbestos; background: @clouds;  }
+        .btn-primary { background: @base; }        
 
     }
     
