@@ -12,13 +12,12 @@ var prep_query_details_page = (function() {
     }
 
 
-
     function add_events() {
         $("#run_query").on("click", function() { $("#update_dataset_sql").show(); });
         $("#new_dataset_from_query").on("click", create_new_dataset_from_query);
         // defined in run_query.js
         code_mirror = prep_polling_query();
-    };
+    }
 
     return add_events;
 })();
