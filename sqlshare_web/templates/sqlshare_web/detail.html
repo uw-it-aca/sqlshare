@@ -30,7 +30,7 @@
     
 <hr>
 
-<div  style="position: relative;">
+<div  style="position: relative; margin-bottom:3em;">
     {% csrf_token %}
     
     <h3>SQL</h3>
@@ -52,18 +52,11 @@
         <input type="hidden" name="show_initial" value="1" />
         <button type="button" class="btn btn-default btn-sm" id="new_dataset_from_query"><i class="fa fa-plus-square"></i> <span>NEW DATASET FROM QUERY</span></button>
         </form>
-        <form action="/new/" method="POST" id="new_dataset_by_derive_form">
-        {% csrf_token %}
-        <input type="hidden" name="sql" value="{{ derive_dataset_sql }}" />
-        <input type="hidden" name="show_initial" value="1" />
-        <button type="button" class="btn btn-default btn-sm" id="new_dataset_derive"><i class="fa fa-code-fork"></i> <span>DERIVE</span></button>
-        </form>
-        <a href="{{ snapshot_url }}" class="btn btn-default btn-sm"><i class="fa fa-camera"></i> <span>SNAPSHOT</span></a>
+        
+        
     </div>
 </div> 
 
-
-<hr>
     
 <div id="query_preview_panel" style="display: none;">
     <h3>Dataset Preview</h3>
@@ -76,7 +69,7 @@
 </div>
     
 
-<div style="position:relative;" id="original_results_panel" >
+<div style="position:relative;" id="original_results_panel">
     
     <h3>Dataset Preview</h3>
     
@@ -117,6 +110,13 @@
     
     <div class="sql-dataset-actions">
         <button type="button" class="btn btn-default btn-sm" id=""><i class="fa fa-download"></i> <span>DOWNLOAD</span></button>
+        <form action="/new/" method="POST" id="new_dataset_by_derive_form">
+        {% csrf_token %}
+        <input type="hidden" name="sql" value="{{ derive_dataset_sql }}" />
+        <input type="hidden" name="show_initial" value="1" />
+        <button type="button" class="btn btn-default btn-sm" id="new_dataset_derive"><i class="fa fa-code-fork"></i> <span>DERIVE</span></button>
+        </form>
+        <a href="{{ snapshot_url }}" class="btn btn-default btn-sm"><i class="fa fa-camera"></i> <span>SNAPSHOT</span></a>
     </div>
     {% endif %}
     
@@ -126,6 +126,7 @@
 <div class="modal fade" id="share_modal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
+      
       <div id="sharing-modal-loading">
           Loading...
       </div>

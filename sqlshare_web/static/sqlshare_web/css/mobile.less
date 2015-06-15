@@ -1,4 +1,5 @@
-@base: #16a085;
+@base: #2980b9;
+@asphault: #34495e;
 
 @asbestos: #7f8c8d;
 @clouds: #ecf0f1;
@@ -6,7 +7,7 @@
 .sql-header { position: relative; text-align: center;  
     
     .sql-user-name { padding-right: 20px; visibility: hidden; }
-    .sql-menu-button { position: absolute; top:0; left:0; font-size: 26px;  color: #aaa; }
+    .sql-menu-button { position: absolute; top:0; left:0; font-size: 26px; color: @asbestos; }
 }
 
 .sql-sidebar { max-height: 500px; overflow-y: hidden; font-family: 'Oswald', sans-serif;  font-size: 16px; font-weight: 300; color: #999; text-transform: uppercase;
@@ -33,7 +34,7 @@
         
         hr { height: 0; margin: 3em -10px 2em -10px; border: 0; border-top: 1px solid darken(@clouds, 5%); }
         
-        .well { margin: 15px 0;  background: #fff; border-color: #ccc;
+        .well { margin: 15px 0;  background: #fff; border-color: #eee;
             p {  margin: 0; line-height: 50px; text-align: center; }
         }
         
@@ -44,25 +45,29 @@
             .sql-dataset-desc { display: block; color: #aaa; }
                         
             .jscroll-inner {
-                .sql-dataset-list-item { position: relative; display: block; padding: 10px; border-top: solid 1px #ccc; 
+                .sql-dataset-list-item { position: relative; display: block; padding: 10px; border-top: solid 1px #eee; 
                     &:first-child { border: none; }
                 }
                 
                 .jscroll-added {
-                    .sql-dataset-list-item { position: relative; display: block; padding: 10px; border-top: solid 1px #ccc; }
+                    .sql-dataset-list-item { position: relative; display: block; padding: 10px; border-top: solid 1px #eee; }
                 }
             }
         }
                 
         .sql-dataset-owner { color: #aaa; }
         .sql-dataset-modified { color: #aaa; }
-            
+        
+        .sql-dataset-title {
+            input[type=text] { border-color: #eee;  }
+        }    
         .sql-dataset-desc { 
-            textarea { border-color: #ccc; resize: vertical;}
+            textarea { border-color: #eee; resize: vertical; }
         }
         
         .sql-search-bar { 
-            input[type=text] { display:inline-block; width: 235px; }
+            input[type=text] { display:inline-block; width: 73%; }
+            input[type=submit] { display:inline-block; width: 25%; }
         }
         
         .sql-dataset-actions { position:absolute; top:-5px; right:0; width:280px; text-align:right;  margin-bottom: 1em; text-align: right; 
@@ -75,17 +80,20 @@
                 span { display: none; }
             }
             
-            .btn { border-color: transparent; }
-            .btn-default { min-width: 32px; color: @base; background: @clouds; border-color: transparent;  }
+            /* action buttons (medium) */
+            .btn { border-color: transparent; /*box-shadow: none;*/ }
+            .btn-default { min-width: 32px; color: @base; background: lighten(@clouds, 4%); border-color: transparent;  }
         }
         
-        .btn { border-color: transparent; }
-        .btn-default { color: @base; background: @clouds;  }
-        .btn-primary { background: @base; }        
+        /* global buttons (large) */
+        .btn { border-color: transparent; border-radius: 3px; box-shadow: inset 0 -2px 0 rgba(0,0,0,0.1); }
+        .btn-default { color: @asphault;  text-transform: uppercase; background: @clouds; }
+        .btn-primary { text-transform: uppercase; background: @base; }        
 
     }
     
-    .sql-upload-target { position:relative; width: 100%; height: 200px; margin-bottom:1em; text-align:center; border: 2px dashed @base; 
+    .sql-upload-target { position:relative; width: 100%; height: 200px; margin-bottom:1em; text-align:center;  border: 2px solid lighten(@base,10%); border-radius: 4px;
+        
         .sql-upload-link { position:absolute; top: 45%; width:100%; text-align:center; 
             a { color: @base; }
         }
@@ -105,9 +113,11 @@
     padding: 0;
     margin: 15px 0;
     background-color: #fff;
-    border: 1px solid #ccc;
+    border: 2px solid lighten(@base,10%);
     border-radius: 4px;
     box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+    
+    .CodeMirror-gutters { z-index: 0; }
     
     .CodeMirror-scroll {
         height: auto;
