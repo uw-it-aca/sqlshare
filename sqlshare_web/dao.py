@@ -227,6 +227,31 @@ def enqueue_sql_statement(request, sql):
     return data
 
 
+def get_recent_queries(request):
+    """
+    Get the list of queries for the current user
+    """
+    url = '/v3/db/query'
+
+    response = send_request(request, 'GET', url)
+
+    data = json.loads(response.content)
+
+    for query in data:
+        url = query["url"]
+        query_id = re.match("/v3/db/query/([0-9]+)", url).group(1)
+        query["query_id"] = query_id
+
+    return data
+
+
+def cancel_query_by_id(request, query_id):
+    """ Cancel a running query """
+    url = '/v3/db/query/%s' % query_id
+
+    response = send_request(request, 'DELETE', url)
+
+
 def get_query_data(request, query_id):
     """
     Get the status of a running or finished query, by query id.  The query id
@@ -236,7 +261,10 @@ def get_query_data(request, query_id):
 
     response = send_request(request, 'GET', url)
 
-    return json.loads(response.content)
+    data = json.loads(response.content)
+    if "error" in data:
+        data["sample_data_error"] = data["error"]
+    return data
 
 
 def get_user_search_results(request, term):
