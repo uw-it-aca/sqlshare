@@ -11,11 +11,12 @@
 <div class="well sql-query-list">
     {% for query in queries %}
     <a class="sql-query-list-item" href="/queries/{{ query.query_id }}">
-        <span>{{ query.sql_code }}<span>
+        
+        <span class="sql-query-code">{{ query.sql_code }}</span>
 
-        <span>{{ query.date_created }}</span>
+        <span class="sql-query-date">{{ query.date_created }}</span>
 
-        <span>
+        <span class="sql-query-status">
             {% if query.is_finished %}
                 {% if query.has_error %}
                 Error
@@ -31,6 +32,7 @@
             </form>
             {% endif %}
         </span>
+        
     </a>
 
     {% endfor %}
