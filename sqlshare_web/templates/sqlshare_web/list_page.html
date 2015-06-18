@@ -1,5 +1,5 @@
     {% for dataset in datasets %}
-    <a class="list-group-item" href="/detail/{{ dataset.owner }}/{{ dataset.name }}">
+    <a class="sql-dataset-list-item" href="/detail/{{ dataset.owner }}/{{ dataset.name }}">
         <span class="sql-dataset-name">{{ dataset.name }}</span>
 
         <span class="sql-dataset-owner-modified">{{ dataset.owner }} {{ dataset.date_modified }}</span>

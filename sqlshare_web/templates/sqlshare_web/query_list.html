@@ -1,0 +1,42 @@
+{% extends "sqlshare_web/base.html" %}
+
+{% block title %}SQLSHARE: Query List{% endblock %}
+
+{% load staticfiles %}
+
+{% block content %}
+
+<h2>Recent Queries</h2>
+
+<div class="well sql-query-list">
+    {% for query in queries %}
+    <a class="sql-query-list-item" href="/queries/{{ query.query_id }}">
+        
+        <span class="sql-query-code">{{ query.sql_code }}</span>
+
+        <span class="sql-query-date">{{ query.date_created }}</span>
+
+        <span class="sql-query-status">
+            {% if query.is_finished %}
+                {% if query.has_error %}
+                Error
+                {% else %}
+                Done
+                {% endif %}
+            {% else %}
+            Running...
+            <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="query_id" value="{{ query.query_id }}"/>
+            <input type="submit" value="X" />
+            </form>
+            {% endif %}
+        </span>
+        
+    </a>
+
+    {% endfor %}
+</div>
+
+
+{% endblock %}

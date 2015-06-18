@@ -1,0 +1,48 @@
+    {% if dataset.sample_data_status == "working" %}
+    <div class="well">
+        <p class="text-muted"><i class="fa fa-circle-o-notch fa-spin"></i> Building preview...</p>
+    </div>
+    {% endif %}
+    
+    {% if dataset.sample_data_status == "error" %}
+    <div class="well">
+        <p class="text-danger">Error creating preview: {{ dataset.sample_data_error }}</p>
+    </div>
+    {% endif %}
+    
+
+    {% if dataset.sample_data_status == "success" %}
+    <div class="well table-responsive">
+        <table class="table table-striped" style="font-size:12px !important;">
+            <thead style="font-size:12px !important;">
+            <tr role="row">
+                {% for col in dataset.columns %}
+                    <th class="sorting_asc" tabindex="0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="ID: activate to sort column descending" style="width: 42px;">{{ col.name }}</th>
+                {% endfor %}
+                </tr>
+            </thead>
+            <tbody role="alert" aria-live="polite" aria-relevant="all" style="font-size:12px !important;">
+                {% for row in dataset.sample_data %}
+                <tr>
+                    {% for col in row %}
+                        <td>{{ col }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+        
+    <div class="sql-dataset-actions">
+        <button type="button" class="btn btn-default btn-sm" id=""><i class="fa fa-download"></i> <span>DOWNLOAD</span></button>
+        <form action="/new/" method="POST" id="new_dataset_by_derive_form">
+        {% csrf_token %}
+        <input type="hidden" name="sql" value="{{ derive_dataset_sql }}" />
+        <input type="hidden" name="show_initial" value="1" />
+        <button type="button" class="btn btn-default btn-sm" id="new_dataset_derive"><i class="fa fa-code-fork"></i> <span>DERIVE</span></button>
+        </form>
+        <a href="{{ snapshot_url }}" class="btn btn-default btn-sm"><i class="fa fa-camera"></i> <span>SNAPSHOT</span></a>
+    </div>
+    
+    {% endif %}
+ 

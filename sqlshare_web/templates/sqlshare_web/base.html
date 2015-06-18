@@ -36,19 +36,25 @@
             <!-- critical css (above the fold styles) -->
             <style rel="stylesheet" type="text/less">
                 
-                body { margin: 0; background: #e9eaed !important; }
+                @base: #2980b9;
+                @asphault: #34495e;
+                
+                @asbestos: #7f8c8d;
+                @clouds: #ecf0f1;
+                
+                body { margin: 0; background: @clouds !important; }
                                 
-                .sql-header { background: #fff; border-top: solid 10px #2980b9; border-bottom: solid 1px #d0d1d5; height: 66px; position: relative; text-transform: uppercase; font-family: 'Oswald', sans-serif;
+                .sql-header { background: #fff; border-top: solid 10px @base; border-bottom: solid 1px #d0d1d5; height: 76px; position: relative; text-transform: uppercase; font-family: 'Oswald', sans-serif;
                     
-                    h1 { margin: 0 10px; line-height: 56px; height:56px; font-weight: 400; font-size: 30px; 
+                    h1 { margin: 0 10px; line-height: 66px; height:66px; font-weight: 400; font-size: 35px; 
                         
-                        a { text-decoration: none; color: lighten(#2980b9, 2%); 
+                        a { text-decoration: none; color: darken(@base,1%); 
                             &:hover { text-decoration: none; }
-                            span { color: #444; }
+                            span { color: @asphault; }
                         }
                     }
                     
-                    .sql-user-name {   position: absolute; top:0; right: 0; padding-right:10px; font-size: 18px; font-weight: 300; line-height: 56px; color: #777; }
+                    .sql-user-name { position: absolute; top:0; right: 0; padding-right:10px; font-size: 18px; font-weight: 300; line-height: 56px; color: @base; }
                 
                 }
                 
@@ -56,17 +62,17 @@
                     
                     .sql-content-inner { padding: 10px; 
                                                 
-                        .sql-search-bar {  background: #e9eaed; margin: -10px; padding: 10px; margin-bottom: 0;
+                        .sql-search-bar {  background: @clouds; margin: -10px; padding: 10px; margin-bottom: 0;
                             button { text-transform: uppercase; font-family: 'Oswald', sans-serif; font-weight: 400; }
                         }
                     
                     }
                     
-                    h2 {  font-family: 'Oswald', sans-serif; text-transform: uppercase; font-weight: 400; font-size: 20px; position: relative;
+                    h2 {  font-family: 'Oswald', sans-serif; text-transform: uppercase; font-weight: 400; font-size: 20px; position: relative; color: @asphault;
                         span { position: absolute; right: 0; font-size: 14px; font-weight: 300; }
                     }
                     
-                    h3 { text-transform: uppercase; font-family: 'Oswald', sans-serif; font-weight: 400; font-size: 16px; color: #666;}
+                    h3 { text-transform: uppercase; font-family: 'Oswald', sans-serif; font-weight: 400; font-size: 16px; color: @asbestos;}
                    
                     .sql-new-query-textarea { resize: vertical; }
                     
@@ -145,9 +151,10 @@
                     <li><a href="/{% if current_query %}?q={{ current_query }}{% endif %}">Yours</a></li>
                     <li><a href="/all{% if current_query %}?q={{ current_query }}{% endif %}">All</a></li>
                     <li><a href="/shared{% if current_query %}?q={{ current_query }}{% endif %}">Shared</a></li>
-                    <li><a href="/recent{% if current_query %}?q={{ current_query }}{% endif %}">Recent</a></li>
+                    <li><a href="/recent{% if current_query %}?q={{ current_query }}{% endif %}">Recently Viewed</a></li>
                 </ul>
                 <ul>
+                    <li><a href="/queries/">Recent Queries</a></li>
                     <li><a href="/upload">Upload</a></li>
                     <li><a href="/new">New Query</a></li>
                 </ul>
@@ -166,7 +173,7 @@
         <div id="footer" class="sql-footer">
             <p>Copyright &copy; {% now "Y" %} eScience Institute &amp; Academic and Collaborative Applications <span><a href="http://www.washington.edu/online/privacy/">Privacy</a></span> <span><a href="http://www.washington.edu/online/terms/">Terms</a></span></p>
         </div>
-            
+        
         <!-- devtools bar -->
         <div id="dev_toolbar">
             <span class="label label-device">Device: {% if request.is_mobile %}Mobile{% elif request.is_tablet %}Tablet{% else %}Desktop{%endif %}</span> <span class="label label-fold">The fold</span>
@@ -188,6 +195,7 @@
         <script src="{% static "sqlshare_web/js/main.js" %}"></script>
         <script src="{% static "sqlshare_web/js/run_query.js" %}"></script>
         <script src="{% static "sqlshare_web/js/details.js" %}"></script>
+        <script src="{% static "sqlshare_web/js/view_query.js" %}"></script>
         {% endcompress %}
             
         {% if google_analytics %}

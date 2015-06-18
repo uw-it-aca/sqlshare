@@ -1,0 +1,54 @@
+{% extends "sqlshare_web/base.html" %}
+
+{% block title %}SQLSHARE: Query{% endblock %}
+
+{% load staticfiles %}
+
+{% block content %}
+
+<div  style="position: relative;">
+    <h3>SQL</h3>
+
+    <div class="form-group">
+        <label for="query_sql" class="sr-only">SQL Query:</label>    
+        <textarea id="query_sql" name='query_sql' class="well" style="background:#fff;">{{ query.sql_code }}</textarea>
+    </div>
+
+    <div style="margin-bottom:1em;">
+        <button type="button" class="btn btn-primary" id="run_query">RUN QUERY</button>
+    </div>
+
+    <div class="sql-dataset-actions">
+        <form action="/new/" method="POST" id="new_dataset_from_query_form">
+        {% csrf_token %}
+        <input type="hidden" name="sql" value="" id="new_query_sql"/>
+        <button type="button" class="btn btn-default btn-xs" id="new_dataset_from_query"><i class="fa fa-plus-square"></i> <span>NEW DATASET FROM QUERY</span></button>
+        </form>
+    </div>
+</div>
+
+<hr>
+
+<div id="query_preview_panel" style="display: none;">
+    <h3>Dataset Preview</h3>
+
+    <div id="query_running_panel" class="well" style="display: none;">
+        <p class="text-muted"><i class="fa fa-circle-o-notch fa-spin"></i> Running query...</p>
+    </div>
+    <div id="query_results_panel" class="well" style="display: none;"></div>
+
+</div>
+
+<div style="position:relative;" id="original_results_panel" >
+    <h3>Query Preview</h3>
+    
+    {% include "sqlshare_web/sample_data_preview.html" with dataset=query %}
+</div>
+
+<script>
+    document.body.onload = function() { prep_query_details_page(); };
+</script>
+
+
+
+{% endblock %}

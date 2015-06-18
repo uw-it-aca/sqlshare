@@ -20,6 +20,7 @@ from sqlshare_web.dao import get_user_search_results
 from sqlshare_web.dao import update_dataset_permissions
 from sqlshare_web.dao import get_dataset_permissions
 from sqlshare_web.dao import make_dataset_snapshot
+from sqlshare_web.dao import get_recent_queries, cancel_query_by_id
 
 import datetime
 from urllib import urlencode
@@ -65,6 +66,46 @@ def dataset_list(request, list_type):
     }
 
     return render_to_response('sqlshare_web/list.html',
+                              data,
+                              context_instance=RequestContext(request))
+
+
+def recent_queries(request):
+    try:
+        user = get_or_create_user(request)
+    except OAuthNeededException as ex:
+        return ex.redirect
+
+    if request.META["REQUEST_METHOD"] == "POST":
+        query_id = request.POST["query_id"]
+        cancel_query_by_id(request, query_id)
+
+    queries = get_recent_queries(request)
+
+    data = {
+        "queries": queries,
+        "user": user,
+    }
+
+    return render_to_response('sqlshare_web/query_list.html',
+                              data,
+                              context_instance=RequestContext(request))
+
+
+def query_status_page(request, query_id):
+    try:
+        user = get_or_create_user(request)
+    except OAuthNeededException as ex:
+        return ex.redirect
+
+    query = get_query_data(request, query_id)
+
+    data = {
+        "query": query,
+        "user": user,
+    }
+
+    return render_to_response('sqlshare_web/query/status_page.html',
                               data,
                               context_instance=RequestContext(request))
 

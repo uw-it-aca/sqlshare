@@ -21,18 +21,24 @@
 
     <button type="button" class="btn btn-primary" id="run_query">RUN QUERY</button>
     
-    
-    <div id="query_preview_panel" style="display: none; position:relative;">
-        <h3>Dataset Preview</h3>
+    <div id="query_preview_panel" style="display: none;">
         
-        <div id="query_running_panel" class="well" style="display: none;">
-            <p class="text-muted"><i class="fa fa-circle-o-notch fa-spin"></i> Running query...</p>
-        </div>
-        <div id="query_results_panel" class="well" style="display: none;"></div>
+        <hr>
         
-        <div class="sql-dataset-actions">
-            <button type="submit" class="btn btn-default btn-xs"><i class="fa fa-floppy-o"></i> <span>SAVE DATASET</span></button>
-            <button type="button" class="btn btn-default btn-xs" id="download_query"><i class="fa fa-download"></i> <span>DOWNLOAD</span></button>
+        <div style="position:relative">
+            
+            <h3>Dataset Preview</h3>
+            
+            <div id="query_running_panel" class="well" style="display: none;">
+                <p class="text-muted"><i class="fa fa-circle-o-notch fa-spin"></i> Running query...</p>
+            </div>
+            <div id="query_results_panel" class="well" style="display: none;"></div>
+            
+            <div class="sql-dataset-actions">
+                <button type="submit" class="btn btn-default btn-sm"><i class="fa fa-floppy-o"></i> <span>SAVE DATASET</span></button>
+                <button type="button" class="btn btn-default btn-sm" id="download_query"><i class="fa fa-download"></i> <span>DOWNLOAD</span></button>
+            </div>
+        
         </div>
         
     </div>
