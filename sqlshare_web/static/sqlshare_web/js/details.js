@@ -6,23 +6,6 @@ var prep_details_page = (function() {
 
     user_template = Handlebars.compile($("#user-access-item").text());
 
-    function add_code_mirror() {
-        // work around jshint - newcap error.
-        var func_code_mirror = CodeMirror;
-        var codemirror = CodeMirror.fromTextArea(document.getElementById("dataset_sql"), {
-            textWrapping: false,
-            autoMatchParens: true,
-            mode:  "text/x-mssql",
-            lineNumbers: true,
-            smartIndent: true,
-            extraKeys: {
-                Tab: false
-            }
-        });
-
-        return codemirror;
-    }
-
     function description_focus() {
         last_description = $("#dataset_description").val();
     }
@@ -193,7 +176,8 @@ var prep_details_page = (function() {
     }
 
     function add_events() {
-        code_mirror = add_code_mirror();
+        // defined in run_query.js
+        code_mirror = prep_polling_query();
         $("#run_query").on("click", function() { $("#update_dataset_sql").show(); });
         $("#update_dataset_sql").on("click", update_sql);
         $("#make_dataset_public").on("click", make_public);
@@ -204,8 +188,6 @@ var prep_details_page = (function() {
         $("#save_permissions_button").on("click", save_permissions);
         $("#new_dataset_from_query").on("click", create_new_dataset_from_query);
         $("#new_dataset_derive").on("click", create_new_dataset_derive);
-        // defined in run_query.js
-        prep_polling_query(code_mirror);
         prep_typeahed();
         $("#share_modal").on('show.bs.modal', load_permissions_data);
 
