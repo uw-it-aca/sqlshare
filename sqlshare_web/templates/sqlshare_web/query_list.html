@@ -19,16 +19,18 @@
         <span class="sql-query-status">
             {% if query.is_finished %}
                 {% if query.has_error %}
-                Error
+                <span class="text-danger"><i class="fa fa-exclamation-circle"></i> Error running query!</span>
                 {% else %}
-                Done
+                <span class="text-success"><i class="fa fa-check"></i> Query finished running!</span>
                 {% endif %}
             {% else %}
-            Running...
-            <form method="POST">
+            
+            <span class="text-muted"><i class="fa fa-circle-o-notch fa-spin"></i> Running query...</span>
+            
+            <form method="POST" style="display: inline-block; margin-left: 2em;">
             {% csrf_token %}
             <input type="hidden" name="query_id" value="{{ query.query_id }}"/>
-            <input type="submit" value="X" />
+            <input type="submit" value="Cancel Query" class="btn btn-default btn-xs" />
             </form>
             {% endif %}
         </span>
