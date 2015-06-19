@@ -32,6 +32,10 @@
         <meta name="apple-mobile-web-app-title" content="">
         -->
         
+        <!-- webfonts -->
+        <link href='//fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
+        <link href='//fonts.googleapis.com/css?family=Roboto:400,500,700,900' rel='stylesheet' type='text/css'>
+        
         {% compress css inline %}
             <!-- critical css (above the fold styles) -->
             <style rel="stylesheet" type="text/less">
@@ -61,7 +65,7 @@
                 .sql-content { margin: 0; background: #fff;
                     
                     .sql-content-inner { padding: 10px; 
-                                                
+                                
                         .sql-search-bar {  background: @clouds; margin: -10px; padding: 10px; margin-bottom: 0;
                             button { text-transform: uppercase; font-family: 'Oswald', sans-serif; font-weight: 400; }
                         }
@@ -81,11 +85,7 @@
             </style>
             
         {% endcompress %}
-        
-        <!-- webfonts -->
-        <link href='//fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
-        <link href='//fonts.googleapis.com/css?family=Roboto:400,500,700,900' rel='stylesheet' type='text/css'>
-        
+                
         {% if request.is_mobile %}
         {% compress css %}
         <!-- bootstrap & font awesome -->
