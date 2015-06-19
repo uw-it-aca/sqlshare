@@ -151,11 +151,14 @@
                     <li><a href="/{% if current_query %}?q={{ current_query }}{% endif %}">Yours</a></li>
                     <li><a href="/all{% if current_query %}?q={{ current_query }}{% endif %}">All</a></li>
                     <li><a href="/shared{% if current_query %}?q={{ current_query }}{% endif %}">Shared</a></li>
-                    <li><a href="/recent{% if current_query %}?q={{ current_query }}{% endif %}">Recently Viewed</a></li>
+                    
                 </ul>
                 <ul>
+                    <li><a href="/recent{% if current_query %}?q={{ current_query }}{% endif %}">Recent Datasets</a></li>
                     <li><a href="/queries/">Recent Queries</a></li>
-                    <li><a href="/upload">Upload</a></li>
+                </ul>
+                <ul>
+                    <li><a href="/upload">Upload Dataset</a></li>
                     <li><a href="/new">New Query</a></li>
                 </ul>
             </div>
