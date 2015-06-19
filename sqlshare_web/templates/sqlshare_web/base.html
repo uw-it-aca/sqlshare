@@ -176,12 +176,7 @@
         <div id="footer" class="sql-footer">
             <p>Copyright &copy; {% now "Y" %} eScience Institute &amp; Academic and Collaborative Applications <span><a href="http://www.washington.edu/online/privacy/">Privacy</a></span> <span><a href="http://www.washington.edu/online/terms/">Terms</a></span></p>
         </div>
-        
-        <!-- devtools bar -->
-        <div id="dev_toolbar">
-            <span class="label label-device">Device: {% if request.is_mobile %}Mobile{% elif request.is_tablet %}Tablet{% else %}Desktop{%endif %}</span> <span class="label label-fold">The fold</span>
-        </div>
-        
+                
         {% compress js %}
         <!-- global javascript -->
         <script src="{% static "vendor/js/jquery-1.11.0.min.js" %}"></script>
