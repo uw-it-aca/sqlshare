@@ -32,6 +32,10 @@
         <meta name="apple-mobile-web-app-title" content="">
         -->
         
+        <!-- webfonts -->
+        <link href='//fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
+        <link href='//fonts.googleapis.com/css?family=Roboto:400,500,700,900' rel='stylesheet' type='text/css'>
+        
         {% compress css inline %}
             <!-- critical css (above the fold styles) -->
             <style rel="stylesheet" type="text/less">
@@ -61,7 +65,7 @@
                 .sql-content { margin: 0; background: #fff;
                     
                     .sql-content-inner { padding: 10px; 
-                                                
+                                
                         .sql-search-bar {  background: @clouds; margin: -10px; padding: 10px; margin-bottom: 0;
                             button { text-transform: uppercase; font-family: 'Oswald', sans-serif; font-weight: 400; }
                         }
@@ -81,11 +85,7 @@
             </style>
             
         {% endcompress %}
-        
-        <!-- webfonts -->
-        <link href='//fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
-        <link href='//fonts.googleapis.com/css?family=Roboto:400,500,700,900' rel='stylesheet' type='text/css'>
-        
+                
         {% if request.is_mobile %}
         {% compress css %}
         <!-- bootstrap & font awesome -->
@@ -151,11 +151,14 @@
                     <li><a href="/{% if current_query %}?q={{ current_query }}{% endif %}">Yours</a></li>
                     <li><a href="/all{% if current_query %}?q={{ current_query }}{% endif %}">All</a></li>
                     <li><a href="/shared{% if current_query %}?q={{ current_query }}{% endif %}">Shared</a></li>
-                    <li><a href="/recent{% if current_query %}?q={{ current_query }}{% endif %}">Recently Viewed</a></li>
+                    
                 </ul>
                 <ul>
+                    <li><a href="/recent{% if current_query %}?q={{ current_query }}{% endif %}">Recent Datasets</a></li>
                     <li><a href="/queries/">Recent Queries</a></li>
-                    <li><a href="/upload">Upload</a></li>
+                </ul>
+                <ul>
+                    <li><a href="/upload">Upload Dataset</a></li>
                     <li><a href="/new">New Query</a></li>
                 </ul>
             </div>
@@ -173,12 +176,7 @@
         <div id="footer" class="sql-footer">
             <p>Copyright &copy; {% now "Y" %} eScience Institute &amp; Academic and Collaborative Applications <span><a href="http://www.washington.edu/online/privacy/">Privacy</a></span> <span><a href="http://www.washington.edu/online/terms/">Terms</a></span></p>
         </div>
-        
-        <!-- devtools bar -->
-        <div id="dev_toolbar">
-            <span class="label label-device">Device: {% if request.is_mobile %}Mobile{% elif request.is_tablet %}Tablet{% else %}Desktop{%endif %}</span> <span class="label label-fold">The fold</span>
-        </div>
-        
+                
         {% compress js %}
         <!-- global javascript -->
         <script src="{% static "vendor/js/jquery-1.11.0.min.js" %}"></script>
