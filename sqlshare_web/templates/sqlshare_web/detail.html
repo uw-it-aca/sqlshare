@@ -19,11 +19,13 @@
     </div>
     
     <div class="sql-dataset-actions">
+        {% if dataset.owner == user.username %}
         <button type="button" class="btn btn-default btn-sm" id="make_dataset_private" {% if not dataset.is_public %}style="display:none;"{% endif %}><i class="fa fa-eye"></i> <span>PUBLIC</span></button>
         <button type="button" class="btn btn-default btn-sm" id="make_dataset_public" {% if dataset.is_public %}style="display:none;"{% endif %}><i class="fa fa-eye-slash"></i> <span>PRIVATE</span></button>
         
         <button type="button" class="btn btn-default btn-sm" id="" data-toggle="modal" data-target="#share_modal"><i class="fa fa-share"></i> <span>SHARE</span></button>
         <button type="button" class="btn btn-default btn-sm" id="" data-toggle="modal" data-target="#delete_modal"><i class="fa fa-trash"></i> <span>DELETE</span></button>
+        {% endif %}
     </div>
 
 </div>
