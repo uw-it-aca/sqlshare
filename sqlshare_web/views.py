@@ -21,6 +21,7 @@ from sqlshare_web.dao import update_dataset_permissions
 from sqlshare_web.dao import get_dataset_permissions
 from sqlshare_web.dao import make_dataset_snapshot
 from sqlshare_web.dao import get_recent_queries, cancel_query_by_id
+from sqlshare_web.exceptions import DataException
 
 import datetime
 from urllib import urlencode
@@ -98,7 +99,10 @@ def query_status_page(request, query_id):
     except OAuthNeededException as ex:
         return ex.redirect
 
-    query = get_query_data(request, query_id)
+    try:
+        query = get_query_data(request, query_id)
+    except DataException:
+        raise Http404("Query not found")
 
     data = {
         "query": query,
