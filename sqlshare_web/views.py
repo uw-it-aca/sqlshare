@@ -421,6 +421,9 @@ def _save_query(request, user):
     if not name:
         errors["name"] = True
 
+    if re.match('.*[\[\]/\\\?#]', name):
+        errors["name_chars"] = True
+
     if errors:
         return _show_query_name_form(request, user, errors=errors)
 
