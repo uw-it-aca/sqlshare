@@ -56,7 +56,14 @@ function add_parser_form_events() {
     var current_file_chunk = 2;
 
     function has_title() {
-        if ($("#id_dataset_name").val().match(/[a-zA-Z0-9]/))   {
+        if ($("#id_dataset_name").val().match(/[a-zA-Z0-9]/) && !has_invalid_title())   {
+            return true;
+        }
+        return false;
+    }
+
+    function has_invalid_title() {
+        if ($("#id_dataset_name").val().match(/[\[\]/\\\?#]/)) {
             return true;
         }
         return false;
@@ -128,10 +135,18 @@ function add_parser_form_events() {
     $("#id_dataset_name").keyup(function() {
         if (has_title()) {
             $("#title_required").hide();
+            $("#invalid_title").hide();
             $("#save_button").prop("disabled", false);
         }
         else {
-            $("#title_required").show();
+            if (has_invalid_title()) {
+                $("#invalid_title").show();
+                $("#title_required").hide();
+            }
+            else {
+                $("#title_required").show();
+                $("#invalid_title").hide();
+            }
             $("#save_button").prop("disabled", true);
         }
     });
