@@ -1,4 +1,6 @@
 from sqlshare_web.utils import send_request, get_file_path
+from sqlshare_web.exceptions import DataNotFoundException
+from sqlshare_web.exceptions import DataPermissionDeniedException
 from urllib import quote, urlencode
 import json
 import re
@@ -260,6 +262,12 @@ def get_query_data(request, query_id):
     url = '/v3/db/query/%s' % query_id
 
     response = send_request(request, 'GET', url)
+
+    if response.status == 404:
+        raise DataNotFoundException()
+
+    if response.status == 403:
+        raise DataPermissionDeniedException()
 
     data = json.loads(response.content)
     if "error" in data:

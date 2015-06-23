@@ -93,12 +93,21 @@ var prep_details_page = (function() {
 
     function addUserOnEnter(ev) {
         if (ev.keyCode === 13) {
-            var content = user_template({ username: $("#exampleInputEmail1").val() });
-            $("#dataset_access_list").append($(content));
-            $('#user-autocomplete-container #exampleInputEmail1').typeahead('close');
-            $('#user-autocomplete-container #exampleInputEmail1').typeahead('val', "");
-            $("#exampleInputEmail1").val("");
+            addUserFromInput();
         }
+    }
+
+    function addUserFromInput() {
+        var username = $("#exampleInputEmail1").val();
+        username = username.replace(/^ +/, "").replace(/ +$/, "");
+
+        if (username) {
+            var content = user_template({ username: username });
+            $("#dataset_access_list").append($(content));
+        }
+        $('#user-autocomplete-container #exampleInputEmail1').typeahead('close');
+        $('#user-autocomplete-container #exampleInputEmail1').typeahead('val', "");
+        $("#exampleInputEmail1").val("");
     }
 
     function prep_typeahed() {
@@ -122,24 +131,26 @@ var prep_details_page = (function() {
     }
 
     function save_permissions() {
-        var checked = $("input[name='dataset_account']:checked");
-        var len = checked.length;
+        addUserFromInput();
+        window.setTimeout(function() {
+            var checked = $("input[name='dataset_account']:checked");
+            var len = checked.length;
 
-        var accounts = [];
-        for (var i = 0; i < len; i++) {
-            accounts.push(checked[i].value);
-        }
+            var accounts = [];
+            for (var i = 0; i < len; i++) {
+                accounts.push(checked[i].value);
+            }
 
-        $.ajax({
-            type: "POST",
-            url: window.location.href+"/permissions",
-            data: {
-                "accounts": accounts,
-                'csrfmiddlewaretoken': $("input[name='csrfmiddlewaretoken']").val()
-            },
-            success: hide_sharing_panel
-        });
-
+            $.ajax({
+                type: "POST",
+                url: window.location.href+"/permissions",
+                data: {
+                    "accounts": accounts,
+                    'csrfmiddlewaretoken': $("input[name='csrfmiddlewaretoken']").val()
+                },
+                success: hide_sharing_panel
+            });
+        }, 0);
     }
 
     function hide_sharing_panel() {
