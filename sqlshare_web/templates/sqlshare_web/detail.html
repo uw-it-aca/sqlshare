@@ -11,7 +11,7 @@
 <div style="position:relative;">
     
     {% if not request.is_mobile %}<span class="sql-dataset-owner"><i class="fa fa-user"></i> {{ dataset.owner }}</span>{% endif %}
-    <span class="sql-dataset-modified"><i class="fa fa-wrench"></i> {{ dataset.date_modified }}</span>
+    <span class="sql-dataset-modified"><i class="fa fa-calendar"></i> {{ dataset.date_modified }}</span>
     
     <div class="form-group sql-dataset-desc" style="margin: 15px 0;">
         <label for="query_sql" class="sr-only">Description:</label>    
