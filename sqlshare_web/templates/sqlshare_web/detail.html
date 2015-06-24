@@ -10,12 +10,12 @@
 
 <div style="position:relative;">
     
-    <span class="sql-dataset-owner"><i class="fa fa-user"></i> {{ dataset.owner }}</span>
-    <span class="sql-dataset-modified"><i class="fa fa-wrench"></i> {{ dataset.date_modified }}</span>
+    {% if not request.is_mobile %}<span class="sql-dataset-owner"><i class="fa fa-user"></i> {{ dataset.owner }}</span>{% endif %}
+    <span class="sql-dataset-modified"><i class="fa fa-calendar"></i> {{ dataset.date_modified }}</span>
     
     <div class="form-group sql-dataset-desc" style="margin: 15px 0;">
         <label for="query_sql" class="sr-only">Description:</label>    
-        <textarea class="form-control" id="dataset_description" rows="4">{{ dataset.description }}</textarea>
+        <textarea class="form-control" id="dataset_description" rows="4" {% if not dataset.owner == user.username %}disabled="disabled" style="resize:none;"{% endif %}>{{ dataset.description }}</textarea>
     </div>
     
     <div class="sql-dataset-actions">
@@ -24,7 +24,7 @@
         <button type="button" class="btn btn-default btn-sm" id="make_dataset_public" {% if dataset.is_public %}style="display:none;"{% endif %}><i class="fa fa-eye-slash"></i> <span>PRIVATE</span></button>
         
         <button type="button" class="btn btn-default btn-sm" id="" data-toggle="modal" data-target="#share_modal"><i class="fa fa-share"></i> <span>SHARE</span></button>
-        <button type="button" class="btn btn-default btn-sm" id="" data-toggle="modal" data-target="#delete_modal"><i class="fa fa-trash"></i> <span>DELETE</span></button>
+        <button type="button" class="btn btn-danger btn-sm" id="" data-toggle="modal" data-target="#delete_modal"><i class="fa fa-trash"></i> <span>DELETE</span></button>
         {% endif %}
     </div>
 
@@ -44,7 +44,7 @@
     
     <div style="margin-bottom:1em;">
         <button type="button" class="btn btn-primary" id="run_query">RUN QUERY</button>
-        <button type="button" class="btn btn-default" id="update_dataset_sql" style="display: none;">UPDATE DATASET</button>
+        {% if dataset.owner == user.username %}<button type="button" class="btn btn-default" id="update_dataset_sql" style="display: none;">UPDATE DATASET</button>{% endif %}
     </div>
     
     <div class="sql-dataset-actions">

@@ -43,9 +43,12 @@
             a { text-decoration: none;
                 &:hover { text-decoration: none; }
             }
-            .sql-dataset-name { display: block; margin-bottom: 5px;  font-family: 'Roboto', sans-serif; font-size: 14px; font-weight: 500; color: @base; text-decoration: none !important; text-transform: uppercase; }
-            .sql-dataset-owner-modified { display: inline-block; font-size: 12px; color: #aaa;  }
-            .sql-dataset-desc { display: block; color: #aaa; }
+            .sql-dataset-name { display: block; margin-bottom: 5px;  font-family: 'Roboto', sans-serif; font-size: 14px; font-weight: 500; color: @base; text-decoration: none !important; text-transform: uppercase; 
+                i { margin-left: 5px; color: @asbestos; }
+            }
+            .sql-dataset-owner { position: absolute; top:10px; right:0; display: inline-block; font-size: 12px; font-weight: normal; color: #aaa; text-transform: uppercase;  }
+            .sql-dataset-modified { display: block; color: #aaa;}
+            .sql-dataset-desc { display: block; color: #777; }
                         
             .sql-dataset-list-item { position: relative; display: block; padding: 10px; border-top: solid 1px #eee; 
                 &:first-child { border: none; }
@@ -54,6 +57,9 @@
             .jscroll-added {
                 .sql-dataset-list-item { position: relative; display: block; padding: 10px; border-top: solid 1px #eee; }
             }
+            
+            .label { font-size: 10px; font-weight: normal; }
+            .label-default {  color: @asbestos; background: #fff; border: solid 1px @clouds; }
         }
 
         .sql-query-list { padding: 0;
@@ -71,8 +77,12 @@
                 
         }
                 
-        .sql-dataset-owner { color: #aaa; }
-        .sql-dataset-modified { color: #aaa; }
+        .sql-dataset-owner { margin-right: 10px; color: #777; 
+            i { color: #ccc; }
+        }
+        .sql-dataset-modified { color: #777; 
+            i { color: #ccc; }
+        }
         
         .sql-dataset-title {
             input[type=text] { border-color: #eee;  }
@@ -96,15 +106,17 @@
                 span { display: none; }
             }
             
-            /* action buttons (medium) */
+            /* action buttons (small) */
             .btn { border-color: transparent; /*box-shadow: none;*/ }
-            .btn-default { min-width: 32px; color: @base; background: lighten(@clouds, 4%); border-color: transparent;  }
+            .btn-default { min-width: 32px; color: @base; background: lighten(@clouds, 4%); border-color: transparent; }
+            .btn-danger { color: #d9534f; background: lighten(@clouds, 4%); border-color: transparent;}
         }
         
         /* global buttons (large) */
         .btn { border-color: transparent; border-radius: 3px; box-shadow: inset 0 -2px 0 rgba(0,0,0,0.1); }
         .btn-default { color: @asphault;  text-transform: uppercase; background: @clouds; }
-        .btn-primary { text-transform: uppercase; background: @base; }        
+        .btn-primary { text-transform: uppercase; background: @base; }
+        .btn-danger { text-transform: uppercase; }        
 
     }
     
