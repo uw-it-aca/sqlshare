@@ -15,7 +15,7 @@
     
     <div class="form-group sql-dataset-desc" style="margin: 15px 0;">
         <label for="query_sql" class="sr-only">Description:</label>    
-        <textarea class="form-control" id="dataset_description" rows="4" {% if not dataset.owner == user.username %}disabled="disabled"{% endif %}>{{ dataset.description }}</textarea>
+        <textarea class="form-control" id="dataset_description" rows="4" {% if not dataset.owner == user.username %}disabled="disabled" style="resize:none;"{% endif %}>{{ dataset.description }}</textarea>
     </div>
     
     <div class="sql-dataset-actions">
