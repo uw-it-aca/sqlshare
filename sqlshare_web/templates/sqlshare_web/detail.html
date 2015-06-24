@@ -44,7 +44,7 @@
     
     <div style="margin-bottom:1em;">
         <button type="button" class="btn btn-primary" id="run_query">RUN QUERY</button>
-        <button type="button" class="btn btn-default" id="update_dataset_sql" style="display: none;">UPDATE DATASET</button>
+        {% if dataset.owner == user.username %}<button type="button" class="btn btn-default" id="update_dataset_sql" style="display: none;">UPDATE DATASET</button>{% endif %}
     </div>
     
     <div class="sql-dataset-actions">
