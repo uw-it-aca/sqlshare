@@ -10,7 +10,7 @@
 
 <div style="position:relative;">
     
-    <span class="sql-dataset-owner"><i class="fa fa-user"></i> {{ dataset.owner }}</span>
+    {% if not request.is_mobile %}<span class="sql-dataset-owner"><i class="fa fa-user"></i> {{ dataset.owner }}</span>{% endif %}
     <span class="sql-dataset-modified"><i class="fa fa-wrench"></i> {{ dataset.date_modified }}</span>
     
     <div class="form-group sql-dataset-desc" style="margin: 15px 0;">
@@ -24,7 +24,7 @@
         <button type="button" class="btn btn-default btn-sm" id="make_dataset_public" {% if dataset.is_public %}style="display:none;"{% endif %}><i class="fa fa-eye-slash"></i> <span>PRIVATE</span></button>
         
         <button type="button" class="btn btn-default btn-sm" id="" data-toggle="modal" data-target="#share_modal"><i class="fa fa-share"></i> <span>SHARE</span></button>
-        <button type="button" class="btn btn-default btn-sm" id="" data-toggle="modal" data-target="#delete_modal"><i class="fa fa-trash"></i> <span>DELETE</span></button>
+        <button type="button" class="btn btn-danger btn-sm" id="" data-toggle="modal" data-target="#delete_modal"><i class="fa fa-trash"></i> <span>DELETE</span></button>
         {% endif %}
     </div>
 

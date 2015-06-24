@@ -96,15 +96,19 @@
                 span { display: none; }
             }
             
-            /* action buttons (medium) */
+            /* action buttons (small) */
             .btn { border-color: transparent; /*box-shadow: none;*/ }
-            .btn-default { min-width: 32px; color: @base; background: lighten(@clouds, 4%); border-color: transparent;  }
+            .btn-default { min-width: 32px; color: @base; background: lighten(@clouds, 4%); border-color: transparent; }
+            .btn-danger { 
+                 span { color: #fff; }
+            }
         }
         
         /* global buttons (large) */
         .btn { border-color: transparent; border-radius: 3px; box-shadow: inset 0 -2px 0 rgba(0,0,0,0.1); }
         .btn-default { color: @asphault;  text-transform: uppercase; background: @clouds; }
-        .btn-primary { text-transform: uppercase; background: @base; }        
+        .btn-primary { text-transform: uppercase; background: @base; }
+        .btn-danger { text-transform: uppercase; }        
 
     }
     
