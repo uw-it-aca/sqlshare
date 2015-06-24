@@ -1,9 +1,12 @@
     {% for dataset in datasets %}
     <a class="sql-dataset-list-item" href="/detail/{{ dataset.owner }}/{{ dataset.name }}">
+        
         <span class="sql-dataset-name">{{ dataset.name }} {% if not dataset.is_public %}<i class="fa fa-eye-slash"></i>{% endif %}</span>
 
-        <span class="sql-dataset-owner-modified">{{ dataset.owner }} {{ dataset.date_modified }}</span>
-
+        <span class="sql-dataset-owner">{% if not dataset.owner == user.username %}<span class="label label-default"><i class="fa fa-user"></i> {{ dataset.owner }}</span>{% endif %}</span>
+        
+        <span class="sql-dataset-modified">modified: {{ dataset.date_modified }}</span>
+        
         {% if dataset.description %}
         <div class="sql-dataset-desc">{{ dataset.description }}</div>
         {% endif %}

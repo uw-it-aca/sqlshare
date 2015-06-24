@@ -46,8 +46,9 @@
             .sql-dataset-name { display: block; margin-bottom: 5px;  font-family: 'Roboto', sans-serif; font-size: 14px; font-weight: 500; color: @base; text-decoration: none !important; text-transform: uppercase; 
                 i { margin-left: 5px; color: @asbestos; }
             }
-            .sql-dataset-owner-modified { display: inline-block; font-size: 12px; color: #aaa;  }
-            .sql-dataset-desc { display: block; color: #aaa; }
+            .sql-dataset-owner { position: absolute; top:10px; right:0; display: inline-block; font-size: 12px; font-weight: normal; color: #aaa; text-transform: uppercase;  }
+            .sql-dataset-modified { display: block; color: #aaa;}
+            .sql-dataset-desc { display: block; color: #777; }
                         
             .sql-dataset-list-item { position: relative; display: block; padding: 10px; border-top: solid 1px #eee; 
                 &:first-child { border: none; }
@@ -56,6 +57,9 @@
             .jscroll-added {
                 .sql-dataset-list-item { position: relative; display: block; padding: 10px; border-top: solid 1px #eee; }
             }
+            
+            .label { font-size: 10px; font-weight: normal; }
+            .label-default {  color: @asbestos; background: none; border: solid 1px @clouds; }
         }
 
         .sql-query-list { padding: 0;
