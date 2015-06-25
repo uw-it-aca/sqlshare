@@ -45,6 +45,10 @@ def get_dataset(request, owner, name):
         data = json.loads(response.content)
 
         return data
+
+    if response.status == 403:
+        raise DataPermissionDeniedException()
+
     return None
 
 

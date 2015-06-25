@@ -21,6 +21,7 @@ from sqlshare_web.dao import update_dataset_permissions
 from sqlshare_web.dao import get_dataset_permissions
 from sqlshare_web.dao import make_dataset_snapshot
 from sqlshare_web.dao import get_recent_queries, cancel_query_by_id
+from sqlshare_web.exceptions import DataPermissionDeniedException
 from sqlshare_web.exceptions import DataException
 
 import datetime
@@ -154,7 +155,10 @@ def dataset_detail(request, owner, name):
     except OAuthNeededException as ex:
         return ex.redirect
 
-    dataset = get_dataset(request, owner, name)
+    try:
+        dataset = get_dataset(request, owner, name)
+    except DataPermissionDeniedException:
+        return render_to_response('sqlshare_web/detail_no_permission.html', {})
 
     if not dataset:
         raise Http404("Dataset Not Found")
