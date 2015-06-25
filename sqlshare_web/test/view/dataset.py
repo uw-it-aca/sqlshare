@@ -50,7 +50,8 @@ class TestDatasetView(TestCase):
 
         response = c2.get(reverse("dataset_detail", kwargs={"name": name, "owner": "dataset_view_user" }))
 
-        self.assertEquals(response.status_code, 404)
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.templates[0].name, "sqlshare_web/detail_no_permission.html")
 
     def test_rando_public(self):
         name = "test_not_your_dataset-public"
