@@ -21,6 +21,7 @@ from sqlshare_web.dao import update_dataset_permissions
 from sqlshare_web.dao import get_dataset_permissions
 from sqlshare_web.dao import make_dataset_snapshot
 from sqlshare_web.dao import get_recent_queries, cancel_query_by_id
+from sqlshare_web.dao import init_sql_download
 from sqlshare_web.exceptions import DataPermissionDeniedException
 from sqlshare_web.exceptions import DataException
 
@@ -641,39 +642,10 @@ def run_download(request):
     if not sql:
         return
 
-    data = enqueue_sql_statement(request, sql)
+    download_url = init_sql_download(request, sql)
 
-    url = data["url"]
-    query_id = re.match(".*v3/db/query/([\d]+)", url).groups()[0]
-    token_req = get_download_token_for_query(request, query_id)
+    response = HttpResponse()
+    response.status_code = 202
+    response["Location"] = download_url
 
-    return HttpResponseRedirect(reverse("sqlshare_web.views.download_status",
-                                kwargs={"query_id": query_id,
-                                        "token": token_req['token']}))
-
-
-def download_status(request, query_id, token=None):
-    """
-    This view returns a download link.  The download can be in process,
-    or it can be a download link.
-    """
-    data = get_query_data(request, query_id)
-
-    if data["is_finished"]:
-        if data["has_error"]:
-            return render_to_response('sqlshare_web/query/error.html',
-                                      data,
-                                      context_instance=RequestContext(request))
-        else:
-            download_uri = build_download_url(query_id, token)
-
-            return HttpResponse(download_uri)
-
-    else:
-        response = HttpResponse("Running...")
-        response.status_code = 202
-        response["Location"] = reverse("sqlshare_web.views.download_status",
-                                       kwargs={"query_id": query_id,
-                                               "token": token})
-
-        return response
+    return response
