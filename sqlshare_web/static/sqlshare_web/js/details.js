@@ -202,6 +202,8 @@ var prep_details_page = (function() {
         prep_typeahed();
         $("#share_modal").on('show.bs.modal', load_permissions_data);
 
+        return code_mirror;
+
     }
     return add_events;
 })();

@@ -135,9 +135,13 @@
     </div>
   </div>
 </div>  
+<div id="download_container"></div>
     
 <script>
-    document.body.onload = function() { prep_details_page(); };
+    document.body.onload = function() {
+        var code_mirror = prep_details_page();
+        prep_download(code_mirror);
+    };
 </script>
 
 <script id="user-access-item" type="text/x-handlebars-template">

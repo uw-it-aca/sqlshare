@@ -2,6 +2,7 @@ from django.conf import settings
 from sanction import Client, transport_headers
 from urllib2 import urlopen, HTTPError
 from django.http import HttpResponseRedirect
+from django.shortcuts import render_to_response
 import hashlib
 import json
 import os
@@ -73,6 +74,12 @@ def oauth_access_token(request):
     c = get_oauth_client()
 
     redirect_uri = "%s/oauth" % settings.SQLSHARE_WEB_HOST
+
+    if 'error' in request.GET:
+        error = request.GET['error']
+
+        # Maybe do something smart here...
+        return render_to_response('sqlshare_web/oauth_denied.html', {})
 
     token_request_data = {
         'code': request.GET['code'],

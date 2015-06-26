@@ -48,12 +48,12 @@
 </form>
 
 <script>
-    document.body.onload = function() { 
-        prep_run_query_page(); 
+    document.body.onload = function() {
+        var code_mirror = prep_run_query_page();
+        prep_download(code_mirror);
         {% if sql %}
         $("#run_query").click();
         {% endif %}
-
     };
 </script>
 

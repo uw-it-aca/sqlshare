@@ -45,6 +45,10 @@ def get_dataset(request, owner, name):
         data = json.loads(response.content)
 
         return data
+
+    if response.status == 403:
+        raise DataPermissionDeniedException()
+
     return None
 
 
@@ -227,6 +231,25 @@ def enqueue_sql_statement(request, sql):
     data = json.loads(response.content)
 
     return data
+
+
+def init_sql_download(request, sql):
+    """
+    Starts a query download.  Gets a url for the client to GET directly.
+    """
+    url = '/v3/db/query/download'
+
+    data = {
+        "sql": sql,
+    }
+
+    response = send_request(request, 'POST', url,
+                            {"Accept": "application/json"},
+                            json.dumps(data))
+
+    location = response.headers["location"]
+
+    return location
 
 
 def get_recent_queries(request):

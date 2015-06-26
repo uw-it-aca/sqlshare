@@ -56,6 +56,8 @@
                             &:hover { text-decoration: none; }
                             span { color: @asphault; }
                         }
+                        
+                        .logo-beta { font-size: 14px; color: #d9534f; }
                     }
                     
                     .sql-user-name { position: absolute; top:0; right: 0; padding-right:10px; font-size: 18px; font-weight: 300; line-height: 56px; color: @base; }
@@ -140,7 +142,7 @@
     <body>
        
         <div id="header" class="sql-header">
-            <h1><a href="/">SQL<span>SHARE</span></a></h1>
+            <h1><a href="/">SQL<span>SHARE</span></a> <span class="logo-beta">BETA</span></h1>
             <span class="sql-user-name">{{ user.username }}</span>
             <button onclick="document.getElementById('sidebar').classList.toggle('closed');" type="button" class="btn sql-menu-button"><i class="fa fa-bars"></i></button>
         </div>         
@@ -174,7 +176,7 @@
         </div>
 
         <div id="footer" class="sql-footer">
-            <p>Copyright &copy; {% now "Y" %} eScience Institute &amp; Academic and Collaborative Applications <span><a href="http://www.washington.edu/online/privacy/">Privacy</a></span> <span><a href="http://www.washington.edu/online/terms/">Terms</a></span></p>
+            <p>Copyright &copy; {% now "Y" %} eScience Institute<span><a href="http://www.washington.edu/online/privacy/">Privacy</a></span> <span><a href="http://www.washington.edu/online/terms/">Terms</a></span></p>
         </div>
                 
         {% compress js %}
@@ -192,6 +194,7 @@
         <!-- app js -->
         <script src="{% static "sqlshare_web/js/main.js" %}"></script>
         <script src="{% static "sqlshare_web/js/run_query.js" %}"></script>
+        <script src="{% static "sqlshare_web/js/download_query.js" %}"></script>
         <script src="{% static "sqlshare_web/js/details.js" %}"></script>
         <script src="{% static "sqlshare_web/js/view_query.js" %}"></script>
         {% endcompress %}
