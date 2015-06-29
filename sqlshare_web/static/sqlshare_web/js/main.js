@@ -112,7 +112,7 @@ function add_parser_form_events() {
                 "finalize": true,
                 "dataset_name": $("input[name='dataset_name']").val(),
                 "dataset_description": $("textarea[name='dataset_description']").val(),
-                "is_public": $("input[name='is_public']").is(':checked')
+                "is_public": $("input[name='is_public']").is(':checked') ? "public" : "private"
             },
             success: poll_finalize
         });

@@ -280,7 +280,7 @@ def _get_finalize_status(request, filename, user):
         response = HttpResponse("Done")
         return response
     else:
-        print "S: ", status
+        print ("S: ", status)
 
 
 def _update_finalize_process(request, filename, user):
@@ -302,7 +302,12 @@ def _update_finalize_process(request, filename, user):
         description = request.POST["dataset_description"]
         is_public = request.POST["is_public"]
 
-        finalize_upload(request, filename, name, description)
+        if is_public == "public":
+            is_public = True
+        else:
+            is_public = False
+
+        finalize_upload(request, filename, name, description, is_public)
 
         response = HttpResponse("finalizing")
         return response

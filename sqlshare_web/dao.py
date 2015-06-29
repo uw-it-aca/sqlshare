@@ -150,7 +150,7 @@ def append_upload_file(request, user, filename, chunk):
                             body=data)
 
 
-def finalize_upload(request, filename, name, description):
+def finalize_upload(request, filename, name, description, is_public):
     session_key = "ss_file_id_%s" % filename
 
     upload_id = request.session[session_key]
@@ -158,6 +158,7 @@ def finalize_upload(request, filename, name, description):
 
     data = json.dumps({"dataset_name": name,
                        "description": description,
+                       "is_public": is_public,
                        })
 
     response = send_request(request, 'POST', url,
