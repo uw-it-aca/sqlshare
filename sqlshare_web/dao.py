@@ -99,7 +99,7 @@ def make_dataset_snapshot(request, dataset, name, description, is_public):
     return "/detail/%s" % segment
 
 
-def get_parser_values(request, user, filename):
+def get_parser_values(request, user, filename, retry=False):
     session_key = "ss_file_id_%s" % filename
     if session_key not in request.session:
         path = get_file_path(user["username"], filename, "1")
@@ -125,6 +125,11 @@ def get_parser_values(request, user, filename):
     response = send_request(request, 'GET', parser_url,
                             {"Accept": "application/json"})
 
+    if response.status != 200:
+        if retry:
+            raise Exception("Unable to get parser values on retry")
+        del request.session[session_key]
+        return get_parser_values(request, user, filename, retry=True)
     data = json.loads(response.content)
 
     return {
