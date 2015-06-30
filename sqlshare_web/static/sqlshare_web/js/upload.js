@@ -38,7 +38,7 @@ function create_uploader() {
 
 function add_parser_form_events() {
     "use strict";
-    var PERCENTAGE_OF_FINALIZE_IN_UPLOAD = 50;
+    var PERCENTAGE_OF_FINALIZE_IN_UPLOAD = 10;
 
     function update_preview() {
         $("#update_preview").val("1");
@@ -71,7 +71,20 @@ function add_parser_form_events() {
     }
 
     function post_chunk_upload(data, text_status) {
-        if (data == "next_chunk") {
+        if (data["state"] == "next_chunk") {
+            var finished = data["finished"];
+            var max = data["max"];
+
+            if (max) {
+                var base = finished / max;
+                var percent_to_fill = (PERCENTAGE_OF_FINALIZE_IN_UPLOAD / 100);
+                var scaled = base * percent_to_fill;
+                var total = 100 * scaled;
+
+                $("#finalizing_progress").css("width", total+"%");
+            }
+
+
             current_file_chunk += 1;
             upload_next_chunk();
             return;
@@ -101,7 +114,7 @@ function add_parser_form_events() {
                 var base = rows_loaded / rows_total;
                 var percent_to_fill = 1 - (PERCENTAGE_OF_FINALIZE_IN_UPLOAD / 100);
                 var scaled = base * percent_to_fill;
-                var total = 100 * (percent_to_fill + scaled);
+                var total = 100 * (1 - percent_to_fill + scaled);
 
                 $("#finalizing_progress").css("width", total+"%");
             }

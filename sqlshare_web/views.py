@@ -303,8 +303,18 @@ def _update_finalize_process(request, filename, user):
         if not os.path.exists(file_path):
             return HttpResponse("upload_complete")
         else:
+            session_key = "ss_max_chunk_%s" % filename
+            max_chunk = request.session.get(session_key, 0)
+
             append_upload_file(request, user, filename, chunk)
-            return HttpResponse("next_chunk")
+
+            json_data = {
+                "state": "next_chunk",
+                "max": max_chunk,
+                "finished": chunk,
+            }
+            return HttpResponse(json.dumps(json_data),
+                                content_type="application/json")
 
     if "finalize" in request.POST:
         name = request.POST["dataset_name"]
