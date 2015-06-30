@@ -15,7 +15,8 @@
     
     <div class="form-group {% if errors.sql %}has-error{% endif %}" >
         <input type="hidden" name="sql" value="{{sql}}"/>
-        <label for="blah3" class="sr-only">SQL Query:</label>
+        <label for="blah3" class="sr-only">SQL Query: </label>
+        {% if errors.sql_syntax %}{{ errors.sql_syntax }}{% endif %}
         <textarea class="form-control" id="blah3" disabled="disabled">{{ sql }}</textarea>
     </div>
 

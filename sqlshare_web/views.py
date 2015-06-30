@@ -458,8 +458,13 @@ def _save_query(request, user):
     if errors:
         return _show_query_name_form(request, user, errors=errors)
 
-    save_dataset_from_query(request, user["username"], name, sql, description,
-                            is_public)
+    try:
+        save_dataset_from_query(request, user["username"], name, sql, description,
+                                is_public)
+    except DataException as ex:
+        errors["sql"] = True
+        errors["sql_syntax"] = str(ex)
+        return _show_query_name_form(request, user, errors=errors)
 
     return HttpResponseRedirect(reverse("dataset_detail",
                                         kwargs={"owner": user["username"],
