@@ -141,6 +141,7 @@ def dataset_list_page(request):
                            }))
 
     data = {
+        "user": user,
         "datasets": datasets,
         "next_page_url": next_page,
     }
