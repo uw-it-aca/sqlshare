@@ -459,7 +459,8 @@ def _save_query(request, user):
         return _show_query_name_form(request, user, errors=errors)
 
     try:
-        save_dataset_from_query(request, user["username"], name, sql, description,
+        save_dataset_from_query(request, user["username"], name, sql,
+                                description,
                                 is_public)
     except DataException as ex:
         errors["sql"] = True
