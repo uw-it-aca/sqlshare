@@ -184,7 +184,13 @@ def get_upload_status(request, filename):
                              },
                             )
 
-    return response.status
+    values = json.loads(response.content)
+
+    data = {
+        "status": response.status,
+        "values": values,
+    }
+    return data
 
 
 def update_parser_values(request, user, filename, delimiter, has_header_row):
