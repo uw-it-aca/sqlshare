@@ -95,15 +95,18 @@ class TestUploads(TestCase):
         # Send off to the backend server:
         response = self.client.post(reverse('upload_finalize_process', kwargs={"filename": "test_upload.csv"}), { "chunk": "1" })
         self.assertEquals(response.status_code, 200)
-        self.assertEquals(response.content, "next_chunk")
+        data = json.loads(response.content)
+        self.assertEquals(data["state"], "next_chunk")
 
         response = self.client.post(reverse('upload_finalize_process', kwargs={"filename": "test_upload.csv"}), { "chunk": "2" })
         self.assertEquals(response.status_code, 200)
-        self.assertEquals(response.content, "next_chunk")
+        data = json.loads(response.content)
+        self.assertEquals(data["state"], "next_chunk")
 
         response = self.client.post(reverse('upload_finalize_process', kwargs={"filename": "test_upload.csv"}), { "chunk": "3" })
         self.assertEquals(response.status_code, 200)
-        self.assertEquals(response.content, "upload_complete")
+        data = json.loads(response.content)
+        self.assertEquals(data["state"], "upload_complete")
 
         response = self.client.post(reverse('upload_finalize_process', kwargs={"filename": "test_upload.csv"}), { "finalize": True, "dataset_name": "test_upload.csv", "dataset_description": "Desc", "is_public": True })
         self.assertEquals(response.status_code, 200)
