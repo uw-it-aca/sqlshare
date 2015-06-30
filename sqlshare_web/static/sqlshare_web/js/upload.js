@@ -71,9 +71,9 @@ function add_parser_form_events() {
     }
 
     function post_chunk_upload(data, text_status) {
-        if (data["state"] == "next_chunk") {
-            var finished = data["finished"];
-            var max = data["max"];
+        if (data.state == "next_chunk") {
+            var finished = data.finished;
+            var max = data.max;
 
             if (max) {
                 var base = finished / max;
@@ -101,12 +101,12 @@ function add_parser_form_events() {
     function poll_finalize(data, text_status, xhr) {
         var filename = $("input[name='original_name']").val();
         var dataset_name = $("#id_dataset_name").val();
-        if (data["state"] == "Done") {
+        if (data.state == "Done") {
             window.location.href = "/detail/"+encodeURIComponent(sqlshare_user)+"/"+encodeURIComponent(dataset_name);
         }
         else {
-            var rows_total = data["rows_total"],
-                rows_loaded = data["rows_loaded"];
+            var rows_total = data.rows_total,
+                rows_loaded = data.rows_loaded;
 
             if (rows_total) {
                 // Finalizing is the last half - so we start at 50% here,
