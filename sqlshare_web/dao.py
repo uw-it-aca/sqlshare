@@ -221,7 +221,7 @@ def save_dataset_from_query(request, owner, name, sql, description, is_public):
                             {"Accept": "application/json"},
                             json.dumps(data))
 
-    if response.status != 200:
+    if response.status == 400:
         raise DataException(response.content)
 
     data = json.loads(response.content)
