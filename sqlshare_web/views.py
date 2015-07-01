@@ -340,6 +340,10 @@ def upload_parser(request, filename):
     except OAuthNeededException as ex:
         return ex.redirect
 
+    key1 = "ss_file_id_%s" % filename
+    if key1 not in request.session:
+        return Http404()
+
     if request.META['REQUEST_METHOD'] == "POST":
         has_header_row = request.POST.get("has_header", False)
         delimiter = request.POST["delimiter"]
