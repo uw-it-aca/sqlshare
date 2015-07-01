@@ -14,13 +14,13 @@
     {% csrf_token %}
 
     <div class="form-group {% if errors.name %}has-error{% endif %}">
-        <label class="control-label" for="snapshot_name">Dataset name:  {% if errors.name %}Required{% endif %}</label>
-        <input type="text" id="snapshot_name" class="form-control" name="name" value="{{ name }}"/>
+        <label class="control-label" for="blah1">Dataset name:  {% if errors.name %}Required{% endif %}</label>
+        <input type="text" id="blah1" class="form-control" name="name" value="{{ name }}"/>
     </div>
 
     <div class="form-group">
-        <label class="control-label" for="snapshot_desc">Description:</label>
-        <textarea id="snapshot_desc" class="form-control" rows="3" name="description">{{ description }}</textarea>
+        <label class="control-label" for="blah2">Description:</label>
+        <textarea id="blah2" class="form-control" rows="3" name="description">{{ description }}</textarea>
     </div>
 
     <div class="checkbox">

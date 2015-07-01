@@ -1,5 +1,5 @@
 from sqlshare_web.utils import send_request, get_file_path
-from sqlshare_web.exceptions import DataNotFoundException
+from sqlshare_web.exceptions import DataNotFoundException, DataException
 from sqlshare_web.exceptions import DataPermissionDeniedException
 from urllib import quote, urlencode
 import json
@@ -184,7 +184,13 @@ def get_upload_status(request, filename):
                              },
                             )
 
-    return response.status
+    values = json.loads(response.content)
+
+    data = {
+        "status": response.status,
+        "values": values,
+    }
+    return data
 
 
 def update_parser_values(request, user, filename, delimiter, has_header_row):
@@ -214,6 +220,9 @@ def save_dataset_from_query(request, owner, name, sql, description, is_public):
     response = send_request(request, 'PUT', url,
                             {"Accept": "application/json"},
                             json.dumps(data))
+
+    if response.status == 400:
+        raise DataException(response.content)
 
     data = json.loads(response.content)
 
