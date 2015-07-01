@@ -59,6 +59,14 @@
     </div>
 </div> 
 
+{% if dataset.upload_errors %}
+<div id="dataset_upload_errors">
+There were errors with some rows while adding them to the database:
+<pre>
+{{ dataset.upload_errors }}
+</pre>
+</div>
+{% endif %}
     
 <div id="query_preview_panel" style="display: none;">
     <h3>Dataset Preview</h3>
