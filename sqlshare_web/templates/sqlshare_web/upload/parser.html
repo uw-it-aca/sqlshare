@@ -44,9 +44,10 @@
 <div id="uploading_panel" class="well" style="display: none;">
     <p class="text-muted"><i class="fa fa-circle-o-notch fa-spin"></i> Saving dataset...</p>
 
-    <div style="width: 500px; height: 30px; border: 1px solid green;">
-        <div id="finalizing_progress" style="height: 100%; width: 0%; background-color: red;"></div>
+    <div class="progress" id="finalizing_progress_wrapper" style="width: 300px;">
+        <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="finalizing_progress" style="min-width:2em; height: 100%; width: 0%;"></div>
     </div>
+    
 </div>
 
 <div id="dataset_parser_settings_panel" style="position:relative;">

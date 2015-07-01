@@ -141,7 +141,6 @@ def dataset_list_page(request):
                            }))
 
     data = {
-        "user": user,
         "datasets": datasets,
         "next_page_url": next_page,
     }
@@ -258,17 +257,9 @@ def finalize_process(request, filename):
 
 
 def _get_finalize_status(request, filename, user):
-    data = get_upload_status(request, filename)
-
-    status = data["status"]
+    status = get_upload_status(request, filename)
     if status == 202:
-        response_data = {
-            "state": "finalizing",
-            "rows_total": data["values"]["rows_total"],
-            "rows_loaded": data["values"]["rows_loaded"],
-        }
-        return HttpResponse(json.dumps(response_data),
-                            content_type="application/json")
+        return HttpResponse("finalizing")
 
     elif status == 201:
         key1 = "ss_file_id_%s" % filename
@@ -286,11 +277,10 @@ def _get_finalize_status(request, filename, user):
         del request.session[key1]
         del request.session[key2]
 
-        response = HttpResponse('{ "state": "Done"}',
-                                content_type="application/json")
+        response = HttpResponse("Done")
         return response
     else:
-        print ("S: ", status)
+        print "S: ", status
 
 
 def _update_finalize_process(request, filename, user):
@@ -304,33 +294,17 @@ def _update_finalize_process(request, filename, user):
         if not os.path.exists(file_path):
             return HttpResponse("upload_complete")
         else:
-            session_key = "ss_max_chunk_%s" % filename
-            max_chunk = request.session.get(session_key, 0)
-
             append_upload_file(request, user, filename, chunk)
-
-            json_data = {
-                "state": "next_chunk",
-                "max": max_chunk,
-                "finished": chunk,
-            }
-            return HttpResponse(json.dumps(json_data),
-                                content_type="application/json")
+            return HttpResponse("next_chunk")
 
     if "finalize" in request.POST:
         name = request.POST["dataset_name"]
         description = request.POST["dataset_description"]
         is_public = request.POST["is_public"]
 
-        if is_public == "public":
-            is_public = True
-        else:
-            is_public = False
+        finalize_upload(request, filename, name, description)
 
-        finalize_upload(request, filename, name, description, is_public)
-
-        response = HttpResponse('{ "state": "finalizing"}',
-                                content_type="application/json")
+        response = HttpResponse("finalizing")
         return response
 
 
@@ -458,14 +432,8 @@ def _save_query(request, user):
     if errors:
         return _show_query_name_form(request, user, errors=errors)
 
-    try:
-        save_dataset_from_query(request, user["username"], name, sql,
-                                description,
-                                is_public)
-    except DataException as ex:
-        errors["sql"] = True
-        errors["sql_syntax"] = str(ex)
-        return _show_query_name_form(request, user, errors=errors)
+    save_dataset_from_query(request, user["username"], name, sql, description,
+                            is_public)
 
     return HttpResponseRedirect(reverse("dataset_detail",
                                         kwargs={"owner": user["username"],

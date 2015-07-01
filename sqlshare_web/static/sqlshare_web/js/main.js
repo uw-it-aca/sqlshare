@@ -38,7 +38,6 @@ function create_uploader() {
 
 function add_parser_form_events() {
     "use strict";
-    var PERCENTAGE_OF_FINALIZE_IN_UPLOAD = 10;
 
     function update_preview() {
         $("#update_preview").val("1");
@@ -71,20 +70,7 @@ function add_parser_form_events() {
     }
 
     function post_chunk_upload(data, text_status) {
-        if (data.state == "next_chunk") {
-            var finished = data.finished;
-            var max = data.max;
-
-            if (max) {
-                var base = finished / max;
-                var percent_to_fill = (PERCENTAGE_OF_FINALIZE_IN_UPLOAD / 100);
-                var scaled = base * percent_to_fill;
-                var total = 100 * scaled;
-
-                $("#finalizing_progress").css("width", total+"%");
-            }
-
-
+        if (data == "next_chunk") {
             current_file_chunk += 1;
             upload_next_chunk();
             return;
@@ -101,23 +87,10 @@ function add_parser_form_events() {
     function poll_finalize(data, text_status, xhr) {
         var filename = $("input[name='original_name']").val();
         var dataset_name = $("#id_dataset_name").val();
-        if (data.state == "Done") {
+        if (data == "Done") {
             window.location.href = "/detail/"+encodeURIComponent(sqlshare_user)+"/"+encodeURIComponent(dataset_name);
         }
         else {
-            var rows_total = data.rows_total,
-                rows_loaded = data.rows_loaded;
-
-            if (rows_total) {
-                // Finalizing is the last half - so we start at 50% here,
-                // then take half of this percentage...
-                var base = rows_loaded / rows_total;
-                var percent_to_fill = 1 - (PERCENTAGE_OF_FINALIZE_IN_UPLOAD / 100);
-                var scaled = base * percent_to_fill;
-                var total = 100 * (1 - percent_to_fill + scaled);
-
-                $("#finalizing_progress").css("width", total+"%");
-            }
             window.setTimeout(function() {
                 $.ajax({
                     url: "/upload/finalize_process/" + filename,
@@ -139,7 +112,7 @@ function add_parser_form_events() {
                 "finalize": true,
                 "dataset_name": $("input[name='dataset_name']").val(),
                 "dataset_description": $("textarea[name='dataset_description']").val(),
-                "is_public": $("input[name='is_public']").is(':checked') ? "public" : "private"
+                "is_public": $("input[name='is_public']").is(':checked')
             },
             success: poll_finalize
         });

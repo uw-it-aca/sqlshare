@@ -93,7 +93,6 @@ def oauth_access_token(request):
 
     if 'sqlshare_post_oauth_redirect' in request.session:
         redirect = request.session['sqlshare_post_oauth_redirect']
-        del request.session['sqlshare_post_oauth_redirect']
         response = HttpResponseRedirect(redirect)
     else:
         response = HttpResponseRedirect("%s" % settings.SQLSHARE_WEB_HOST)
@@ -106,8 +105,6 @@ def send_request(request, method, url, headers={}, body=None,
     # If we don't have an access token in our session, we need to get the
     # user to auth through the backend server
     if not request.session.get("sqlshare_access_token", None):
-        current_url = request.build_absolute_uri()
-        request.session["sqlshare_post_oauth_redirect"] = current_url
         raise OAuthNeededException(oauth_authorize())
 
     client = get_oauth_client()
