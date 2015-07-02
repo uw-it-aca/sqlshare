@@ -3,7 +3,6 @@ function create_uploader() {
     var r = new Resumable({
         target:'/upload_chunk/',
         simultaneousUploads: 1,
-        //chunkSize: 1,
         maxFiles: 1,
         query: {
             'csrfmiddlewaretoken': $("input[name='csrfmiddlewaretoken']").val()

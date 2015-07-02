@@ -418,7 +418,7 @@ def _update_session_file_tracking(request):
         chunk_number = request.GET['resumableChunkNumber']
 
     session_key = "ss_max_chunk_%s" % filename
-    current = request.session.get(session_key, 0)
+    current = int(request.session.get(session_key, 0))
 
     chunk_number = int(chunk_number)
     if chunk_number > current:
