@@ -59,6 +59,16 @@
     </div>
 </div> 
 
+{% if dataset.upload_errors %}
+<div id="dataset_upload_errors" class="sql-dataset-errors">
+    <p class="text-warning"><i class="fa fa-exclamation-triangle"></i> Your dataset contains errors which prevented some rows from being added.</p>
+    <div class="well">
+        <pre>
+        {{ dataset.upload_errors }}
+        </pre>
+    </div>
+</div>
+{% endif %}
     
 <div id="query_preview_panel" style="display: none;">
     <h3>Dataset Preview</h3>

@@ -82,6 +82,7 @@ function add_parser_form_events() {
                 var total = 100 * scaled;
 
                 $("#finalizing_progress").css("width", total+"%");
+                $("#finalizing_progress").attr("aria-valuenow", Math.round(total));
             }
 
 
@@ -117,6 +118,7 @@ function add_parser_form_events() {
                 var total = 100 * (1 - percent_to_fill + scaled);
 
                 $("#finalizing_progress").css("width", total+"%");
+                $("#finalizing_progress").attr("aria-valuenow", Math.round(total));
             }
             window.setTimeout(function() {
                 $.ajax({
