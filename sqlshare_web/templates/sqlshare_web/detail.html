@@ -104,17 +104,18 @@
         <h3 class="modal-title" id="myModalLabel">Share Dataset</h3>
       </div>
       <div class="modal-body">
-        <p class="text-muted">Enter UW NetID of users you want to share with!</p>
+        <p>You can share your data with anyone that has a valid UW NetID or Google Account.</p>
         
         <div class="form-group" id="user-autocomplete-container">
-            <label for="exampleInputEmail1">Email address</label>
-            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+            <label for="exampleInputEmail1">People:</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Enter UW NetID, Google Account or email address...">
         </div>
-
-        <div>
-            Users:
-            <div id="dataset_access_list">
-            </div>
+        
+        <p class="text-muted">Note: Email addresses not associated with a valid account will receive an invitation instead.</p>
+        
+        <div class="sql-shared-list">
+            <strong>Shared with:</strong>
+            <div id="dataset_access_list"></div>
         </div>
   
       </div>
