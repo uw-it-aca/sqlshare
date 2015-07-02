@@ -1,5 +1,5 @@
 from sqlshare_web.utils import send_request, get_file_path
-from sqlshare_web.exceptions import DataNotFoundException
+from sqlshare_web.exceptions import DataNotFoundException, DataException
 from sqlshare_web.exceptions import DataPermissionDeniedException
 from urllib import quote, urlencode
 import json
@@ -99,7 +99,7 @@ def make_dataset_snapshot(request, dataset, name, description, is_public):
     return "/detail/%s" % segment
 
 
-def get_parser_values(request, user, filename):
+def get_parser_values(request, user, filename, retry=False):
     session_key = "ss_file_id_%s" % filename
     if session_key not in request.session:
         path = get_file_path(user["username"], filename, "1")
@@ -125,6 +125,11 @@ def get_parser_values(request, user, filename):
     response = send_request(request, 'GET', parser_url,
                             {"Accept": "application/json"})
 
+    if response.status != 200:
+        if retry:
+            raise Exception("Unable to get parser values on retry")
+        del request.session[session_key]
+        return get_parser_values(request, user, filename, retry=True)
     data = json.loads(response.content)
 
     return {
@@ -150,7 +155,7 @@ def append_upload_file(request, user, filename, chunk):
                             body=data)
 
 
-def finalize_upload(request, filename, name, description):
+def finalize_upload(request, filename, name, description, is_public):
     session_key = "ss_file_id_%s" % filename
 
     upload_id = request.session[session_key]
@@ -158,6 +163,7 @@ def finalize_upload(request, filename, name, description):
 
     data = json.dumps({"dataset_name": name,
                        "description": description,
+                       "is_public": is_public,
                        })
 
     response = send_request(request, 'POST', url,
@@ -178,7 +184,13 @@ def get_upload_status(request, filename):
                              },
                             )
 
-    return response.status
+    values = json.loads(response.content)
+
+    data = {
+        "status": response.status,
+        "values": values,
+    }
+    return data
 
 
 def update_parser_values(request, user, filename, delimiter, has_header_row):
@@ -208,6 +220,9 @@ def save_dataset_from_query(request, owner, name, sql, description, is_public):
     response = send_request(request, 'PUT', url,
                             {"Accept": "application/json"},
                             json.dumps(data))
+
+    if response.status == 400:
+        raise DataException(response.content)
 
     data = json.loads(response.content)
 
