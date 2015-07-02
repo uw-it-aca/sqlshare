@@ -340,9 +340,9 @@ def upload_parser(request, filename):
     except OAuthNeededException as ex:
         return ex.redirect
 
-    key1 = "ss_file_id_%s" % filename
-    if key1 not in request.session:
-        return Http404()
+#    key1 = "ss_file_id_%s" % filename
+#    if key1 not in request.session:
+#        return Http404()
 
     if request.META['REQUEST_METHOD'] == "POST":
         has_header_row = request.POST.get("has_header", False)
@@ -392,11 +392,7 @@ def _save_upload_chunk(request, user):
                               chunk_number,
                               )
 
-    session_key = "ss_max_chunk_%s" % file_name
-    current = request.session.get(session_key, 0)
-
-    if chunk_number > current:
-        request.session[session_key] = chunk_number
+    _update_session_file_tracking(request)
 
     if not os.path.exists(os.path.dirname(file_path)):
         try:
@@ -413,15 +409,36 @@ def _save_upload_chunk(request, user):
     return HttpResponse("")
 
 
+def _update_session_file_tracking(request):
+    if request.META["REQUEST_METHOD"] == "POST":
+        filename = request.POST['resumableFilename']
+        chunk_number = request.POST['resumableChunkNumber']
+    else:
+        filename = request.GET['resumableFilename']
+        chunk_number = request.GET['resumableChunkNumber']
+
+    session_key = "ss_max_chunk_%s" % filename
+    current = request.session.get(session_key, 0)
+
+    chunk_number = int(chunk_number)
+    if chunk_number > current:
+        request.session[session_key] = chunk_number
+
+
 def _check_upload_chunk(request, user):
+    filename = request.GET['resumableFilename']
     file_path = get_file_path(user["username"],
-                              request.GET['resumableFilename'],
+                              filename,
                               request.GET['resumableChunkNumber'],
                               )
 
     response = HttpResponse("")
     if not os.path.exists(file_path):
         raise Http404("")
+
+    # If the file is on disk, but the session is new, we need to update the
+    # max chunk here as well...
+    _update_session_file_tracking(request)
 
     return response
 
