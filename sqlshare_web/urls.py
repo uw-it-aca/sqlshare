@@ -53,5 +53,6 @@ urlpatterns = patterns(
     url(r'^dataset_list/next_page', 'sqlshare_web.views.dataset_list_page'),
     url(r'^run_download/', 'sqlshare_web.views.run_download'),
     url(r'^oauth/', 'sqlshare_web.views.oauth_return'),
+    url(r'^logout', 'sqlshare_web.views.logout'),
 
 )

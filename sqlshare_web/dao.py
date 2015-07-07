@@ -1,4 +1,5 @@
 from sqlshare_web.utils import send_request, get_file_path
+from sqlshare_web.utils import get_full_backend_url
 from sqlshare_web.exceptions import DataNotFoundException, DataException
 from sqlshare_web.exceptions import DataPermissionDeniedException
 from urllib import quote, urlencode
@@ -361,3 +362,12 @@ def get_download_token_for_query(request, query_id):
     response = send_request(request, 'POST', url)
 
     return json.loads(response.content)
+
+
+def get_backend_logout_url(request):
+    """
+    Gets a url for the user that will clear their rest server session.
+    """
+    response = send_request(request, 'GET', '/v3/user/logout', {})
+    data = json.loads(response.content)
+    return get_full_backend_url(data["url"])

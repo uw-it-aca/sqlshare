@@ -3,6 +3,7 @@ from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response, redirect
 from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.contrib.auth import logout as django_logout
 
 from sqlshare_web.utils import oauth_access_token
 from sqlshare_web.utils import get_or_create_user, OAuthNeededException
@@ -21,7 +22,7 @@ from sqlshare_web.dao import update_dataset_permissions
 from sqlshare_web.dao import get_dataset_permissions
 from sqlshare_web.dao import make_dataset_snapshot
 from sqlshare_web.dao import get_recent_queries, cancel_query_by_id
-from sqlshare_web.dao import init_sql_download
+from sqlshare_web.dao import init_sql_download, get_backend_logout_url
 from sqlshare_web.exceptions import DataPermissionDeniedException
 from sqlshare_web.exceptions import DataException
 
@@ -702,3 +703,16 @@ def run_download(request):
     response["Location"] = download_url
 
     return response
+
+
+def logout(request):
+    if request.META["REQUEST_METHOD"] != "POST":
+        return HttpResponse("")
+
+    backend_logout_url = get_backend_logout_url(request)
+
+    # Delete our local session
+    django_logout(request)
+    # Go to the backend url to delete that session (if it exists)
+
+    return HttpResponseRedirect(backend_logout_url)

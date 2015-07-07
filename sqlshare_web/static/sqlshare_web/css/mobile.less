@@ -8,6 +8,16 @@
     
     .sql-user-name { padding-right: 20px; visibility: hidden; }
     .sql-menu-button { position: absolute; top:5px; left:0; font-size: 26px; color: @asbestos; }
+    
+    .sql-user-dropdown { 
+        .dropdown-menu { width: 200px; font-size: 13px;
+            .divider { margin: 0; }
+            .sql-signed-in { padding: 10px; font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; color: #666; }
+            .sql-logout { padding: 10px;
+                input[type=submit] { padding: 0; font-size: 13px; color: #d9534f; text-decoration: none; text-transform: uppercase;  }
+            }
+        }
+    }
 }
 
 .sql-sidebar { max-height: 500px; overflow-y: hidden; font-family: 'Oswald', sans-serif;  font-size: 16px; font-weight: 300; color: #999; text-transform: uppercase;

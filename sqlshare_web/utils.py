@@ -168,3 +168,9 @@ def get_file_path(username, file_name, chunk):
                         username,
                         hashlib.md5(file_name).hexdigest(),
                         chunk)
+
+
+def get_full_backend_url(url):
+    host = _get_sqlshare_host()
+
+    return host + url
