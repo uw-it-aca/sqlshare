@@ -63,7 +63,7 @@
                     .sql-user-name { position: absolute; top:0; right: 0; padding-right:10px; font-size: 18px; font-weight: 300; line-height: 56px; color: @base; }
                     
                     .sql-user-dropdown { text-transform: none; font-weight: 300; position:absolute; right:10px; top:0;
-                        button { height:66px; width:35px; font-size:20px; padding:0; } 
+                        button { height:66px; width:35px; font-size:18px; padding:0; } 
                         .glyphicon-user { color: @asphault; }
                     }
                 
@@ -151,6 +151,7 @@
             
             <div class="dropdown sql-user-dropdown">
               <button id="dLabel" class="btn btn-link" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="sql-user-name">{{ user.username }}</span>
                 <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
               </button>
               <ul class="dropdown-menu pull-right" aria-labelledby="dLabel">
