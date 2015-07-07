@@ -361,3 +361,10 @@ def get_download_token_for_query(request, query_id):
     response = send_request(request, 'POST', url)
 
     return json.loads(response.content)
+
+
+def get_backend_logout_url(request):
+    """
+    Gets a url for the user that will clear their rest server session.
+    """
+    raise Exception("Not implemented")
