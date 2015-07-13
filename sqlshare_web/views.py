@@ -51,7 +51,7 @@ def dataset_list(request, list_type):
 
     next_page = "%s?%s" % (reverse("sqlshare_web.views.dataset_list_page"),
                            urlencode({
-                            "page": 50,
+                            "page": 2,
                             "q": q,
                             "list_type": list_type,
                            }))

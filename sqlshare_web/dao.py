@@ -8,7 +8,7 @@ import re
 
 
 def get_datasets(request, page=1, query=None, list_type="yours"):
-    page_size = 2
+    page_size = 50
     order_by = "updated"
 
     input_data = {"page": page,
