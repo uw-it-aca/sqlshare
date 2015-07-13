@@ -41,6 +41,14 @@ var prep_details_page = (function() {
 
     }
 
+    function show_update_message() {
+        $("#update_dataset_message").fadeIn();
+
+        window.setTimeout(function() {
+            $("#update_dataset_message").fadeOut();
+        }, 2000);
+    }
+
     function update_sql() {
         var sql = code_mirror.getValue();
 
@@ -51,6 +59,7 @@ var prep_details_page = (function() {
                 "dataset_sql": sql,
                 'csrfmiddlewaretoken': $("input[name='csrfmiddlewaretoken']").val()
             },
+            success: show_update_message,
         });
 
     }
