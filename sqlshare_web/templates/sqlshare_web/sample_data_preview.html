@@ -39,9 +39,11 @@
         {% csrf_token %}
         <input type="hidden" name="sql" value="{{ derive_dataset_sql }}" />
         <input type="hidden" name="show_initial" value="1" />
+        {% if not is_query %}
         <button type="button" class="btn btn-default btn-sm" id="new_dataset_derive"><i class="fa fa-code-fork"></i> <span>DERIVE</span></button>
         </form>
         <a href="{{ snapshot_url }}" class="btn btn-default btn-sm"><i class="fa fa-camera"></i> <span>SNAPSHOT</span></a>
+        {% endif %}
     </div>
     
     {% endif %}

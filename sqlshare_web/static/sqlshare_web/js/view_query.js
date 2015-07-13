@@ -17,6 +17,8 @@ var prep_query_details_page = (function() {
         $("#new_dataset_from_query").on("click", create_new_dataset_from_query);
         // defined in run_query.js
         code_mirror = prep_polling_query();
+
+        return code_mirror;
     }
 
     return add_events;

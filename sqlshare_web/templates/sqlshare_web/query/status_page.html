@@ -42,11 +42,15 @@
 <div style="position:relative;" id="original_results_panel" >
     <h3>Query Preview</h3>
     
-    {% include "sqlshare_web/sample_data_preview.html" with dataset=query %}
+    {% include "sqlshare_web/sample_data_preview.html" with dataset=query is_query=True %}
 </div>
+<div id="download_container"></div>
 
 <script>
-    document.body.onload = function() { prep_query_details_page(); };
+    document.body.onload = function() {
+        var code_mirror = prep_query_details_page();
+        prep_download(code_mirror);
+    };
 </script>
 
 
