@@ -2,6 +2,7 @@ from sqlshare_web.utils import send_request, get_file_path
 from sqlshare_web.utils import get_full_backend_url
 from sqlshare_web.exceptions import DataNotFoundException, DataException
 from sqlshare_web.exceptions import DataPermissionDeniedException
+from django.core.urlresolvers import reverse
 from urllib import quote, urlencode
 import json
 import re
@@ -371,3 +372,18 @@ def get_backend_logout_url(request):
     response = send_request(request, 'GET', '/v3/user/logout', {})
     data = json.loads(response.content)
     return get_full_backend_url(data["url"])
+
+
+def add_sharing_url_access(request, token):
+    """
+    Adds access to a dataset via a sharing url.
+    Returns the url for the dataset.
+    """
+    url = '/v3/db/token/%s' % token
+
+    response = send_request(request, 'POST', url)
+
+    data = json.loads(response.content)
+
+    return reverse("dataset_detail", kwargs={"owner": data["owner"],
+                                             "name": data["name"]})
