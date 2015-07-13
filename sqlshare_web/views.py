@@ -23,6 +23,7 @@ from sqlshare_web.dao import get_dataset_permissions
 from sqlshare_web.dao import make_dataset_snapshot
 from sqlshare_web.dao import get_recent_queries, cancel_query_by_id
 from sqlshare_web.dao import init_sql_download, get_backend_logout_url
+from sqlshare_web.dao import add_sharing_url_access
 from sqlshare_web.exceptions import DataPermissionDeniedException
 from sqlshare_web.exceptions import DataException
 
@@ -716,3 +717,17 @@ def logout(request):
     # Go to the backend url to delete that session (if it exists)
 
     return HttpResponseRedirect(backend_logout_url)
+
+
+def sharing_url(request, token):
+    try:
+        user = get_or_create_user(request)
+    except OAuthNeededException as ex:
+        return ex.redirect
+
+    url = add_sharing_url_access(request, token)
+
+    if not url:
+        raise Http404()
+
+    return HttpResponseRedirect(url)
