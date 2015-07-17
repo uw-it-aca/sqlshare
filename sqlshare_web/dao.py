@@ -239,6 +239,7 @@ def enqueue_sql_statement(request, sql):
 
     data = {
         "sql": sql,
+        "is_preview": True,
     }
 
     response = send_request(request, 'POST', url,
