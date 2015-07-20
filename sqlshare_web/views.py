@@ -356,11 +356,12 @@ def upload_parser(request, filename):
 
     try:
         parser_values = get_parser_values(request, user, filename)
+        parser_values["is_public"] = True
 
         if request.META['REQUEST_METHOD'] == "POST":
             parser_values["new_name"] = request.POST["dataset_name"]
             parser_values["description"] = request.POST["dataset_description"]
-            parser_values["is_public"] = request.POST["is_public"]
+            parser_values["is_public"] = request.POST.get("is_public", False)
 
         if "new_name" not in parser_values or parser_values["new_name"] == "":
             parser_values["new_name"] = filename
