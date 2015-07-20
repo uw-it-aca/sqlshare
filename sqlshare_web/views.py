@@ -543,9 +543,6 @@ def run_query(request):
     """
     sql = request.POST.get("sql", "")
 
-    if not sql:
-        return
-
     data = enqueue_sql_statement(request, sql)
 
     url = data["url"]
