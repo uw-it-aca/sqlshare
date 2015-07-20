@@ -31,7 +31,7 @@
     
     <div class="checkbox">
         <label>
-          <input type="checkbox" name="is_public" value="1" checked="checked" /> Is Public
+          <input type="checkbox" name="is_public" value="1" {% if is_public %}checked="checked"{% endif %} /> Is Public
         </label>
     </div>
             

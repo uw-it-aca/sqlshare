@@ -356,14 +356,18 @@ def upload_parser(request, filename):
 
     try:
         parser_values = get_parser_values(request, user, filename)
+        parser_values["is_public"] = True
 
         if request.META['REQUEST_METHOD'] == "POST":
             parser_values["new_name"] = request.POST["dataset_name"]
             parser_values["description"] = request.POST["dataset_description"]
-            parser_values["is_public"] = request.POST["is_public"]
+            parser_values["is_public"] = request.POST.get("is_public", False)
 
         if "new_name" not in parser_values or parser_values["new_name"] == "":
             parser_values["new_name"] = filename
+
+        if parser_values["parser_values"]["parser"]["delimiter"] == "\t":
+            parser_values["parser_values"]["parser"]["delimiter"] = "TAB"
 
         parser_values["user"] = user
         parser_values["filename"] = filename
@@ -538,9 +542,6 @@ def run_query(request):
     the state or result of the query.
     """
     sql = request.POST.get("sql", "")
-
-    if not sql:
-        return
 
     data = enqueue_sql_statement(request, sql)
 
