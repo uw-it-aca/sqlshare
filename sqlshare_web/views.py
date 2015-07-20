@@ -366,6 +366,9 @@ def upload_parser(request, filename):
         if "new_name" not in parser_values or parser_values["new_name"] == "":
             parser_values["new_name"] = filename
 
+        if parser_values["parser_values"]["parser"]["delimiter"] == "\t":
+            parser_values["parser_values"]["parser"]["delimiter"] = "TAB"
+
         parser_values["user"] = user
         parser_values["filename"] = filename
         return render_to_response('sqlshare_web/upload/parser.html',
