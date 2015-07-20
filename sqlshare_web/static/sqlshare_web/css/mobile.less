@@ -5,9 +5,6 @@
 @clouds: #ecf0f1;
                 
 
-.tt-hint { visibility: hidden; }
-.tt-cursor { background-color: @clouds; }
-
 .sql-header { position: relative; text-align: center;  
     
     .sql-user-name { padding-right: 20px; visibility: hidden; }
@@ -192,8 +189,9 @@
     .tt-suggestion { }
     .tt-empty { }
     .tt-open { }
-    .tt-cursor { }
+    .tt-cursor { background: @clouds; }
     .tt-highlight { background: yellow; }
+    .tt-hint { visibility: hidden; }
 }
 
 /* jscroll + bootstrap overrides */
