@@ -124,7 +124,7 @@ function add_parser_form_events() {
                 $.ajax({
                     url: "/upload/finalize_process/" + filename,
                     method: "GET",
-                    success: poll_finalize
+                    success: poll_finalize,
                 });
             }, 1000);
 
