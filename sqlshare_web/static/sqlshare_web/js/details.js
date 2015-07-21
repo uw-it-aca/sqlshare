@@ -186,9 +186,9 @@ var prep_details_page = (function() {
         $("#new_dataset_by_derive_form").submit();
     }
 
-    function add_events() {
+    function add_events(preview_query_id) {
         // defined in run_query.js
-        code_mirror = prep_polling_query();
+        code_mirror = prep_polling_query(null, preview_query_id);
         $("#run_query").on("click", function() { $("#update_dataset_sql").show(); });
         $("#update_dataset_sql").on("click", update_sql);
         $("#make_dataset_public").on("click", make_public);

@@ -150,7 +150,11 @@
     
 <script>
     document.body.onload = function() {
+        {% if dataset.sample_data_query_id %}
+        var code_mirror = prep_details_page({{ dataset.sample_data_query_id }});
+        {% else %}
         var code_mirror = prep_details_page();
+        {% endif %}
         prep_download(code_mirror);
     };
 </script>
