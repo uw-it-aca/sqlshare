@@ -96,7 +96,6 @@ var prep_polling_query = (function() {
     function add_events(code_mirror, preview_query_id) {
         codemirror = code_mirror;
 
-        console.log("Initial query id: ", preview_query_id);
         $("#run_query").on("click", start_query);
 
         codemirror = CodeMirror.fromTextArea(document.getElementById("query_sql"), {
