@@ -261,14 +261,6 @@ def finalize_process(request, filename):
 
 def _get_finalize_status(request, filename, user):
     data = get_upload_status(request, filename)
-    key1 = "ss_file_id_%s" % filename
-    key2 = "ss_max_chunk_%s" % filename
-
-    if key1 not in request.session:
-        raise Http404()
-
-    if key2 not in request.session:
-        raise Http404()
 
     status = data["status"]
     if status == 202:
@@ -350,14 +342,9 @@ def upload_parser(request, filename):
     except OAuthNeededException as ex:
         return ex.redirect
 
-    key1 = "ss_file_id_%s" % filename
-    key2 = "ss_max_chunk_%s" % filename
-
-    if key1 not in request.session:
-        return HttpResponseRedirect(reverse("dataset_upload"))
-
-    if key2 not in request.session:
-        return HttpResponseRedirect(reverse("dataset_upload"))
+#    key1 = "ss_file_id_%s" % filename
+#    if key1 not in request.session:
+#        return Http404()
 
     if request.META['REQUEST_METHOD'] == "POST":
         has_header_row = request.POST.get("has_header", False)
