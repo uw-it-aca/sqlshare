@@ -37,7 +37,9 @@
     
     <h3>SQL Query</h3>
     
-    <div class="form-group">
+    <div class="form-group" id="query_sql_form_group">
+        <div class="control-label" id="save_query_sql_error" style="display: none;">
+        </div>
         <label for="query_sql" class="sr-only">SQL Query:</label>    
         <textarea id="query_sql" name='dataset_sql' class="well" style="background:#fff;">{{ dataset.sql_code }}</textarea>
     </div>

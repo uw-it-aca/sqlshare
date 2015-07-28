@@ -41,8 +41,16 @@ var prep_details_page = (function() {
 
     }
 
+    function show_sql_error(xhr) {
+        $("#save_query_sql_error").text(xhr.responseText);
+        $("#query_sql_form_group").addClass("has-error");
+        $("#save_query_sql_error").show();
+    }
+
     function update_sql() {
         var sql = code_mirror.getValue();
+        $("#save_query_sql_error").hide();
+        $("#query_sql_form_group").removeClass("has-error");
 
         $.ajax({
             type: "POST",
@@ -51,6 +59,7 @@ var prep_details_page = (function() {
                 "dataset_sql": sql,
                 'csrfmiddlewaretoken': $("input[name='csrfmiddlewaretoken']").val()
             },
+            error: show_sql_error
         });
 
     }

@@ -590,7 +590,12 @@ def patch_dataset_sql(request, owner, name):
         raise Http404("Dataset Not Found")
 
     sql = request.POST["dataset_sql"]
-    update_dataset_sql(request, dataset, sql)
+    try:
+        update_dataset_sql(request, dataset, sql)
+    except DataException as ex:
+        r = HttpResponse(str(ex))
+        r.status_code = 400
+        return r
 
     return HttpResponse("")
 

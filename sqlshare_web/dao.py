@@ -68,6 +68,9 @@ def update_dataset_sql(request, dataset, sql):
     response = send_request(request, 'PATCH', url,
                             {"Accept": "application/json"}, body=data)
 
+    if response.status == 400:
+        raise DataException(response.content)
+
 
 def update_dataset_description(request, dataset, description):
     url = '/v3/db/dataset/%s/%s' % (quote(dataset["owner"]),
