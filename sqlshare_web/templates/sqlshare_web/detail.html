@@ -75,22 +75,49 @@
 </div>
 {% endif %}
     
-<div id="query_preview_panel" style="display: none;">
+<div id="query_preview_panel" style="position:relative; display: none;">
+    
     <h3>Dataset Preview</h3>
 
     <div id="query_running_panel" class="well" style="display: none;">
         <p class="text-muted"><i class="fa fa-circle-o-notch fa-spin"></i> Running query...</p>
     </div>
-    <div id="query_results_panel" class="well" style="display: none;"></div>
-
+    <div id="query_results_panel" class="well table-responsive" style="display: none;"></div>
+    
+    <div class="sql-dataset-actions">
+        <button type="button" class="btn btn-default btn-sm" id="download_query"><i class="fa fa-download"></i> <span>DOWNLOAD</span></button>
+        <form action="/new/" method="POST" id="new_dataset_by_derive_form">
+        {% csrf_token %}
+        <input type="hidden" name="sql" value="{{ derive_dataset_sql }}" />
+        <input type="hidden" name="show_initial" value="1" />
+        {% if not is_query %}
+        <button type="button" class="btn btn-default btn-sm" id="new_dataset_derive"><i class="fa fa-code-fork"></i> <span>DERIVE</span></button>
+        </form>
+        <a href="{{ snapshot_url }}" class="btn btn-default btn-sm"><i class="fa fa-camera"></i> <span>SNAPSHOT</span></a>
+        {% endif %}
+    </div>
+    
 </div>
     
 
-<div style="position:relative;" id="original_results_panel">
+<div id="original_results_panel" style="position:relative;">
     
     <h3>Dataset Preview</h3>
     
     {% include "sqlshare_web/sample_data_preview.html" %}
+    
+    <div class="sql-dataset-actions">
+        <button type="button" class="btn btn-default btn-sm" id="download_query"><i class="fa fa-download"></i> <span>DOWNLOAD</span></button>
+        <form action="/new/" method="POST" id="new_dataset_by_derive_form">
+        {% csrf_token %}
+        <input type="hidden" name="sql" value="{{ derive_dataset_sql }}" />
+        <input type="hidden" name="show_initial" value="1" />
+        {% if not is_query %}
+        <button type="button" class="btn btn-default btn-sm" id="new_dataset_derive"><i class="fa fa-code-fork"></i> <span>DERIVE</span></button>
+        </form>
+        <a href="{{ snapshot_url }}" class="btn btn-default btn-sm"><i class="fa fa-camera"></i> <span>SNAPSHOT</span></a>
+        {% endif %}
+    </div>
     
 </div>
 
