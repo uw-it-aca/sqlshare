@@ -164,11 +164,14 @@
   </div>
 </div>  
 <div id="download_container"></div>
-    
+
 <script>
     document.body.onload = function() {
         {% if dataset.sample_data_query_id %}
         var code_mirror = prep_details_page({{ dataset.sample_data_query_id }});
+        {% elif not dataset.sample_data_query_id and not dataset.sample_data_error %}
+        // Snapshots don't start w/ a preview query id, so poll on their name
+        var code_mirror = prep_details_page("snapshot_{{ dataset.owner}}/{{ dataset.name }}");
         {% else %}
         var code_mirror = prep_details_page();
         {% endif %}

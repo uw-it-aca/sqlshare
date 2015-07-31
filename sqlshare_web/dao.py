@@ -299,7 +299,25 @@ def get_query_data(request, query_id):
     """
     Get the status of a running or finished query, by query id.  The query id
     comes from the data in enqueue_sql_statement.
+
+    Can also get the preview query data by dataset name, if the query_id is
+    of the format snapshot_<owner>/<dataset_name>
     """
+
+    matches = re.match("snapshot_(.+?)/(.+)", query_id)
+    if matches:
+        owner = matches.group(1)
+        name = matches.group(2)
+        dataset = get_dataset(request, owner, name)
+
+        if dataset and dataset["sample_data_query_id"]:
+            qid = str(dataset["sample_data_query_id"])
+            return get_query_data(request, qid)
+
+        return {
+            "is_finished": False
+        }
+
     url = '/v3/db/query/%s' % query_id
 
     response = send_request(request, 'GET', url)
