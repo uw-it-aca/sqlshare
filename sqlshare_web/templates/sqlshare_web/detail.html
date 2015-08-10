@@ -169,7 +169,7 @@
     document.body.onload = function() {
         {% if dataset.sample_data_query_id %}
         var code_mirror = prep_details_page({{ dataset.sample_data_query_id }});
-        {% elif not dataset.sample_data_query_id and not dataset.sample_data_error %}
+        {% elif not dataset.sample_data_query_id and not dataset.sample_data_error and dataset.sample_data_status == "working" %}
         // Snapshots don't start w/ a preview query id, so poll on their name
         var code_mirror = prep_details_page("snapshot_{{ dataset.owner}}/{{ dataset.name }}");
         {% else %}
