@@ -104,6 +104,7 @@ var prep_polling_query = (function() {
             autoMatchParens: true,
             mode:  "text/x-mssql",
             lineNumbers: true,
+            viewportMargin: Infinity,
             smartIndent: true,
             extraKeys: {
                 Tab: false
