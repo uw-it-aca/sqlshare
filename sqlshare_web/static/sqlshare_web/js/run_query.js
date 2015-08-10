@@ -51,6 +51,7 @@ var prep_polling_query = (function() {
     }
 
     function start_preview_polling(query_id) {
+        reset_polling_delay();
         show_polling_query_elements();
         current_timeout = window.setTimeout(function() {
             current_process = $.ajax({
