@@ -38,59 +38,7 @@
         
         {% compress css inline %}
             <!-- critical css (above the fold styles) -->
-            <style rel="stylesheet" type="text/less">
-                
-                @base: #2980b9;
-                @asphault: #34495e;
-                
-                @asbestos: #7f8c8d;
-                @clouds: #ecf0f1;
-                
-                body { margin: 0; background: @clouds !important; }
-                                
-                .sql-header { background: #fff; border-top: solid 10px @base; border-bottom: solid 1px #d0d1d5; height: 76px; position: relative; text-transform: uppercase; font-family: 'Oswald', sans-serif;
-                    
-                    h1 { margin: 0 10px; line-height: 66px; height:66px; font-weight: 400; font-size: 35px; 
-                        
-                        a { text-decoration: none; color: darken(@base,1%); 
-                            &:hover { text-decoration: none; }
-                            span { color: @asphault; }
-                        }
-                        
-                        .logo-beta { font-size: 14px; color: #d9534f; }
-                    }
-                    
-                    .sql-user-name { position: absolute; top:0; right: 0; padding-right:10px; font-size: 18px; font-weight: 300; line-height: 56px; color: @base; }
-                    
-                    .sql-user-dropdown { text-transform: none; font-weight: 300; position:absolute; right:10px; top:0;
-                        button { height:66px; width:35px; font-size:18px; padding:0; } 
-                        .glyphicon-user { color: @asphault; }
-                    }
-                
-                }
-                
-                .sql-content { margin: 0; background: #fff;
-                    
-                    .sql-content-inner { padding: 10px; 
-                                
-                        .sql-search-bar {  background: @clouds; margin: -10px; padding: 10px; margin-bottom: 0;
-                            button { text-transform: uppercase; font-family: 'Oswald', sans-serif; font-weight: 400; }
-                        }
-                    
-                    }
-                    
-                    h2 {  font-family: 'Oswald', sans-serif; text-transform: uppercase; font-weight: 400; font-size: 20px; position: relative; color: @asphault;
-                        span { position: absolute; right: 0; font-size: 14px; font-weight: 300; }
-                    }
-                    
-                    h3 { text-transform: uppercase; font-family: 'Oswald', sans-serif; font-weight: 400; font-size: 16px; color: @asbestos;}
-                   
-                    .sql-new-query-textarea { resize: vertical; }
-                    
-                }
-                                
-            </style>
-            
+            <link rel="stylesheet" href="{% static "sqlshare_web/css/inline.less" %}" type="text/less">            
         {% endcompress %}
                 
         {% if request.is_mobile %}
