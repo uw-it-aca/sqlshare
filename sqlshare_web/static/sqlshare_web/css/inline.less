@@ -1,0 +1,48 @@
+@base: #2980b9;
+@asphault: #34495e;
+
+@asbestos: #7f8c8d;
+@clouds: #ecf0f1;
+
+body { margin: 0; background: @clouds !important; }
+                
+.sql-header { position: relative; height: 76px; font-family: 'Oswald', sans-serif; text-transform: uppercase; background: #fff; border-top: solid 10px @base; border-bottom: solid 1px #d0d1d5;   
+    
+    h1 { height:66px; margin: 0 10px; font-size: 35px; font-weight: 400; line-height: 66px;
+        
+        a { color: darken(@base,1%); text-decoration: none;  
+            &:hover { text-decoration: none; }
+            span { color: @asphault; }
+        }
+        
+        .logo-beta { font-size: 14px; color: #d9534f; }
+    }
+    
+    .sql-user-name { position: absolute; top:0; right: 0; padding-right:10px; font-size: 18px; font-weight: 300; line-height: 56px; color: @base; }
+    
+    .sql-user-dropdown { position:absolute; top:0; right:10px; font-weight: 300; text-transform: none;  
+        button { width:35px; height:66px; padding:0;font-size:18px;  } 
+        .glyphicon-user { color: @asphault; }
+    }
+
+}
+
+.sql-content { margin: 0; background: #fff;
+    
+    .sql-content-inner { padding: 10px; 
+                
+        .sql-search-bar { padding: 10px;  margin: -10px; margin-bottom: 0; background: @clouds; 
+            button { font-family: 'Oswald', sans-serif; font-weight: 400; text-transform: uppercase; }
+        }
+    
+    }
+    
+    h2 { position: relative; font-family: 'Oswald', sans-serif; font-size: 20px; font-weight: 400; color: @asphault;text-transform: uppercase;
+        span { position: absolute; right: 0; font-size: 14px; font-weight: 300; }
+    }
+    
+    h3 { font-family: 'Oswald', sans-serif;  font-size: 16px; font-weight: 400; color: @asbestos; text-transform: uppercase; }
+   
+    .sql-new-query-textarea { resize: vertical; }
+    
+}
