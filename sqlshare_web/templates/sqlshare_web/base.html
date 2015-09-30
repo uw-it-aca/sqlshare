@@ -13,24 +13,8 @@
         {% load staticfiles %}
         {% load compress %}
         
-        <!-- favicon and mobile device icons-->
-        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{% static "vendor/ico/apple-touch-icon-144x144-precomposed.png" %}">
-        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{% static "vendor/ico/apple-touch-icon-114x114-precomposed.png" %}">
-        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{% static "vendor/ico/apple-touch-icon-72x72-precomposed.png" %}">
-        <link rel="apple-touch-icon-precomposed" sizes="57x57" href="{% static "vendor/ico/apple-touch-icon-57x57-precomposed.png" %}"> 
-        <link rel="shortcut icon" href="{% static "vendor/ico/favicon.ico" %}">
-        
-        <!-- windows8 - tile icon  & color -->
-        <meta name="msapplication-TileImage" content="{% static "vendor/ico/apple-touch-icon-144x144-precomposed.png" %}">
-        <meta name="msapplication-TileColor" content="#222222">
-        
-        <!-- ios webapps - delete if not needed -->
-        <!--
-        <meta name="apple-touch-fullscreen" content="yes" />
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black">
-        <meta name="apple-mobile-web-app-title" content="">
-        -->
+        <!-- favicon -->
+        <link rel="shortcut icon" href="{% static "sqlshare_web/ico/escience_favicon.ico" %}">
         
         <!-- webfonts -->
         <link href='//fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
@@ -126,14 +110,17 @@
                     <li><a href="/shared{% if current_query %}?q={{ current_query }}{% endif %}">Shared</a></li>
                     
                 </ul>
+                
+                <ul style="font-weight:400;">
+                    <li><a href="/upload">Upload Dataset</a></li>
+                    <li><a href="/new">New Query</a></li>
+                </ul>
+                
                 <ul>
                     <li><a href="/recent{% if current_query %}?q={{ current_query }}{% endif %}">Recent Datasets</a></li>
                     <li><a href="/queries/">Recent Queries</a></li>
                 </ul>
-                <ul>
-                    <li><a href="/upload">Upload Dataset</a></li>
-                    <li><a href="/new">New Query</a></li>
-                </ul>
+                
             </div>
         </div>       
                 
