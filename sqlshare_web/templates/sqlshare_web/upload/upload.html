@@ -10,12 +10,11 @@
 
 <div id="chunk_upload_container">
     {% csrf_token %}
-    
+
     <div id="upload_dataset_droptarget" class="sql-upload-target">
        <div class="sql-upload-link">Drag and drop a single file here <br/>or <a href="#" id="upload_dataset_browse">select from computer</a></div>
     </div>
     <p class="text-muted">Accepted file types: Comma-separated values (.csv) and Plain text (.txt)</p>
-    
 </div>
 
 <div id="uploading_panel" style="display: none;">
@@ -29,6 +28,10 @@
 Your browser doesn't support html5 file uploading.  We're figuring out an option for you.
 </div>
 
+
+<div id="long_upload_panel">
+    <p class="text-danger">Your dataset upload is taking longer than usual. You are free to continue using other parts of the app. We will email you when your dataset has finished.</p>
+</div>
 
 <script>
     document.body.onload = function() {
