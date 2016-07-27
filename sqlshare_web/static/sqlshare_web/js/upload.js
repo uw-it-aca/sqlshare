@@ -1,3 +1,5 @@
+SLOW_UPLOAD_TIME = 15000;
+
 function create_uploader() {
     "use strict";
     var r = new Resumable({
@@ -147,6 +149,8 @@ function add_parser_form_events() {
             },
             success: poll_finalize
         });
+
+        window.setTimeout(function() { $("#long_upload_panel").show(); }, SLOW_UPLOAD_TIME);
 
     }
 
