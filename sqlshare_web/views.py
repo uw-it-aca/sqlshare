@@ -259,6 +259,13 @@ def finalize_process(request, filename):
         return _update_finalize_process(request, filename, user)
 
 
+def _clear_upload_session(request, filename):
+        key1 = "ss_file_id_%s" % filename
+        key2 = "ss_max_chunk_%s" % filename
+        del request.session[key1]
+        del request.session[key2]
+
+
 def _get_finalize_status(request, filename, user):
     data = get_upload_status(request, filename)
 
@@ -285,14 +292,16 @@ def _get_finalize_status(request, filename, user):
 
             os.remove(file_path)
 
-        del request.session[key1]
-        del request.session[key2]
+        _clear_upload_session(request, filename)
 
         response = HttpResponse('{ "state": "Done"}',
                                 content_type="application/json")
         return response
     else:
-        print ("S: ", status)
+        response = HttpResponse(json.dumps({ "state": "Error",
+                                             "msg": data["values"]}),
+                                content_type="application/json")
+        return response
 
 
 def _update_finalize_process(request, filename, user):

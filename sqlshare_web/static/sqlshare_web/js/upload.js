@@ -1,4 +1,5 @@
-SLOW_UPLOAD_TIME = 15000;
+SLOW_UPLOAD_TIME = 5000;
+SLOW_UPLOAD_TIMER = null;
 
 function create_uploader() {
     "use strict";
@@ -108,6 +109,11 @@ function add_parser_form_events() {
         if (data.state == "Done") {
             window.location.href = "/detail/"+encodeURIComponent(sqlshare_user)+"/"+encodeURIComponent(dataset_name);
         }
+        else if (data.state == "Error") {
+            $("#upload_error_message").text(data.msg);
+            $("#upload_error_panel").show();
+            window.clearTimeout(SLOW_UPLOAD_TIMER);
+        }
         else {
             var rows_total = data.rows_total,
                 rows_loaded = data.rows_loaded;
@@ -128,7 +134,7 @@ function add_parser_form_events() {
                 $.ajax({
                     url: "/upload/finalize_process/" + filename,
                     method: "GET",
-                    success: poll_finalize,
+                    success: poll_finalize
                 });
             }, 1000);
 
@@ -150,7 +156,7 @@ function add_parser_form_events() {
             success: poll_finalize
         });
 
-        window.setTimeout(function() { $("#long_upload_panel").show(); }, SLOW_UPLOAD_TIME);
+        SLOW_UPLOAD_TIMER = window.setTimeout(function() { $("#long_upload_panel").show(); }, SLOW_UPLOAD_TIME);
 
     }
 
