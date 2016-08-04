@@ -52,9 +52,9 @@ def dataset_list(request, list_type):
 
     next_page = "%s?%s" % (reverse("sqlshare_web.views.dataset_list_page"),
                            urlencode({
-                            "page": 2,
-                            "q": q,
-                            "list_type": list_type,
+                               "page": 2,
+                               "q": q,
+                               "list_type": list_type,
                            }))
 
     if list_type == "yours":
@@ -137,9 +137,9 @@ def dataset_list_page(request):
         q = ""
     next_page = "%s?%s" % (reverse("sqlshare_web.views.dataset_list_page"),
                            urlencode({
-                            "page": int(page) + 1,
-                            "q": q,
-                            "list_type": list_type,
+                               "page": int(page) + 1,
+                               "q": q,
+                               "list_type": list_type,
                            }))
 
     data = {
@@ -259,6 +259,13 @@ def finalize_process(request, filename):
         return _update_finalize_process(request, filename, user)
 
 
+def _clear_upload_session(request, filename):
+        key1 = "ss_file_id_%s" % filename
+        key2 = "ss_max_chunk_%s" % filename
+        del request.session[key1]
+        del request.session[key2]
+
+
 def _get_finalize_status(request, filename, user):
     data = get_upload_status(request, filename)
 
@@ -285,14 +292,16 @@ def _get_finalize_status(request, filename, user):
 
             os.remove(file_path)
 
-        del request.session[key1]
-        del request.session[key2]
+        _clear_upload_session(request, filename)
 
         response = HttpResponse('{ "state": "Done"}',
                                 content_type="application/json")
         return response
     else:
-        print ("S: ", status)
+        response = HttpResponse(json.dumps({"state": "Error",
+                                            "msg": data["values"]}),
+                                content_type="application/json")
+        return response
 
 
 def _update_finalize_process(request, filename, user):
