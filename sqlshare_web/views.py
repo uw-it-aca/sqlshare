@@ -52,9 +52,9 @@ def dataset_list(request, list_type):
 
     next_page = "%s?%s" % (reverse("sqlshare_web.views.dataset_list_page"),
                            urlencode({
-                            "page": 2,
-                            "q": q,
-                            "list_type": list_type,
+                               "page": 2,
+                               "q": q,
+                               "list_type": list_type,
                            }))
 
     if list_type == "yours":
@@ -137,9 +137,9 @@ def dataset_list_page(request):
         q = ""
     next_page = "%s?%s" % (reverse("sqlshare_web.views.dataset_list_page"),
                            urlencode({
-                            "page": int(page) + 1,
-                            "q": q,
-                            "list_type": list_type,
+                               "page": int(page) + 1,
+                               "q": q,
+                               "list_type": list_type,
                            }))
 
     data = {
@@ -298,8 +298,8 @@ def _get_finalize_status(request, filename, user):
                                 content_type="application/json")
         return response
     else:
-        response = HttpResponse(json.dumps({ "state": "Error",
-                                             "msg": data["values"]}),
+        response = HttpResponse(json.dumps({"state": "Error",
+                                            "msg": data["values"]}),
                                 content_type="application/json")
         return response
 

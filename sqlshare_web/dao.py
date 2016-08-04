@@ -186,7 +186,6 @@ def get_upload_status(request, filename):
                              },
                             )
 
-
     try:
         values = json.loads(response.content)
     except Exception as ex:
