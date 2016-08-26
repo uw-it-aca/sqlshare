@@ -9,5 +9,6 @@ class DataNotFoundException(DataException):
 class DataPermissionDeniedException(DataException):
     pass
 
+
 class DataParserErrorException(DataException):
     pass
