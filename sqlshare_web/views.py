@@ -26,6 +26,7 @@ from sqlshare_web.dao import init_sql_download, get_backend_logout_url
 from sqlshare_web.dao import add_sharing_url_access
 from sqlshare_web.exceptions import DataPermissionDeniedException
 from sqlshare_web.exceptions import DataException
+from sqlshare_web.exceptions import DataParserErrorException
 
 import datetime
 from urllib import urlencode
@@ -383,6 +384,11 @@ def upload_parser(request, filename):
         return render_to_response('sqlshare_web/upload/parser.html',
                                   parser_values,
                                   context_instance=RequestContext(request))
+    except DataParserErrorException as dpee:
+        return render_to_response('sqlshare_web/upload/parser-error.html',
+                                  {},
+                                  context_instance=RequestContext(request))
+
     except IOError:
         raise Http404("")
 

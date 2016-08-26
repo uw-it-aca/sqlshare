@@ -2,6 +2,7 @@ from sqlshare_web.utils import send_request, get_file_path
 from sqlshare_web.utils import get_full_backend_url
 from sqlshare_web.exceptions import DataNotFoundException, DataException
 from sqlshare_web.exceptions import DataPermissionDeniedException
+from sqlshare_web.exceptions import DataParserErrorException
 from django.core.urlresolvers import reverse
 from urllib import quote, urlencode
 import json
@@ -126,6 +127,9 @@ def get_parser_values(request, user, filename, retry=False):
 
     response = send_request(request, 'GET', parser_url,
                             {"Accept": "application/json"})
+
+    if response.status == 400:
+        raise DataParserErrorException(response.content)
 
     if response.status != 200:
         if retry:
