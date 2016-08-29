@@ -44,10 +44,10 @@ urlpatterns = patterns(
 
     url(r'^upload', 'sqlshare_web.views.dataset_upload',
         name='dataset_upload'),
-    url(r'^new/', 'sqlshare_web.views.new_query'),
-    url(r'^run_query/', 'sqlshare_web.views.run_query'),
+    url(r'^new', 'sqlshare_web.views.new_query'),
+    url(r'^run_query', 'sqlshare_web.views.run_query'),
     url(r'^user_search/(?P<term>.*)', 'sqlshare_web.views.user_search'),
-    url(r'^queries/$', 'sqlshare_web.views.recent_queries'),
+    url(r'^queries$', 'sqlshare_web.views.recent_queries'),
     url(r'^queries/(?P<query_id>.*)', 'sqlshare_web.views.query_status_page'),
     url(r'^query/(?P<query_id>.*)', 'sqlshare_web.views.query_status'),
     url(r'^dataset_list/next_page', 'sqlshare_web.views.dataset_list_page'),
