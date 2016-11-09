@@ -133,8 +133,16 @@ def send_request(request, method, url, headers={}, body=None,
                 c = get_oauth_client()
                 refresh = request.session["sqlshare_refresh_access_token"]
 
-                c.request_token(grant_type='refresh_token',
-                                refresh_token=refresh)
+                try:
+                    c.request_token(grant_type='refresh_token',
+                                    refresh_token=refresh)
+                except HTTPError as ex:
+                    if ex.code == 401:
+                        del request.session["sqlshare_access_token"]
+                        del request.session["sqlshare_refresh_access_token"]
+                        raise OAuthNeededException(oauth_authorize())
+                    else:
+                        raise
 
                 request.session["sqlshare_access_token"] = c.access_token
                 refresh = c.refresh_token
