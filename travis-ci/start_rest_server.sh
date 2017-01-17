@@ -8,7 +8,7 @@ cd /tmp/rest_server
 git clone https://github.com/uw-it-aca/sqlshare-rest.git
 cd sqlshare-rest
 virtualenv . -p python2.7
-git checkout feature/uploading
+git checkout develop
 source bin/activate
 pip install -r requirements.txt
 pip install PyMySQL

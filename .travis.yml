@@ -2,7 +2,7 @@ sudo: false
 language: python
 python:
   - "2.7"
-  - "3.4"
+  - "3.6"
 before_script:
   # manually make our own virtualenv, so we don't need to worry about python version paths
   - deactivate
