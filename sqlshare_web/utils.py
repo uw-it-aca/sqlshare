@@ -2,7 +2,7 @@ from django.conf import settings
 from sanction import Client, transport_headers
 from urllib2 import urlopen, HTTPError
 from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 import hashlib
 import json
 import os
@@ -79,7 +79,7 @@ def oauth_access_token(request):
         error = request.GET['error']
 
         # Maybe do something smart here...
-        return render_to_response('sqlshare_web/oauth_denied.html', {})
+        return render(request, 'sqlshare_web/oauth_denied.html', {})
 
     token_request_data = {
         'code': request.GET['code'],
