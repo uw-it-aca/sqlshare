@@ -11,8 +11,6 @@ from sqlshare_web.views import (dataset_detail, dataset_list,
                                 run_download, run_query, sharing_url,
                                 upload_parser, user_search)
 
-
-
 urlpatterns = [
     url(r'^$', dataset_list,
         {"list_type": "yours"}, name="dataset_list"),
