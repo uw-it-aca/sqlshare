@@ -715,6 +715,8 @@ def run_download(request):
 
     download_url = init_sql_download(request, sql)
 
+    download_url = "%s%s" % (settings.SQLSHARE_REST_HOST, download_url)
+
     response = HttpResponse()
     response.status_code = 202
     response["Location"] = download_url
