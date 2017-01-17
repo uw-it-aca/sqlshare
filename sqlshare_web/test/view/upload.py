@@ -21,7 +21,7 @@ class TestUploads(TestCase):
 
 
     def test_upload(self):
-        response = self.client.get(reverse("sqlshare_web.views.dataset_upload"))
+        response = self.client.get(reverse("dataset_upload"))
 
         view_context = response.context[-1]
         self.assertEquals(view_context["user"]["username"], "upload_file_user")

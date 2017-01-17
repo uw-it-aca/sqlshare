@@ -14,7 +14,7 @@ setup(
     install_requires = [
         # For ansible deployments, you also need to update requirements.txt :(
         'setuptools',
-        'django==1.8',
+        'django==1.10.*',
         'django-compressor',
         'django-templatetag-handlebars',
         'django_mobileesp',

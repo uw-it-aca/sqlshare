@@ -1,7 +1,6 @@
 from django.conf import settings
-from django.template import RequestContext
 from django.core.urlresolvers import reverse
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.contrib.auth import logout as django_logout
 
@@ -51,7 +50,7 @@ def dataset_list(request, list_type):
     if q is None:
         q = ""
 
-    next_page = "%s?%s" % (reverse("sqlshare_web.views.dataset_list_page"),
+    next_page = "%s?%s" % (reverse("dataset_list_page"),
                            urlencode({
                                "page": 2,
                                "q": q,
@@ -71,9 +70,7 @@ def dataset_list(request, list_type):
         "is_recent": list_type == "recent",
     }
 
-    return render_to_response('sqlshare_web/list.html',
-                              data,
-                              context_instance=RequestContext(request))
+    return render(request, 'sqlshare_web/list.html', data)
 
 
 def recent_queries(request):
@@ -93,9 +90,7 @@ def recent_queries(request):
         "user": user,
     }
 
-    return render_to_response('sqlshare_web/query_list.html',
-                              data,
-                              context_instance=RequestContext(request))
+    return render(request, 'sqlshare_web/query_list.html', data)
 
 
 def query_status_page(request, query_id):
@@ -114,9 +109,7 @@ def query_status_page(request, query_id):
         "user": user,
     }
 
-    return render_to_response('sqlshare_web/query/status_page.html',
-                              data,
-                              context_instance=RequestContext(request))
+    return render(request, 'sqlshare_web/query/status_page.html', data)
 
 
 def dataset_list_page(request):
@@ -136,7 +129,7 @@ def dataset_list_page(request):
 
     if q is None:
         q = ""
-    next_page = "%s?%s" % (reverse("sqlshare_web.views.dataset_list_page"),
+    next_page = "%s?%s" % (reverse("dataset_list_page"),
                            urlencode({
                                "page": int(page) + 1,
                                "q": q,
@@ -149,9 +142,7 @@ def dataset_list_page(request):
         "next_page_url": next_page,
     }
 
-    return render_to_response('sqlshare_web/list_page.html',
-                              data,
-                              context_instance=RequestContext(request))
+    return render(request, 'sqlshare_web/list_page.html', data)
 
 
 def dataset_detail(request, owner, name):
@@ -163,7 +154,7 @@ def dataset_detail(request, owner, name):
     try:
         dataset = get_dataset(request, owner, name)
     except DataPermissionDeniedException:
-        return render_to_response('sqlshare_web/detail_no_permission.html', {})
+        return render(request, 'sqlshare_web/detail_no_permission.html', {})
 
     if not dataset:
         raise Http404("Dataset Not Found")
@@ -176,9 +167,7 @@ def dataset_detail(request, owner, name):
                                 kwargs={"owner": owner, "name": name}),
     }
 
-    return render_to_response('sqlshare_web/detail.html',
-                              data,
-                              context_instance=RequestContext(request))
+    return render(request, 'sqlshare_web/detail.html', data)
 
 
 def dataset_snapshot(request, owner, name):
@@ -232,9 +221,7 @@ def dataset_snapshot(request, owner, name):
                                kwargs={"owner": owner, "name": name}),
     }
 
-    return render_to_response('sqlshare_web/snapshot.html',
-                              data,
-                              context_instance=RequestContext(request))
+    return render(request, 'sqlshare_web/snapshot.html', data)
 
 
 def dataset_upload(request):
@@ -242,9 +229,7 @@ def dataset_upload(request):
         user = get_or_create_user(request)
     except OAuthNeededException as ex:
         return ex.redirect
-    return render_to_response('sqlshare_web/upload/upload.html',
-                              {"user": user},
-                              context_instance=RequestContext(request))
+    return render(request, 'sqlshare_web/upload/upload.html', {"user": user})
 
 
 def finalize_process(request, filename):
@@ -381,13 +366,11 @@ def upload_parser(request, filename):
 
         parser_values["user"] = user
         parser_values["filename"] = filename
-        return render_to_response('sqlshare_web/upload/parser.html',
-                                  parser_values,
-                                  context_instance=RequestContext(request))
+        return render(request, 'sqlshare_web/upload/parser.html',
+                      parser_values)
+
     except DataParserErrorException as dpee:
-        return render_to_response('sqlshare_web/upload/parser-error.html',
-                                  {},
-                                  context_instance=RequestContext(request))
+        return render(request, 'sqlshare_web/upload/parser-error.html', {})
 
     except IOError:
         raise Http404("")
@@ -529,9 +512,7 @@ def _show_query_name_form(request, user, errors={}):
         "is_public": is_public,
     }
 
-    return render_to_response('sqlshare_web/query/name.html',
-                              data,
-                              context_instance=RequestContext(request))
+    return render(request, 'sqlshare_web/query/name.html', data)
 
 
 def _show_new_query_form(request, user):
@@ -542,9 +523,7 @@ def _show_new_query_form(request, user):
     if "sql" in request.POST:
         data["sql"] = request.POST["sql"]
 
-    return render_to_response('sqlshare_web/query/run.html',
-                              data,
-                              context_instance=RequestContext(request))
+    return render(request, 'sqlshare_web/query/run.html', data)
 
 
 def oauth_return(request):
@@ -563,7 +542,7 @@ def run_query(request):
     url = data["url"]
     query_id = re.match(".*v3/db/query/([\d]+)", url).groups()[0]
 
-    return HttpResponseRedirect(reverse("sqlshare_web.views.query_status",
+    return HttpResponseRedirect(reverse("query_status",
                                 kwargs={"query_id": query_id}))
 
 
@@ -576,18 +555,14 @@ def query_status(request, query_id):
 
     if data["is_finished"]:
         if data["has_error"]:
-            return render_to_response('sqlshare_web/query/error.html',
-                                      data,
-                                      context_instance=RequestContext(request))
+            return render(request, 'sqlshare_web/query/error.html', data)
         else:
-            return render_to_response('sqlshare_web/query/results.html',
-                                      data,
-                                      context_instance=RequestContext(request))
+            return render(request, 'sqlshare_web/query/results.html', data)
 
     else:
         response = HttpResponse("Running...")
         response.status_code = 202
-        response["Location"] = reverse("sqlshare_web.views.query_status",
+        response["Location"] = reverse("query_status",
                                        kwargs={"query_id": query_id})
 
         return response
