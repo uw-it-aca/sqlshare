@@ -14,7 +14,7 @@ class TestDatasetView(TestCase):
 
     def test_valid_own(self):
         name = "test_owner_dataset"
-        response = self.client.post(reverse("sqlshare_web.views.new_query"),
+        response = self.client.post(reverse("new_query"),
                                     { "save": "1",
                                       "name": name,
                                       "sql": "SELECT (44)",
@@ -39,7 +39,7 @@ class TestDatasetView(TestCase):
 
     def test_rando(self):
         name = "test_not_your_dataset"
-        response = self.client.post(reverse("sqlshare_web.views.new_query"),
+        response = self.client.post(reverse("new_query"),
                                     { "save": "1",
                                       "name": name,
                                       "sql": "SELECT (44)",
@@ -55,7 +55,7 @@ class TestDatasetView(TestCase):
 
     def test_rando_public(self):
         name = "test_not_your_dataset-public"
-        response = self.client.post(reverse("sqlshare_web.views.new_query"),
+        response = self.client.post(reverse("new_query"),
                                     { "save": "1",
                                       "name": name,
                                       "sql": "SELECT (33)",

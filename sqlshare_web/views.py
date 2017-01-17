@@ -51,7 +51,7 @@ def dataset_list(request, list_type):
     if q is None:
         q = ""
 
-    next_page = "%s?%s" % (reverse("sqlshare_web.views.dataset_list_page"),
+    next_page = "%s?%s" % (reverse("dataset_list_page"),
                            urlencode({
                                "page": 2,
                                "q": q,
@@ -136,7 +136,7 @@ def dataset_list_page(request):
 
     if q is None:
         q = ""
-    next_page = "%s?%s" % (reverse("sqlshare_web.views.dataset_list_page"),
+    next_page = "%s?%s" % (reverse("dataset_list_page"),
                            urlencode({
                                "page": int(page) + 1,
                                "q": q,
@@ -563,7 +563,7 @@ def run_query(request):
     url = data["url"]
     query_id = re.match(".*v3/db/query/([\d]+)", url).groups()[0]
 
-    return HttpResponseRedirect(reverse("sqlshare_web.views.query_status",
+    return HttpResponseRedirect(reverse("query_status",
                                 kwargs={"query_id": query_id}))
 
 
@@ -587,7 +587,7 @@ def query_status(request, query_id):
     else:
         response = HttpResponse("Running...")
         response.status_code = 202
-        response["Location"] = reverse("sqlshare_web.views.query_status",
+        response["Location"] = reverse("query_status",
                                        kwargs={"query_id": query_id})
 
         return response

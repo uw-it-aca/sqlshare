@@ -15,7 +15,7 @@ class TestQueryView(TestCase):
         login(self.client, "new_query_user")
 
     def test_login_required(self):
-        response = self.client.get(reverse("sqlshare_web.views.new_query"))
+        response = self.client.get(reverse("new_query"))
 
         view_context = response.context[-1]
         self.assertEquals(view_context["user"]["username"], "new_query_user")
@@ -23,7 +23,7 @@ class TestQueryView(TestCase):
 
 
     def test_save_query_flow(self):
-        response = self.client.post(reverse("sqlshare_web.views.new_query"),
+        response = self.client.post(reverse("new_query"),
                                     { "sql": "select (1)" })
 
 
@@ -33,7 +33,7 @@ class TestQueryView(TestCase):
         self.assertEquals(view_context["errors"], {})
         self.assertEquals(response.templates[0].name, "sqlshare_web/query/name.html")
 
-        response = self.client.post(reverse("sqlshare_web.views.new_query"),
+        response = self.client.post(reverse("new_query"),
                                     { "sql": "select (1)",
                                       "save": "1",
                                     })
@@ -41,14 +41,14 @@ class TestQueryView(TestCase):
         view_context = response.context[-1]
         self.assertTrue(view_context["errors"]["name"])
 
-        response = self.client.post(reverse("sqlshare_web.views.new_query"),
+        response = self.client.post(reverse("new_query"),
                                     { "save": "1"})
 
         view_context = response.context[-1]
         self.assertFalse(view_context["is_public"])
 
 
-        response = self.client.post(reverse("sqlshare_web.views.new_query"),
+        response = self.client.post(reverse("new_query"),
                                     { "save": "1",
                                       "is_public": "1"})
 
@@ -59,7 +59,7 @@ class TestQueryView(TestCase):
 
         name = "test_save_%s" % calendar.timegm(time.gmtime())
 
-        response = self.client.post(reverse("sqlshare_web.views.new_query"),
+        response = self.client.post(reverse("new_query"),
                                     { "save": "1",
                                       "name": name,
                                       "sql": "SELECT (1)",
@@ -68,7 +68,7 @@ class TestQueryView(TestCase):
         self.assertRedirects(response, reverse("dataset_detail", kwargs={"owner": "new_query_user", "name": name }))
 
     def test_running_query(self):
-        response = self.client.post(reverse("sqlshare_web.views.run_query"),
+        response = self.client.post(reverse("run_query"),
                                     {"sql": "select (22)" })
 
         location = response["Location"]
@@ -80,7 +80,7 @@ class TestQueryView(TestCase):
         self.assertEquals(response.templates[0].name, "sqlshare_web/query/results.html")
 
 
-        response = self.client.post(reverse("sqlshare_web.views.run_query"),
+        response = self.client.post(reverse("run_query"),
                                     {"sql": "select SLEEP(2)" })
 
         location = response["Location"]
@@ -97,7 +97,7 @@ class TestQueryView(TestCase):
         response = self.client.get(location)
         self.assertEquals(response.status_code, 200)
 
-        response = self.client.post(reverse("sqlshare_web.views.run_query"),
+        response = self.client.post(reverse("run_query"),
                                     {"sql": "select (22" })
 
         location = response["Location"]
