@@ -6,7 +6,7 @@ function create_uploader() {
     var r = new Resumable({
         target:'/upload_chunk/',
         simultaneousUploads: 1,
-        //chunkSize: 1,
+//        chunkSize: 1,
         maxFiles: 1,
         query: {
             'csrfmiddlewaretoken': $("input[name='csrfmiddlewaretoken']").val()
@@ -73,6 +73,12 @@ function add_parser_form_events() {
         return false;
     }
 
+    function get_finalize_url() {
+        var filename = $("input[name='original_name']").val();
+        var file_id = $("input[name='file_id']").val();
+        return "/upload/finalize_process/" + file_id + "/" + filename;
+    }
+
     function post_chunk_upload(data, text_status) {
         if (data.state == "next_chunk") {
             var finished = data.finished;
@@ -132,7 +138,7 @@ function add_parser_form_events() {
             }
             window.setTimeout(function() {
                 $.ajax({
-                    url: "/upload/finalize_process/" + filename,
+                    url: get_finalize_url(),
                     method: "GET",
                     success: poll_finalize
                 });
@@ -142,9 +148,8 @@ function add_parser_form_events() {
     }
 
     function send_finalize() {
-        var filename = $("input[name='original_name']").val();
         $.ajax({
-            url: "/upload/finalize_process/" + filename,
+            url: get_finalize_url(),
             method: "POST",
             data: {
                 'csrfmiddlewaretoken': $("input[name='csrfmiddlewaretoken']").val(),
@@ -161,9 +166,8 @@ function add_parser_form_events() {
     }
 
     function upload_next_chunk() {
-        var filename = $("input[name='original_name']").val();
         $.ajax({
-            url: "/upload/finalize_process/" + filename,
+            url: get_finalize_url(),
             method: "POST",
             data: {
                 'csrfmiddlewaretoken': $("input[name='csrfmiddlewaretoken']").val(),
