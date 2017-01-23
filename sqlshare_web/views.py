@@ -22,7 +22,7 @@ from sqlshare_web.dao import get_dataset_permissions
 from sqlshare_web.dao import make_dataset_snapshot
 from sqlshare_web.dao import get_recent_queries, cancel_query_by_id
 from sqlshare_web.dao import init_sql_download, get_backend_logout_url
-from sqlshare_web.dao import add_sharing_url_access
+from sqlshare_web.dao import add_sharing_url_access, initialize_parser
 from sqlshare_web.exceptions import DataPermissionDeniedException
 from sqlshare_web.exceptions import DataException
 from sqlshare_web.exceptions import DataParserErrorException
@@ -232,28 +232,26 @@ def dataset_upload(request):
     return render(request, 'sqlshare_web/upload/upload.html', {"user": user})
 
 
-def finalize_process(request, filename):
+def finalize_process(request, file_id, filename):
     try:
         user = get_or_create_user(request)
     except OAuthNeededException as ex:
         return ex.redirect
 
     if request.META['REQUEST_METHOD'] == "GET":
-        return _get_finalize_status(request, filename, user)
+        return _get_finalize_status(request, filename, file_id, user)
 
     else:
-        return _update_finalize_process(request, filename, user)
+        return _update_finalize_process(request, filename, file_id, user)
 
 
 def _clear_upload_session(request, filename):
-        key1 = "ss_file_id_%s" % filename
         key2 = "ss_max_chunk_%s" % filename
-        del request.session[key1]
         del request.session[key2]
 
 
-def _get_finalize_status(request, filename, user):
-    data = get_upload_status(request, filename)
+def _get_finalize_status(request, filename, file_id, user):
+    data = get_upload_status(request, file_id)
 
     status = data["status"]
     if status == 202:
@@ -266,7 +264,6 @@ def _get_finalize_status(request, filename, user):
                             content_type="application/json")
 
     elif status == 201:
-        key1 = "ss_file_id_%s" % filename
         key2 = "ss_max_chunk_%s" % filename
 
         max_chunks = request.session[key2]
@@ -290,7 +287,7 @@ def _get_finalize_status(request, filename, user):
         return response
 
 
-def _update_finalize_process(request, filename, user):
+def _update_finalize_process(request, filename, file_id, user):
     if "chunk" in request.POST:
         chunk = request.POST["chunk"]
         file_path = get_file_path(user["username"],
@@ -304,7 +301,7 @@ def _update_finalize_process(request, filename, user):
             session_key = "ss_max_chunk_%s" % filename
             max_chunk = request.session.get(session_key, 0)
 
-            append_upload_file(request, user, filename, chunk)
+            append_upload_file(request, user, filename, file_id, chunk)
 
             json_data = {
                 "state": "next_chunk",
@@ -324,33 +321,42 @@ def _update_finalize_process(request, filename, user):
         else:
             is_public = False
 
-        finalize_upload(request, filename, name, description, is_public)
+        finalize_upload(request, file_id, name, description, is_public)
 
         response = HttpResponse('{ "state": "finalizing"}',
                                 content_type="application/json")
         return response
 
 
-def upload_parser(request, filename):
+def upload_parser_init(request, filename):
     try:
         user = get_or_create_user(request)
     except OAuthNeededException as ex:
         return ex.redirect
 
-#    key1 = "ss_file_id_%s" % filename
-#    if key1 not in request.session:
-#        return Http404()
+    file_id = initialize_parser(request, user, filename)
+
+    return HttpResponseRedirect(reverse("upload_parser",
+                                        kwargs={"file_id": file_id,
+                                                "filename": filename}))
+
+
+def upload_parser(request, file_id, filename):
+    try:
+        user = get_or_create_user(request)
+    except OAuthNeededException as ex:
+        return ex.redirect
 
     if request.META['REQUEST_METHOD'] == "POST":
         has_header_row = request.POST.get("has_header", False)
         delimiter = request.POST["delimiter"]
         if delimiter == "TAB":
             delimiter = "\t"
-        update_parser_values(request, user, filename, delimiter,
+        update_parser_values(request, user, file_id, delimiter,
                              has_header_row)
 
     try:
-        parser_values = get_parser_values(request, user, filename)
+        parser_values = get_parser_values(request, user, file_id)
         parser_values["is_public"] = True
 
         if request.META['REQUEST_METHOD'] == "POST":
@@ -366,11 +372,15 @@ def upload_parser(request, filename):
 
         parser_values["user"] = user
         parser_values["filename"] = filename
+        parser_values["file_id"] = file_id
         return render(request, 'sqlshare_web/upload/parser.html',
                       parser_values)
 
     except DataParserErrorException as dpee:
         return render(request, 'sqlshare_web/upload/parser-error.html', {})
+
+    except DataPermissionDeniedException as dpee:
+        raise Http404()
 
     except IOError:
         raise Http404("")
@@ -430,6 +440,7 @@ def _update_session_file_tracking(request):
 
 
 def _check_upload_chunk(request, user):
+    raise Http404("")
     filename = request.GET['resumableFilename']
     file_path = get_file_path(user["username"],
                               filename,

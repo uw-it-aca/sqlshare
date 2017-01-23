@@ -102,27 +102,25 @@ def make_dataset_snapshot(request, dataset, name, description, is_public):
     return "/detail/%s" % segment
 
 
-def get_parser_values(request, user, filename, retry=False):
-    session_key = "ss_file_id_%s" % filename
-    if session_key not in request.session:
-        path = get_file_path(user["username"], filename, "1")
+def initialize_parser(request, user, filename):
+    path = get_file_path(user["username"], filename, "1")
 
-        with open(path, 'rb') as source:
-            data = source.read()
+    with open(path, 'rb') as source:
+        data = source.read()
 
-        url = '/v3/db/file/'
-        response = send_request(request, 'POST', url,
-                                {"Accept": "application/json",
-                                 "Content-type": "text/plain",
-                                 },
-                                body=data)
+    url = '/v3/db/file/'
+    response = send_request(request, 'POST', url,
+                            {"Accept": "application/json",
+                             "Content-type": "text/plain",
+                             },
+                            body=data)
 
-        upload_id = json.loads(response.content)
+    upload_id = json.loads(response.content)
 
-        request.session[session_key] = upload_id
+    return upload_id
 
-    upload_id = request.session[session_key]
 
+def get_parser_values(request, user, upload_id, retry=False):
     parser_url = '/v3/db/file/%s/parser' % (upload_id)
 
     response = send_request(request, 'GET', parser_url,
@@ -131,11 +129,9 @@ def get_parser_values(request, user, filename, retry=False):
     if response.status == 400:
         raise DataParserErrorException(response.content)
 
-    if response.status != 200:
-        if retry:
-            raise Exception("Unable to get parser values on retry")
-        del request.session[session_key]
-        return get_parser_values(request, user, filename, retry=True)
+    if response.status == 403:
+        raise DataPermissionDeniedException(response.content)
+
     data = json.loads(response.content)
 
     return {
@@ -144,10 +140,7 @@ def get_parser_values(request, user, filename, retry=False):
     }
 
 
-def append_upload_file(request, user, filename, chunk):
-    session_key = "ss_file_id_%s" % filename
-
-    upload_id = request.session[session_key]
+def append_upload_file(request, user, filename, upload_id, chunk):
     path = get_file_path(user["username"], filename, "%s" % chunk)
 
     with open(path, 'rb') as source:
@@ -161,10 +154,7 @@ def append_upload_file(request, user, filename, chunk):
                             body=data)
 
 
-def finalize_upload(request, filename, name, description, is_public):
-    session_key = "ss_file_id_%s" % filename
-
-    upload_id = request.session[session_key]
+def finalize_upload(request, upload_id, name, description, is_public):
     url = '/v3/db/file/%s/finalize' % (upload_id)
 
     data = json.dumps({"dataset_name": name,
@@ -179,10 +169,7 @@ def finalize_upload(request, filename, name, description, is_public):
                             body=data)
 
 
-def get_upload_status(request, filename):
-    session_key = "ss_file_id_%s" % filename
-
-    upload_id = request.session[session_key]
+def get_upload_status(request, upload_id):
     url = '/v3/db/file/%s/finalize' % (upload_id)
     response = send_request(request, 'GET', url,
                             {"Accept": "application/json",
@@ -202,10 +189,7 @@ def get_upload_status(request, filename):
     return data
 
 
-def update_parser_values(request, user, filename, delimiter, has_header_row):
-    session_key = "ss_file_id_%s" % filename
-    upload_id = request.session[session_key]
-
+def update_parser_values(request, user, upload_id, delimiter, has_header_row):
     parser_url = '/v3/db/file/%s/parser' % (upload_id)
 
     data = json.dumps({"parser": {"delimiter": delimiter,

@@ -53,7 +53,9 @@ class TestUploads(TestCase):
             "resumableFilename": "test_upload.csv",
         })
 
-        self.assertEquals(response.status_code, 200)
+        # Just kidding - we're disabling that to make sure new content
+        # is uploaded.
+        self.assertEquals(response.status_code, 404)
 
         # Test that some random other user doesn't see that progress
         c2 = Client()
@@ -76,38 +78,46 @@ class TestUploads(TestCase):
             "file": file_handle
         })
 
-        response = self.client.get(reverse("upload_parser", kwargs={"filename": "test_upload.csv"}))
+        response = self.client.get(reverse("upload_parser_init", kwargs={"filename": "test_upload.csv"}))
+
+        parser_url = response["Location"]
+
+        response = self.client.get(parser_url)
         self.assertEquals(response.templates[0].name, "sqlshare_web/upload/parser.html")
         view_context = response.context[-1]
         self.assertEquals(view_context["user"]["username"], "upload_file_user")
 
-        response = c2.get(reverse("upload_parser", kwargs={"filename": "test_upload.csv"}))
+        response = c2.get(parser_url)
 
         self.assertEquals(response.status_code, 404)
 
         # Make sure we stay on the page w/ an update...
-        response = self.client.post(reverse("upload_parser", kwargs={"filename": "test_upload.csv"}), {"delimiter": "a", "has_header": False, "update_preview": True,  "dataset_name": "test_upload.csv", "dataset_description": "Desc", "is_public": True })
+        response = self.client.post(parser_url, {"delimiter": "a", "has_header": False, "update_preview": True,  "dataset_name": "test_upload.csv", "dataset_description": "Desc", "is_public": True })
         self.assertEquals(response.templates[0].name, "sqlshare_web/upload/parser.html")
 
         # Moving on...
-        response = self.client.post(reverse("upload_parser", kwargs={"filename": "test_upload.csv"}), {"delimiter": ",", "has_header": True, "update_preview": False,  "dataset_name": "test_upload.csv", "dataset_description": "Desc", "is_public": True })
+        response = self.client.post(parser_url, {"delimiter": ",", "has_header": True, "update_preview": False,  "dataset_name": "test_upload.csv", "dataset_description": "Desc", "is_public": True })
+
+        print "URL: ", parser_url
+
+        finalize_url = parser_url.replace('parser', 'finalize_process')
 
         # Send off to the backend server:
-        response = self.client.post(reverse('upload_finalize_process', kwargs={"filename": "test_upload.csv"}), { "chunk": "1" })
+        response = self.client.post(finalize_url, { "chunk": "1" })
         self.assertEquals(response.status_code, 200)
         data = json.loads(response.content)
         self.assertEquals(data["state"], "next_chunk")
 
-        response = self.client.post(reverse('upload_finalize_process', kwargs={"filename": "test_upload.csv"}), { "chunk": "2" })
+        response = self.client.post(finalize_url, { "chunk": "2" })
         self.assertEquals(response.status_code, 200)
         data = json.loads(response.content)
         self.assertEquals(data["state"], "next_chunk")
 
-        response = self.client.post(reverse('upload_finalize_process', kwargs={"filename": "test_upload.csv"}), { "chunk": "3" })
+        response = self.client.post(finalize_url, { "chunk": "3" })
         self.assertEquals(response.status_code, 200)
         self.assertEquals(response.content, "upload_complete")
 
-        response = self.client.post(reverse('upload_finalize_process', kwargs={"filename": "test_upload.csv"}), { "finalize": True, "dataset_name": "test_upload.csv", "dataset_description": "Desc", "is_public": True })
+        response = self.client.post(finalize_url, { "finalize": True, "dataset_name": "test_upload.csv", "dataset_description": "Desc", "is_public": True })
         self.assertEquals(response.status_code, 200)
 
         data = json.loads(response.content)
@@ -116,7 +126,7 @@ class TestUploads(TestCase):
         has_done = False
         for i in range(1,  10):
             time.sleep(1)
-            response = self.client.get(reverse('upload_finalize_process', kwargs={"filename": "test_upload.csv"}))
+            response = self.client.get(finalize_url)
             self.assertEquals(response.status_code, 200)
             data = json.loads(response.content)
             if data["state"] == "Done":

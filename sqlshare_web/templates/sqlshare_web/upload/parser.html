@@ -16,6 +16,7 @@
     
     {% csrf_token %}
     <input type="hidden" name="original_name" value="{{ filename }}"/>
+    <input type="hidden" name="file_id" value="{{ file_id }}"/>
     
     <div class="form-group sql-dataset-title">
         <label for="id_dataset_name">Dataset name:</label>
