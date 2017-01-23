@@ -129,6 +129,9 @@ def get_parser_values(request, user, upload_id, retry=False):
     if response.status == 400:
         raise DataParserErrorException(response.content)
 
+    if response.status == 403:
+        raise DataPermissionDeniedException(response.content)
+
     data = json.loads(response.content)
 
     return {

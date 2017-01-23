@@ -379,6 +379,9 @@ def upload_parser(request, file_id, filename):
     except DataParserErrorException as dpee:
         return render(request, 'sqlshare_web/upload/parser-error.html', {})
 
+    except DataPermissionDeniedException as dpee:
+        raise Http404()
+
     except IOError:
         raise Http404("")
 
