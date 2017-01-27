@@ -8,8 +8,10 @@ from urllib import quote as urllib_quote, urlencode
 import json
 import re
 
+
 def quote(value):
     return urllib_quote(value.encode('utf-8'))
+
 
 def get_datasets(request, page=1, query=None, list_type="yours"):
     page_size = 50
