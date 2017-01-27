@@ -4,9 +4,13 @@ from sqlshare_web.exceptions import DataNotFoundException, DataException
 from sqlshare_web.exceptions import DataPermissionDeniedException
 from sqlshare_web.exceptions import DataParserErrorException
 from django.core.urlresolvers import reverse
-from urllib import quote, urlencode
+from urllib import quote as urllib_quote, urlencode
 import json
 import re
+
+
+def quote(value):
+    return urllib_quote(value.encode('utf-8'))
 
 
 def get_datasets(request, page=1, query=None, list_type="yours"):
