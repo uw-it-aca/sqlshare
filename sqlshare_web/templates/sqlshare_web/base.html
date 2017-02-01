@@ -9,22 +9,22 @@
         <meta name="MobileOptimized" content="320">
         <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
         <meta http-equiv="cleartype" content="on">
-        
+
         {% load staticfiles %}
         {% load compress %}
-        
+
         <!-- favicon -->
         <link rel="shortcut icon" href="{% static "sqlshare_web/ico/escience_favicon.ico" %}">
-        
+
         <!-- webfonts -->
         <link href='//fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
         <link href='//fonts.googleapis.com/css?family=Roboto:400,500,700,900' rel='stylesheet' type='text/css'>
-        
+
         {% compress css inline %}
             <!-- critical css (above the fold styles) -->
-            <link rel="stylesheet" href="{% static "sqlshare_web/css/inline.less" %}" type="text/less">            
+            <link rel="stylesheet" href="{% static "sqlshare_web/css/inline.less" %}" type="text/less">
         {% endcompress %}
-                
+
         {% if request.is_mobile %}
         {% compress css %}
         <!-- bootstrap & font awesome -->
@@ -34,11 +34,11 @@
         <link rel="stylesheet" href="{% static "vendor/css/codemirror-5.3.css" %}">
         <!-- devtools -->
         <link rel="stylesheet" href="{% static "vendor/css/aca-devtools.min.css" %}">
-        <!-- mobile -->   
+        <!-- mobile -->
         <link rel="stylesheet" href="{% static "sqlshare_web/css/mobile.less" %}" type="text/less">
         {% endcompress %}
         {% endif %}
-        
+
         {% if request.is_tablet %}
         {% compress css %}
         <!-- bootstrap & font awesome -->
@@ -53,7 +53,7 @@
         <link rel="stylesheet" href="{% static "sqlshare_web/css/tablet.less" %}" type="text/less">
         {% endcompress %}
         {% endif %}
-        
+
         {% if not request.is_mobile and not request.is_tablet %}
         {% compress css %}
         <!-- bootstrap & font awesome -->
@@ -69,18 +69,18 @@
         <link rel="stylesheet" href="{% static "sqlshare_web/css/desktop.less" %}" type="text/less">
         {% endcompress %}
         {% endif %}
-        
+
         {% if not less_compiled %}
             <!-- less.js -->
             <script src="{% static 'vendor/js/less-2.0.0.min.js' %}" type="text/javascript"></script>
         {% endif %}
-    
+
     </head>
     <body>
-       
+
         <div id="header" class="sql-header">
             <h1><a href="/">SQL<span>SHARE</span></a></h1>
-            
+
             <div class="dropdown sql-user-dropdown">
               <button id="dLabel" class="btn btn-link" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="sql-user-name">{{ user.username }}</span>
@@ -97,10 +97,10 @@
                 </li>
               </ul>
             </div>
-                        
+
             <button onclick="document.getElementById('sidebar').classList.toggle('closed');" type="button" class="btn sql-menu-button"><i class="fa fa-bars"></i></button>
-                        
-        </div>         
+
+        </div>
 
         <div id="sidebar" class="sql-sidebar {% if request.is_mobile or request.is_tablet %}closed{% endif %}">
             <div class="sql-sidebar-actions">
@@ -108,35 +108,36 @@
                     <li><a href="/{% if current_query %}?q={{ current_query }}{% endif %}">Yours</a></li>
                     <li><a href="/all{% if current_query %}?q={{ current_query }}{% endif %}">All</a></li>
                     <li><a href="/shared{% if current_query %}?q={{ current_query }}{% endif %}">Shared</a></li>
-                    
+
                 </ul>
-                
+
                 <ul style="font-weight:400;">
                     <li><a href="/upload">Upload Dataset</a></li>
                     <li><a href="/new">New Query</a></li>
                 </ul>
-                
+
                 <ul>
                     <li><a href="/recent{% if current_query %}?q={{ current_query }}{% endif %}">Recent Datasets</a></li>
                     <li><a href="/queries">Recent Queries</a></li>
                 </ul>
-                
+
             </div>
-        </div>       
-                
+        </div>
+
         <div id="content" class="sql-content">
-            
+
             <div class="sql-content-inner">
-                {% block searchbar %}{% endblock %}   
+                {% block searchbar %}{% endblock %}
                 {% block content %}{% endblock %}
             </div>
-            
+
         </div>
 
         <div id="footer" class="sql-footer">
-            <p>Copyright &copy; {% now "Y" %} eScience Institute<span><a href="http://www.washington.edu/online/privacy/">Privacy</a></span> <span><a href="http://www.washington.edu/online/terms/">Terms</a></span></p>
+            <p class="pull-left">Copyright &copy; {% now "Y" %} eScience Institute &nbsp;&nbsp; <span><a href="http://www.washington.edu/online/privacy/">Privacy</a></span> <span><a href="http://www.washington.edu/online/terms/">Terms</a></span></p>
+            <p class="pull-right"><i class="fa fa-envelope-o" aria-hidden="true"></i><a href="mailto:sqlshare-support@uw.edu">Contact Support</a></p>
         </div>
-                
+
         {% compress js %}
         <!-- global javascript -->
         <script src="{% static "vendor/js/jquery-1.11.0.min.js" %}"></script>
@@ -156,7 +157,7 @@
         <script src="{% static "sqlshare_web/js/details.js" %}"></script>
         <script src="{% static "sqlshare_web/js/view_query.js" %}"></script>
         {% endcompress %}
-            
+
         {% if google_analytics %}
         <!-- google analytics -->
         <script>
@@ -164,12 +165,12 @@
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
             m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
             })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-            
+
             ga('create', '');
-            ga('send', 'pageview');        
+            ga('send', 'pageview');
         </script>
         {% endif %}
-    
+
         <script>
             var sqlshare_user = '{{ user.username }}';
         </script>
