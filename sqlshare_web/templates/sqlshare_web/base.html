@@ -89,6 +89,12 @@
               <ul class="dropdown-menu pull-right" aria-labelledby="dLabel">
                 <li class="sql-signed-in">Signed in as <strong>{{ user.username }}</strong></li>
                 <li role="separator" class="divider"></li>
+                <li class="sql-support-links">
+                    <a href="https://itconnect.uw.edu/learn/tools/sqlshare/" class="btn btn-link">Documentation</a>
+                    <a href="https://itconnect.uw.edu/learn/tools/sqlshare/tutorial" class="btn btn-link">Tutorial</a>
+                    <a href="mailto:sqlshare-support@uw.edu" class="btn btn-link">Contact Support</a>
+                </li>
+                <li role="separator" class="divider"></li>
                 <li class="sql-logout">
                     <form action="/logout" method="POST">
                     {% csrf_token %}
