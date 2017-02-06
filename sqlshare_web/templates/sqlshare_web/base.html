@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="no-js">
+<html class="no-js" lang="en">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,66 +13,25 @@
         {% load staticfiles %}
         {% load compress %}
         
-        <!-- favicon and mobile device icons-->
-        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{% static "vendor/ico/apple-touch-icon-144x144-precomposed.png" %}">
-        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{% static "vendor/ico/apple-touch-icon-114x114-precomposed.png" %}">
-        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{% static "vendor/ico/apple-touch-icon-72x72-precomposed.png" %}">
-        <link rel="apple-touch-icon-precomposed" sizes="57x57" href="{% static "vendor/ico/apple-touch-icon-57x57-precomposed.png" %}"> 
-        <link rel="shortcut icon" href="{% static "vendor/ico/favicon.ico" %}">
+        <!-- favicon -->
+        <link rel="shortcut icon" href="{% static "sqlshare_web/ico/escience_favicon.ico" %}">
         
-        <!-- windows8 - tile icon  & color -->
-        <meta name="msapplication-TileImage" content="{% static "vendor/ico/apple-touch-icon-144x144-precomposed.png" %}">
-        <meta name="msapplication-TileColor" content="#222222">
-        
-        <!-- ios webapps - delete if not needed -->
-        <!--
-        <meta name="apple-touch-fullscreen" content="yes" />
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black">
-        <meta name="apple-mobile-web-app-title" content="">
-        -->
+        <!-- webfonts -->
+        <link href='//fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
+        <link href='//fonts.googleapis.com/css?family=Roboto:400,500,700,900' rel='stylesheet' type='text/css'>
         
         {% compress css inline %}
             <!-- critical css (above the fold styles) -->
-            <style rel="stylesheet" type="text/less">
-                
-                body { margin: 0; background: #f7f7f9 !important; }
-                                
-                #header { background: #fff; border-bottom: solid 1px #e1e1e8; height: 56px;
-                    
-                    h1 { margin: 0 10px; line-height: 56px; height:56px; text-transform: uppercase; font-family: 'Oswald', sans-serif; font-weight: 300; font-size: 30px; position: relative;
-                    
-                        a { text-decoration: none; color: #2980b9; }
-                        span { position: absolute; right: 0; font-size: 18px; font-weight: 300; color: red; }
-                    }
-                    
-                    
-                    
-                }
-                
-                #content { margin: 0 10px;
-                    h2 {  font-family: 'Oswald', sans-serif; font-weight: 400; font-size: 18px; position: relative;
-                        span { position: absolute; right: 0; font-size: 14px; font-weight: 300; }
-                    }
-                    
-                    h3 { text-transform: uppercase; font-family: 'Oswald', sans-serif; font-weight: 400; font-size: 14px; color: #666;}
-                   
-                    
-                    
-                }
-                                
-            </style>
-            
+            <link rel="stylesheet" href="{% static "sqlshare_web/css/inline.less" %}" type="text/less">            
         {% endcompress %}
-        
-        <!-- webfonts -->
-        <link href='http://fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
-        
+                
         {% if request.is_mobile %}
         {% compress css %}
         <!-- bootstrap & font awesome -->
-        <link rel="stylesheet" href="{% static "vendor/css/bootstrap-3.3.1.min.css" %}">
-        <link rel="stylesheet" href="{% static "vendor/css/font-awesome-4.0.3.min.css" %}">
+        <link rel="stylesheet" href="{% static "vendor/css/bootstrap-3.3.4.min.css" %}">
+        <link rel="stylesheet" href="{% static "vendor/css/font-awesome-4.3.0.min.css" %}">
+        <!-- codemirror -->
+        <link rel="stylesheet" href="{% static "vendor/css/codemirror-5.3.css" %}">
         <!-- devtools -->
         <link rel="stylesheet" href="{% static "vendor/css/aca-devtools.min.css" %}">
         <!-- mobile -->   
@@ -83,8 +42,10 @@
         {% if request.is_tablet %}
         {% compress css %}
         <!-- bootstrap & font awesome -->
-        <link rel="stylesheet" href="{% static "vendor/css/bootstrap-3.3.1.min.css" %}">
-        <link rel="stylesheet" href="{% static "vendor/css/font-awesome-4.0.3.min.css" %}">
+        <link rel="stylesheet" href="{% static "vendor/css/bootstrap-3.3.4.min.css" %}">
+        <link rel="stylesheet" href="{% static "vendor/css/font-awesome-4.3.0.min.css" %}">
+        <!-- codemirror -->
+        <link rel="stylesheet" href="{% static "vendor/css/codemirror-5.3.css" %}">
         <!-- devtools -->
         <link rel="stylesheet" href="{% static "vendor/css/aca-devtools.min.css" %}">
         <!-- mobile + table -->
@@ -96,8 +57,10 @@
         {% if not request.is_mobile and not request.is_tablet %}
         {% compress css %}
         <!-- bootstrap & font awesome -->
-        <link rel="stylesheet" href="{% static "vendor/css/bootstrap-3.3.1.min.css" %}">
-        <link rel="stylesheet" href="{% static "vendor/css/font-awesome-4.0.3.min.css" %}">
+        <link rel="stylesheet" href="{% static "vendor/css/bootstrap-3.3.4.min.css" %}">
+        <link rel="stylesheet" href="{% static "vendor/css/font-awesome-4.3.0.min.css" %}">
+        <!-- codemirror -->
+        <link rel="stylesheet" href="{% static "vendor/css/codemirror-5.3.css" %}">
         <!-- devtools -->
         <link rel="stylesheet" href="{% static "vendor/css/aca-devtools.min.css" %}">
         <!-- mobile + tablet + desktop -->
@@ -115,30 +78,83 @@
     </head>
     <body>
        
-        <div id="header"> 
-            <h1><a href="/">SQLSHARE</a> <span>UW_NETID</span></h1>
+        <div id="header" class="sql-header">
+            <h1><a href="/">SQL<span>SHARE</span></a></h1>
+            
+            <div class="dropdown sql-user-dropdown">
+              <button id="dLabel" class="btn btn-link" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="sql-user-name">{{ user.username }}</span>
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+              </button>
+              <ul class="dropdown-menu pull-right" aria-labelledby="dLabel">
+                <li class="sql-signed-in">Signed in as <strong>{{ user.username }}</strong></li>
+                <li role="separator" class="divider"></li>
+                <li class="sql-logout">
+                    <form action="/logout" method="POST">
+                    {% csrf_token %}
+                    <input type="submit" class="btn btn-link" value="Logout" />
+                    </form>
+                </li>
+              </ul>
+            </div>
+                        
+            <button onclick="document.getElementById('sidebar').classList.toggle('closed');" type="button" class="btn sql-menu-button"><i class="fa fa-bars"></i></button>
+                        
         </div>         
+
+        <div id="sidebar" class="sql-sidebar {% if request.is_mobile or request.is_tablet %}closed{% endif %}">
+            <div class="sql-sidebar-actions">
+                <ul>
+                    <li><a href="/{% if current_query %}?q={{ current_query }}{% endif %}">Yours</a></li>
+                    <li><a href="/all{% if current_query %}?q={{ current_query }}{% endif %}">All</a></li>
+                    <li><a href="/shared{% if current_query %}?q={{ current_query }}{% endif %}">Shared</a></li>
+                    
+                </ul>
                 
-        <div id="content">
-            {% block content %}{% endblock %}
+                <ul style="font-weight:400;">
+                    <li><a href="/upload">Upload Dataset</a></li>
+                    <li><a href="/new">New Query</a></li>
+                </ul>
+                
+                <ul>
+                    <li><a href="/recent{% if current_query %}?q={{ current_query }}{% endif %}">Recent Datasets</a></li>
+                    <li><a href="/queries">Recent Queries</a></li>
+                </ul>
+                
+            </div>
+        </div>       
+                
+        <div id="content" class="sql-content">
+            
+            <div class="sql-content-inner">
+                {% block searchbar %}{% endblock %}   
+                {% block content %}{% endblock %}
+            </div>
+            
         </div>
 
-        <div id="footer">
-            <p class="text-muted credit">Courtesy of Charlon and Craig. UW-IT ACA</p>
+        <div id="footer" class="sql-footer">
+            <p>Copyright &copy; {% now "Y" %} eScience Institute<span><a href="http://www.washington.edu/online/privacy/">Privacy</a></span> <span><a href="http://www.washington.edu/online/terms/">Terms</a></span></p>
         </div>
-            
-        <!-- devtools bar -->
-        <div id="dev_toolbar">
-            <span class="label label-device">Device: {% if request.is_mobile %}Mobile{% elif request.is_tablet %}Tablet{% else %}Desktop{%endif %}</span> <span class="label label-fold">The fold</span>
-        </div>
-        
+                
         {% compress js %}
         <!-- global javascript -->
         <script src="{% static "vendor/js/jquery-1.11.0.min.js" %}"></script>
-        <script src="{% static "vendor/js/bootstrap-3.2.0.min.js" %}"></script>
+        <script src="{% static "vendor/js/bootstrap-3.3.4.min.js" %}"></script>
+        <script src="{% static "vendor/js/handlebars-v3.0.3.js" %}"></script>
         <script src="{% static "vendor/js/aca-devtools.min.js" %}"></script>
+        <script src="{% static "vendor/js/resumable-1.0-github-master.js" %}"></script>
+        <script src="{% static "vendor/js/codemirror-5.3.js" %}"></script>
+        <script src="{% static "vendor/js/codemirror-sql-5.3.js" %}"></script>
+        <script src="{% static "vendor/js/codemirror-placeholder-5.3.js" %}"></script>
+        <script src="{% static "vendor/js/jquery.jscroll-2.3.4.js" %}"></script>
+        <script src="{% static "vendor/js/typeahead.bundle-0.11.1.js" %}"></script>
         <!-- app js -->
-        <script src="{% static "sqlshare_web/js/main.js" %}"></script>                        
+        <script src="{% static "sqlshare_web/js/upload.js" %}"></script>
+        <script src="{% static "sqlshare_web/js/run_query.js" %}"></script>
+        <script src="{% static "sqlshare_web/js/download_query.js" %}"></script>
+        <script src="{% static "sqlshare_web/js/details.js" %}"></script>
+        <script src="{% static "sqlshare_web/js/view_query.js" %}"></script>
         {% endcompress %}
             
         {% if google_analytics %}
@@ -154,5 +170,8 @@
         </script>
         {% endif %}
     
+        <script>
+            var sqlshare_user = '{{ user.username }}';
+        </script>
     </body>
 </html>

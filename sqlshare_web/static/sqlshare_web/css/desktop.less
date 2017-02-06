@@ -1,0 +1,64 @@
+@base: #2980b9;
+@asphault: #34495e;
+
+@asbestos: #7f8c8d;
+@clouds: #ecf0f1;
+
+.sql-header { position: fixed; top:0; z-index: 999; width: 100%; height: 66px !important; text-align: left; 
+    h1 { height:56px;  font-size: 30px; line-height: 56px; }
+    .sql-user-name { padding-right: 35px; color: @asbestos; text-transform: uppercase; visibility: visible; }
+    .sql-menu-button { display: none; }
+    
+    .sql-user-dropdown { right:15px;
+        button { height:56px; } 
+    }
+}
+
+.sql-sidebar { position: fixed; top:66px; bottom: 0; z-index: 999; width: 220px; height: 100%; max-height: 2000px; background: #fff; border-right: solid 1px #e1e1e8;
+        
+    .sql-sidebar-actions { padding: 0; 
+        ul { padding: 10px 20px;
+
+            li { line-height: 35px; }
+        }
+        a { line-height: 35px; }
+    }
+}
+
+.sql-content { margin-top: 80px;  margin-left: 240px; 
+        
+
+    .sql-content-inner { padding: 20px; 
+        
+        hr { margin: 3em -20px 2em -20px; }
+        
+        h2 { margin-top: 0; }
+        
+        .sql-dataset-list {
+            .sql-dataset-name {  }
+            .sql-dataset-owner {  position: absolute;  top:10px; right: 10px; display:inline-block; font-size: 14px;}
+            .sql-dataset-modified { }
+            .sql-dataset-desc { display: inline-block; width: 50%;  }
+        }
+        
+        .sql-query-list {
+            .sql-query-code {  }
+            .sql-query-date {  position: absolute;  top:10px; right: 10px; display:inline-block; font-size: 14px;}
+            .sql-query-status { display: inline-block; width: 50%;  }
+        }
+        .sql-search-bar { position: fixed; top:10px; left: 240px; z-index: 99999; width: 500px;  height: 56px; padding: 0; margin: 0; line-height: 56px; background: transparent; 
+            input[type="text"] { width: 84%; }
+            input[type="submit"] { width: 15%; }
+        }
+        
+        .sql-dataset-actions { width: 50%; margin-bottom: 1em; text-align: right; 
+            a, button { 
+                span { display: inline-block; color: @asbestos; }
+            }
+        }    
+    
+    }
+    
+}
+
+.sql-footer { margin-left: 240px; color: #666; }

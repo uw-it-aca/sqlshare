@@ -1,0 +1,120 @@
+{% extends "sqlshare_web/base.html" %}
+
+{% block title %}SQLSHARE: Dataset Upload{% endblock %}
+
+{% load staticfiles %}
+
+{% block content %}
+
+<h2>Save Upload</h2>
+
+<form method="POST" id="dataset_parser_form">
+
+{% csrf_token %}
+
+<div id="final_settings_panel" style="margin-bottom:3em;">
+    
+    {% csrf_token %}
+    <input type="hidden" name="original_name" value="{{ filename }}"/>
+    <input type="hidden" name="file_id" value="{{ file_id }}"/>
+    
+    <div class="form-group sql-dataset-title">
+        <label for="id_dataset_name">Dataset name:</label>
+        <input type="text" class="form-control" name="dataset_name" id="id_dataset_name" value="{{ new_name }}"/> 
+        <span id="title_required" style="display: none;">Required</span>
+        <span id="invalid_title" style="display: none;">Name can't include ?, #, /, \, [ or ]</span>
+    </div>
+  
+    <div class="form-group sql-dataset-desc">
+        <label for="id_dataset_description">Description:</label>
+        <textarea class="form-control" rows="3" id="id_dataset_description" name="dataset_description">{{ description }}</textarea>
+    </div>
+    
+    <div class="checkbox">
+        <label>
+          <input type="checkbox" name="is_public" value="1" {% if is_public %}checked="checked"{% endif %} /> Is Public
+        </label>
+    </div>
+            
+    <button class="btn btn-primary" id="save_button">Save</button>
+    
+    <hr/>
+    
+</div>
+
+<div id="uploading_panel" class="well" style="display: none;">
+    <p class="text-muted"><i class="fa fa-circle-o-notch fa-spin"></i> Saving dataset...</p>
+
+    <div class="progress" id="finalizing_progress_wrapper" style="width: 300px;">
+        <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="finalizing_progress" style="height: 100%; width: 0%;"></div>
+    </div>
+
+    <div id="upload_error_panel" style="display: none;">
+        Error processing upload: <span id="upload_error_message"></span>
+    </div>
+    <div id="long_upload_panel" style="display: none;">
+        <p class="text-danger">Your dataset upload is taking longer than usual. You are free to continue using other parts of the app. We will email you when your dataset has finished.</p>
+    </div>
+
+
+</div>
+
+<div id="dataset_parser_settings_panel" style="position:relative;">
+    
+    <h3>Dataset Preview</h3>
+    
+    <div class="sql-dataset-actions form-inline">
+        
+        <input type="hidden" name="update_preview" id="update_preview" value="0" />
+            
+        <div class="checkbox" style="margin-right:20px;">
+            <label>
+              <input id="has_column_headers" type="checkbox" name="has_header" value="1" {% if parser_values.parser.has_column_headers %}checked="checked"{% endif %} /> Has column headers
+            </label>
+        </div>
+        
+        <div class="form-group">
+            <label for="dataset_delimiter">Delimiter:</label>
+            <select name="delimiter" id="dataset_delimiter" class="form-control input-sm">
+                <option value="," {% if parser_values.parser.delimiter == "," %}selected=selected{% endif %}>,</option>
+                <option value="|" {% if parser_values.parser.delimiter == "|" %}selected=selected{% endif %}>|</option>
+                <option value="TAB" {% if parser_values.parser.delimiter == "TAB" %}selected=selected{% endif %}>TAB</option>
+            </select>
+        </div>
+        
+    </div>
+     
+</div>
+
+<div id="dataset_preview_panel" class="well table-responsive">
+    
+    <table class="table table-striped" style="font-size:12px !important;">
+        <thead>
+            <tr>
+                {% for row in parser_values.columns %}
+                <th>{{ row.name }}</th>
+                {% endfor %}
+            </tr>  
+        </thead>
+        <tbody> 
+            {% for row in parser_values.sample_data %}
+            <tr>
+                {% for col in row %}
+                <td>{{ col }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+</form>
+
+<script>
+    document.body.onload = function() {
+        add_parser_form_events();
+    };
+</script>
+
+{% endblock %}

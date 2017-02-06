@@ -12,16 +12,18 @@ setup(
     packages=['sqlshare_web'],
     include_package_data=True,
     install_requires = [
+        # For ansible deployments, you also need to update requirements.txt :(
         'setuptools',
-        'django>=1.7',
+        'django==1.10.*',
         'django-compressor',
         'django-templatetag-handlebars',
         'django_mobileesp',
+        'sanction',
     ],
     license='Apache License, Version 2.0',  # example license
-    description='A Django app to ...',
+    description='Frontend for SQLShare',
     long_description=README,
-    url='http://www.example.com/',
+    url='https://github.com/uw-it-aca/sqlshare',
     author='Your Name',
     author_email='yourname@example.com',
     classifiers=[
@@ -31,8 +33,8 @@ setup(
         'License :: OSI Approved :: Apache Software License', # example license
         'Operating System :: OS Independent',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.4',
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
     ],

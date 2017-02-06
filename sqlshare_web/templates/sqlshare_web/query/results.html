@@ -1,0 +1,18 @@
+<table class="table table-striped" style="font-size:12px !important;">
+    <thead style="font-size:12px !important;">
+        <tr>
+            {% for column in columns %}
+                <th>{{ column }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody role="alert" aria-live="polite" aria-relevant="all" style="font-size:12px !important;">
+        {% for row in sample_data %}
+            <tr>
+                {% for cell in row %}
+                <td>{{ cell }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

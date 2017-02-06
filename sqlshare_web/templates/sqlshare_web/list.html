@@ -5,206 +5,49 @@
 {% load staticfiles %}
 
 {% block content %}
-
-<h2>Your datasets <span><a href="/upload">Upload</a></span></h2>
-
-<div class="list-group sql-dataset-list">
-    <a class="list-group-item" href="/detail">
-        <span class="sql-dataset-name">Dheilly-array-design</span>
-        <span class="sql-dataset-desc">Array design from http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GPL11353</span>
-        <span class="sql-dataset-owner">owner@uw.edu</span>
-        <span class="sql-dataset-modified">modified on may 12, 2005</span>
-    </a>
-    <a class="list-group-item" href="/detail">
-        <span class="sql-dataset-name">Batting.csv</span>
-        <span class="sql-dataset-desc">this is a description</span>
-        <span class="sql-dataset-owner">owner@uw.edu</span>
-        <span class="sql-dataset-modified">modified on may 12, 2005</span>
-    </a>
-    <a class="list-group-item" href="/detail">
-        <span class="sql-dataset-name">Chars Data</span>
-        <span class="sql-dataset-desc">this is a description</span>
-        <span class="sql-dataset-owner">owner@uw.edu</span>
-        <span class="sql-dataset-modified">modified on may 12, 2005</span>
-    </a>
-    <a class="list-group-item" href="/detail">
-        <span class="sql-dataset-name">census.txt </span>
-        <span class="sql-dataset-desc">this is a description</span>
-        <span class="sql-dataset-owner">owner@uw.edu</span>
-        <span class="sql-dataset-modified">modified on may 12, 2005</span>
-    </a>
-    <a class="list-group-item" href="/detail">
-        <span class="sql-dataset-name">seaflow_21min.csv</span>
-        <span class="sql-dataset-desc">this is a description</span>
-        <span class="sql-dataset-owner">owner@uw.edu</span>
-        <span class="sql-dataset-modified">modified on may 12, 2005</span>
-    </a>
-    <a class="list-group-item" href="/detail">
-        <span class="sql-dataset-name">datagen1.txt</span>
-        <span class="sql-dataset-desc">this is a description</span>
-        <span class="sql-dataset-owner">owner@uw.edu</span>
-        <span class="sql-dataset-modified">modified on may 12, 2005</span>
-    </a>
-    <a class="list-group-item" href="/detail">
-        <span class="sql-dataset-name">periodic.txt</span>
-        <span class="sql-dataset-desc">this is a description</span>
-        <span class="sql-dataset-owner">owner@uw.edu</span>
-        <span class="sql-dataset-modified">modified on may 12, 2005</span>
-    </a>
-    <a class="list-group-item" href="/detail">
-        <span class="sql-dataset-name">nameLikeCraft</span>
-        <span class="sql-dataset-desc">this is a description</span>
-        <span class="sql-dataset-owner">owner@uw.edu</span>
-        <span class="sql-dataset-modified">modified on may 12, 2005</span>
-    </a>
-</div>
-
+      
+{% if is_yours %}
+<h2>Your datasets</h2>
+{% endif %}
+{% if is_shared %}
+<h2>Shared with you</h2>
+{% endif %}
+{% if is_all %}
 <h2>All datasets</h2>
-<div class="list-group sql-dataset-list">
-    <a class="list-group-item" href="/detail">
-        <span class="sql-dataset-name">seaflow_21min.csv</span>
-        <span class="sql-dataset-desc">this is a description</span>
-        <span class="sql-dataset-owner">owner@uw.edu</span>
-        <span class="sql-dataset-modified">modified on may 12, 2005</span>
-    </a>
-    <a class="list-group-item" href="/detail">
-        <span class="sql-dataset-name">Batting.csv</span>
-        <span class="sql-dataset-desc">this is a description</span>
-        <span class="sql-dataset-owner">owner@uw.edu</span>
-        <span class="sql-dataset-modified">modified on may 12, 2005</span>
-    </a>
-    <a class="list-group-item" href="/detail">
-        <span class="sql-dataset-name">Chars Data</span>
-        <span class="sql-dataset-desc">this is a description</span>
-        <span class="sql-dataset-owner">owner@uw.edu</span>
-        <span class="sql-dataset-modified">modified on may 12, 2005</span>
-    </a>
-    <a class="list-group-item" href="/detail">
-        <span class="sql-dataset-name">uniprot-reviewed-031615.tab</span>
-        <span class="sql-dataset-desc">this is a description</span>
-        <span class="sql-dataset-owner">owner@uw.edu</span>
-        <span class="sql-dataset-modified">modified on may 12, 2005</span>
-    </a>
-    <a class="list-group-item" href="/detail">
-        <span class="sql-dataset-name">census.txt </span>
-        <span class="sql-dataset-desc">this is a description</span>
-        <span class="sql-dataset-owner">owner@uw.edu</span>
-        <span class="sql-dataset-modified">modified on may 12, 2005</span>
-    </a>
-    <a class="list-group-item" href="/detail">
-        <span class="sql-dataset-name">datagen1.txt</span>
-        <span class="sql-dataset-desc">this is a description</span>
-        <span class="sql-dataset-owner">owner@uw.edu</span>
-        <span class="sql-dataset-modified">modified on may 12, 2005</span>
-    </a>
-    <a class="list-group-item" href="/detail">
-        <span class="sql-dataset-name">periodic.txt</span>
-        <span class="sql-dataset-desc">this is a description</span>
-        <span class="sql-dataset-owner">owner@uw.edu</span>
-        <span class="sql-dataset-modified">modified on may 12, 2005</span>
-    </a>
-    <a class="list-group-item" href="/detail">
-        <span class="sql-dataset-name">nameLikeCraft</span>
-        <span class="sql-dataset-desc">this is a description</span>
-        <span class="sql-dataset-owner">owner@uw.edu</span>
-        <span class="sql-dataset-modified">modified on may 12, 2005</span>
-    </a>
-    <a class="list-group-item" href="/detail">
-        <span class="sql-dataset-name">Batting.csv</span>
-        <span class="sql-dataset-desc">this is a description</span>
-        <span class="sql-dataset-owner">owner@uw.edu</span>
-        <span class="sql-dataset-modified">modified on may 12, 2005</span>
-    </a>
-    <a class="list-group-item" href="/detail">
-        <span class="sql-dataset-name">Chars Data</span>
-        <span class="sql-dataset-desc">this is a description</span>
-        <span class="sql-dataset-owner">owner@uw.edu</span>
-        <span class="sql-dataset-modified">modified on may 12, 2005</span>
-    </a>
-    <a class="list-group-item" href="/detail">
-        <span class="sql-dataset-name">uniprot-reviewed-031615.tab</span>
-        <span class="sql-dataset-desc">this is a description</span>
-        <span class="sql-dataset-owner">owner@uw.edu</span>
-        <span class="sql-dataset-modified">modified on may 12, 2005</span>
-    </a>
-    <a class="list-group-item" href="/detail">
-        <span class="sql-dataset-name">census.txt </span>
-        <span class="sql-dataset-desc">this is a description</span>
-        <span class="sql-dataset-owner">owner@uw.edu</span>
-        <span class="sql-dataset-modified">modified on may 12, 2005</span>
-    </a>
-    <a class="list-group-item" href="/detail">
-        <span class="sql-dataset-name">Batting.csv</span>
-        <span class="sql-dataset-desc">this is a description</span>
-        <span class="sql-dataset-owner">owner@uw.edu</span>
-        <span class="sql-dataset-modified">modified on may 12, 2005</span>
-    </a>
-    <a class="list-group-item" href="/detail">
-        <span class="sql-dataset-name">Chars Data</span>
-        <span class="sql-dataset-desc">this is a description</span>
-        <span class="sql-dataset-owner">owner@uw.edu</span>
-        <span class="sql-dataset-modified">modified on may 12, 2005</span>
-    </a>
-    <a class="list-group-item" href="/detail">
-        <span class="sql-dataset-name">uniprot-reviewed-031615.tab</span>
-        <span class="sql-dataset-desc">this is a description</span>
-        <span class="sql-dataset-owner">owner@uw.edu</span>
-        <span class="sql-dataset-modified">modified on may 12, 2005</span>
-    </a>
-    <a class="list-group-item" href="/detail">
-        <span class="sql-dataset-name">census.txt </span>
-        <span class="sql-dataset-desc">this is a description</span>
-        <span class="sql-dataset-owner">owner@uw.edu</span>
-        <span class="sql-dataset-modified">modified on may 12, 2005</span>
-    </a>
-    <a class="list-group-item" href="/detail">
-        <span class="sql-dataset-name">seaflow_21min.csv</span>
-        <span class="sql-dataset-desc">this is a description</span>
-        <span class="sql-dataset-owner">owner@uw.edu</span>
-        <span class="sql-dataset-modified">modified on may 12, 2005</span>
-    </a>
-    <a class="list-group-item" href="/detail">
-        <span class="sql-dataset-name">datagen1.txt</span>
-        <span class="sql-dataset-desc">this is a description</span>
-        <span class="sql-dataset-owner">owner@uw.edu</span>
-        <span class="sql-dataset-modified">modified on may 12, 2005</span>
-    </a>
-    <a class="list-group-item" href="/detail">
-        <span class="sql-dataset-name">periodic.txt</span>
-        <span class="sql-dataset-desc">this is a description</span>
-        <span class="sql-dataset-owner">owner@uw.edu</span>
-        <span class="sql-dataset-modified">modified on may 12, 2005</span>
-    </a>
-    <a class="list-group-item" href="/detail">
-        <span class="sql-dataset-name">Batting.csv</span>
-        <span class="sql-dataset-desc">this is a description</span>
-        <span class="sql-dataset-owner">owner@uw.edu</span>
-        <span class="sql-dataset-modified">modified on may 12, 2005</span>
-    </a>
-    <a class="list-group-item" href="/detail">
-        <span class="sql-dataset-name">Chars Data</span>
-        <span class="sql-dataset-desc">this is a description</span>
-        <span class="sql-dataset-owner">owner@uw.edu</span>
-        <span class="sql-dataset-modified">modified on may 12, 2005</span>
-    </a>
-    <a class="list-group-item" href="/detail">
-        <span class="sql-dataset-name">uniprot-reviewed-031615.tab</span>
-        <span class="sql-dataset-desc">this is a description</span>
-        <span class="sql-dataset-owner">owner@uw.edu</span>
-        <span class="sql-dataset-modified">modified on may 12, 2005</span>
-    </a>
-    <a class="list-group-item" href="/detail">
-        <span class="sql-dataset-name">census.txt </span>
-        <span class="sql-dataset-desc">this is a description</span>
-        <span class="sql-dataset-owner">owner@uw.edu</span>
-        <span class="sql-dataset-modified">modified on may 12, 2005</span>
-    </a>
-    <a class="list-group-item" href="/detail">
-        <span class="sql-dataset-name">nameLikeCraft</span>
-        <span class="sql-dataset-desc">this is a description</span>
-        <span class="sql-dataset-owner">owner@uw.edu</span>
-        <span class="sql-dataset-modified">modified on may 12, 2005</span>
-    </a>
+{% endif %}
+{% if is_recent %}
+<h2>Recent datasets</h2>
+{% endif %}
+
+<div class="well sql-dataset-list" id="dataset_list_scroll">
+    {% if datasets %}
+    {% include 'sqlshare_web/list_page.html' %}
+    {% else %}
+    <p class="text-muted">No datasets available!</p>
+    {% endif %}
 </div>
 
+<script>
+    window.onload = function() { add_datasetlist_events(); };
+</script>
+
+{% endblock %}
+
+{% block searchbar %}
+<div class="sql-search-bar">
+      
+    <form method="GET" class="form-inline" style="display:inline;">
+      <input type="text" class="form-control" placeholder="Filter dataset by keyword..." name="q" value="{{ current_query }}" id="dataset_search_input">
+      <span >
+        <input class="btn btn-primary" type="submit" value="Filter" id="run_dataset_search_button" {% if current_query %}style="display: none;"{% endif %}/>
+      </span>
+    </form>
+    
+    <form method="GET" class="form-inline" style="display:inline;">
+        <span >
+        <input class="btn btn-danger" type="submit" value="Clear" id="clear_dataset_search_button" {% if not current_query %}style="display: none;"{% endif %}/>
+        </span>
+    </form>
+    
+</div>
 {% endblock %}

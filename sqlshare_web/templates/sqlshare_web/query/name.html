@@ -1,0 +1,43 @@
+{% extends "sqlshare_web/base.html" %}
+
+{% block title %}SQLSHARE: New Query{% endblock %}
+
+{% load staticfiles %}
+
+{% block content %}
+
+<h2>Save Dataset</h2>
+
+<form method="POST">
+    
+    <input type="hidden" name="save" value="1"/>
+    {% csrf_token %}
+    
+    <div class="form-group {% if errors.sql %}has-error{% endif %}" >
+        <input type="hidden" name="sql" value="{{sql}}"/>
+        <label for="blah3" class="sr-only">SQL Query: </label>
+        {% if errors.sql_syntax %}{{ errors.sql_syntax }}{% endif %}
+        <textarea class="form-control" id="blah3" disabled="disabled">{{ sql }}</textarea>
+    </div>
+
+    <div class="form-group {% if errors.name %}has-error{% endif %} {% if errors.name_chars %}has-error{% endif %}">
+        <label class="control-label" for="blah1">Dataset name:  {% if errors.name %}Required{% endif %} {% if errors.name_chars %}Name can't include ?, #, /, \, [ or ]{% endif %}</label>
+        <input type="text" id="blah1" class="form-control" name="name" value="{{ name  }}"/>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label" for="blah2">Description:</label>
+        <textarea id="blah2" class="form-control" rows="3" name="description">{{ description }}</textarea>
+    </div>
+
+    <div class="checkbox">
+        <label>
+          <input type="checkbox" name="is_public" value="1" {% if is_public %}checked="checked"{% endif %} />Is public?
+        </label>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Submit</button>
+
+</form>
+
+{% endblock %}

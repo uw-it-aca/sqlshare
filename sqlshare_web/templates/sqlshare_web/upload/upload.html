@@ -1,0 +1,39 @@
+{% extends "sqlshare_web/base.html" %}
+
+{% block title %}SQLSHARE: Dataset Upload{% endblock %}
+
+{% load staticfiles %}
+
+{% block content %}
+
+<h2>Upload Dataset</h2>
+
+<div id="chunk_upload_container">
+    {% csrf_token %}
+
+    <div id="upload_dataset_droptarget" class="sql-upload-target">
+       <div class="sql-upload-link">Drag and drop a single file here <br/>or <a href="#" id="upload_dataset_browse">select from computer</a></div>
+    </div>
+    <p class="text-muted">Accepted file types: Comma-separated values (.csv) and Plain text (.txt)</p>
+</div>
+
+<div id="uploading_panel" style="display: none;">
+    <div class="progress" id="progress_meter_wrapper" style="width: 300px;">
+        <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="progress_meter" style="width: 0%; height: 100%;">
+        </div>
+    </div>
+</div>
+
+<div id="old_school_panel" style="display: none;">
+Your browser doesn't support html5 file uploading.  We're figuring out an option for you.
+</div>
+
+
+<script>
+    document.body.onload = function() {
+        create_uploader();
+    };
+</script>
+
+
+{% endblock %}

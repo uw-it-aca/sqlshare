@@ -1,0 +1,60 @@
+{% extends "sqlshare_web/base.html" %}
+
+{% block title %}SQLSHARE: New Dataset{% endblock %}
+
+{% load staticfiles %}
+
+{% block content %}
+
+<h2>New Query</h2>
+
+<form method="POST">
+    
+    {% csrf_token %}
+    <!-- this is priming the next page, if they want to save the query -->
+    <input type="hidden" name="is_public" value="1"/>
+    
+    <div class="form-group">
+        <label for="query_sql" class="sr-only">SQL Query:</label>
+        <textarea class="form-control sql-new-query-textarea" rows="3" placeholder="E.g. select * from table name" name="sql" id="query_sql">{{ sql }}</textarea>
+    </div>
+
+    <button type="button" class="btn btn-primary" id="run_query">RUN QUERY</button>
+    
+    <div id="query_preview_panel" style="display: none;">
+        
+        <hr>
+        
+        <div style="position:relative">
+            
+            <h3>Dataset Preview</h3>
+            
+            <div id="query_running_panel" class="well" style="display: none;">
+                <p class="text-muted"><i class="fa fa-circle-o-notch fa-spin"></i> Running query...</p>
+            </div>
+            <div id="query_results_panel" class="well table-responsive" style="display: none;"></div>
+            
+            <div class="sql-dataset-actions">
+                <button type="submit" class="btn btn-default btn-sm"><i class="fa fa-floppy-o"></i> <span>SAVE DATASET</span></button>
+                <button type="button" class="btn btn-default btn-sm" id="download_query"><i class="fa fa-download"></i> <span>DOWNLOAD</span></button>
+            </div>
+        
+        </div>
+        
+    </div>
+
+    <div id="download_container"></div>
+    
+</form>
+
+<script>
+    document.body.onload = function() {
+        var code_mirror = prep_run_query_page();
+        prep_download(code_mirror);
+        {% if sql %}
+        $("#run_query").click();
+        {% endif %}
+    };
+</script>
+
+{% endblock %}
